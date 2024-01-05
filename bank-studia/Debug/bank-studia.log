@@ -1,9 +1,2 @@
-﻿klient.obj : error LNK2005: "public: __thiscall Klient::Klient(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0Klient@@QAE@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@000@Z) already defined in bank.obj
-klient.obj : error LNK2005: "private: __thiscall KontoKlienta::KontoKlienta(void)" (??0KontoKlienta@@AAE@XZ) already defined in bank.obj
-klient.obj : error LNK2005: "public: __thiscall Klient::~Klient(void)" (??1Klient@@QAE@XZ) already defined in bank.obj
-klient.obj : error LNK2005: "private: __thiscall KontoKlienta::~KontoKlienta(void)" (??1KontoKlienta@@AAE@XZ) already defined in bank.obj
-main.obj : error LNK2005: "public: __thiscall Klient::Klient(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0Klient@@QAE@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@000@Z) already defined in bank.obj
-main.obj : error LNK2005: "private: __thiscall KontoKlienta::KontoKlienta(void)" (??0KontoKlienta@@AAE@XZ) already defined in bank.obj
-main.obj : error LNK2005: "public: __thiscall Klient::~Klient(void)" (??1Klient@@QAE@XZ) already defined in bank.obj
-main.obj : error LNK2005: "private: __thiscall KontoKlienta::~KontoKlienta(void)" (??1KontoKlienta@@AAE@XZ) already defined in bank.obj
-C:\Users\gymzo\source\repos\bank-studia\Debug\bank-studia.exe : fatal error LNK1169: one or more multiply defined symbols found
+﻿  klient.cpp
+  bank-studia.vcxproj -> C:\Users\gymzo\source\repos\bank-studia\Debug\bank-studia.exe

@@ -5,6 +5,7 @@ class Klient
 public:
 	Klient(std::string, std::string, std::string, std::string);
 	~Klient();
+	void wyswietlDane();
 protected:
 private:
 	std::string imie;

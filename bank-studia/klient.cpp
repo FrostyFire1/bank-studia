@@ -12,6 +12,10 @@ Klient::Klient(std::string new_imie, std::string new_nazwisko, std::string new_a
 
 Klient::~Klient() {}
 
+void Klient::wyswietlDane()
+{
+	std::cout << imie << " " << nazwisko << "\n" << adres << "\n" << mail << " \n";
+}
 
 KontoKlienta::KontoKlienta(){
 
