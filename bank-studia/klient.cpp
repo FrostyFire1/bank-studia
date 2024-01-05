@@ -17,9 +17,11 @@ void Klient::wyswietlDane()
 	std::cout << imie << " " << nazwisko << "\n" << adres << "\n" << mail << " \n";
 }
 
-KontoKlienta::KontoKlienta(){
-
+KontoKlienta::KontoKlienta(std::string newLogin)
+{
+	login = newLogin;
 }
+
 KontoKlienta::~KontoKlienta()
 {
 

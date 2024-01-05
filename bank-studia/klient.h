@@ -17,11 +17,14 @@ private:
 class KontoKlienta
 {
 public:
+	std::string login;
+	KontoKlienta(std::string);
+	~KontoKlienta();
+	
+
+
+
 private:
 	int numerKonta = 0;
-	std::string login;
 	std::string haslo;
-
-	KontoKlienta();
-	~KontoKlienta();
 };
