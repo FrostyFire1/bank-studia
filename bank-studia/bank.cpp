@@ -72,7 +72,6 @@ void Bank::ustawLogin()
 
 		if (!czyWolny) std::cout << "Login zajety!";
 	} while (!czyWolny);
-
 }
 
 bool Bank::czyWolnyLogin(std::string newLogin)
@@ -80,7 +79,7 @@ bool Bank::czyWolnyLogin(std::string newLogin)
 	bool czyWolny = 1;
 	for (KontoKlienta konto : listaKontKlientow)
 	{
-		if (konto.login == newLogin)
+		if (konto.login==newLogin)
 		{
 			czyWolny = 0;
 			break;

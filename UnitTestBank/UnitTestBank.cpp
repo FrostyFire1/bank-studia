@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTestBank
 {
-	TEST_CLASS(UnitTestBank)
+	TEST_CLASS(AccountCreation)
 	{
 	public:
 		
@@ -15,30 +15,27 @@ namespace UnitTestBank
 		{
 			Bank bank;
 
-			std::list<KontoKlienta> listaKont;
-
 			for (int i = 0; i < 10; i++)
 			{
-				KontoKlienta* konto = new KontoKlienta(std::to_string(i + i * 20));
-				listaKont.push_back(*konto);
+				KontoKlienta* konto = new KontoKlienta(std::to_string(i+20*i));
+				bank.listaKontKlientow.push_back(*konto);
 				delete konto;
 			}
 
 			KontoKlienta* konto = new KontoKlienta("papamobile");
-			listaKont.push_back(*konto);
+			bank.listaKontKlientow.push_back(*konto);
 			delete konto;
 
 			for (int i = 10; i < 20; i++)
 			{
-				KontoKlienta* konto = new KontoKlienta(std::to_string(i + i * 20));
-				listaKont.push_back(*konto);
+				KontoKlienta* konto = new KontoKlienta(std::to_string(i + 20 * i));
+				bank.listaKontKlientow.push_back(*konto);
 				delete konto;
 			}
 
 			std::string nowyLogin = "papamobile";
 
-			Assert::IsTrue(bank.czyWolnyLogin(nowyLogin));
-
+			Assert::IsFalse(bank.czyWolnyLogin(nowyLogin));
 		}
 	};
 }
