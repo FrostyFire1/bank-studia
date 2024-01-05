@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "C:\Users\gymzo\source\repos\bank-studia\bank-studia\bank.h"
-#include "C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.h"
+#include "..\bank-studia\bank.h"
+#include "..\bank-studia\klient.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
