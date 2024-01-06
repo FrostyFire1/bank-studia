@@ -46,7 +46,11 @@ void Bank::dodajKlienta()
 	new_haslo = ustawHaslo();
 	listaKontKlientow.front().haslo = new_haslo;
 
-
+	int number = static_cast<int>(new_imie[0]);
+	number += 10 * static_cast<int>(new_imie[1]);
+	number += 100 * static_cast<int>(new_imie[2]);
+	number += 1000 * static_cast<int>(new_imie[3]);
+	listaKontKlientow.front().numerKonta = number;
 }
 
 void Bank::usunKlienta()
@@ -58,9 +62,11 @@ void Bank::usunKlienta()
 
 void wyswietlKlientow(Bank bank)
 {
+	system("cls");
 	for (KontoKlienta aktualny : bank.listaKontKlientow)
 	{
 		aktualny.wyswietlDane();
+		std::cout << "\n\n";
 	}
 }
 
@@ -76,8 +82,12 @@ std::string ustawLogin(std::list<KontoKlienta> listaKont)
 
 		czyWolny = czyWolnyLogin(listaKont, wyborLogin);
 
-		if (!czyWolny) std::cout << "Login zajety!";
-	} while (!czyWolny);
+		if (!czyWolny)
+		{
+			std::cout << "Login zajety!";
+			_getch();
+		}
+	} while (!czyWolny && wyborLogin.length() < 4);
 
 	return wyborLogin;
 }
@@ -100,6 +110,7 @@ std::string ustawHaslo()
 		{
 			system("cls");
 			std::cout << "Podane hasla roznia sie :c";
+			_getch();
 		}
 	} while (wyborHaslo != powtorzHaslo);
 

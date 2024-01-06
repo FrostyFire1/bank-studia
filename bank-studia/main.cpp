@@ -9,6 +9,14 @@ int main()
 	bank.dodajKlienta();
 	wyswietlKlientow(bank);
 
+	_getch();
+	bank.dodajKlienta();
+	wyswietlKlientow(bank);
+
+	_getch();
+	bank.dodajKlienta();
+	wyswietlKlientow(bank);
+
 
 	return 0;
 }

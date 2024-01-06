@@ -19,7 +19,7 @@ KontoKlienta::~KontoKlienta() {}
 
 void KontoKlienta::wyswietlDane()
 {
-	std::cout << imie << " " << nazwisko << "\n" << adres << "\n" << mail << " \n";
+	std::cout << imie << " " << nazwisko << "\n" << adres << "\n" << mail << " \n" << login << " " << haslo << "\n" << numerKonta;
 }
 
 
