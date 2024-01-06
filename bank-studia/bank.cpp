@@ -38,12 +38,12 @@ void Bank::dodajKlienta()
 
 	ustawLogin();
 
-
+	//finish setting up account
 }
 
 void Bank::usunKlienta()
 {
-	//confirm passwort
+	//add confirm passwort function
 
 
 }
