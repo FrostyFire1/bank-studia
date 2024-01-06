@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <list>
 #include "bank.h"
+#include "klient.h"
 
 Bank::Bank()
 {
@@ -17,26 +19,32 @@ Bank::~Bank()
 
 void Bank::dodajKlienta()
 {
-	std::string imie;
-	std::string nazwisko;
-	std::string adres;
-	std::string mail;
+	std::string new_imie;
+	std::string new_nazwisko;
+	std::string new_adres;
+	std::string new_mail;
+	std::string new_login;
+	std::string new_haslo;
 	
 	system("cls");
 	std::cout << "Imie: ";
-	std::getline(std::cin, imie);
+	std::getline(std::cin, new_imie);
 	std::cout << "Nazwisko: ";
-	std::getline(std::cin, nazwisko);
+	std::getline(std::cin, new_nazwisko);
 	std::cout << "Adres zamieszkania: ";
-	std::getline(std::cin, adres);
+	std::getline(std::cin, new_adres);
 	std::cout << "Adres Email: ";
-	std::getline(std::cin, mail);
+	std::getline(std::cin, new_mail);
 
-	KontoKlienta *nowy = new KontoKlienta(imie, nazwisko, adres, mail);
-	listaKlientow.push_back(*nowy);
+	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
+	listaKontKlientow.push_front(*nowy);
 	delete nowy;
 
-	ustawLogin();
+	new_login = ustawLogin(listaKontKlientow);
+	listaKontKlientow.front().login = new_login;
+
+	new_haslo = ustawHaslo();
+	listaKontKlientow.front().haslo = new_haslo;
 
 
 }
@@ -48,15 +56,15 @@ void Bank::usunKlienta()
 
 }
 
-void Bank::wyswietlKlientow()
+void wyswietlKlientow(Bank bank)
 {
-	for (KontoKlienta aktualny : listaKlientow)
+	for (KontoKlienta aktualny : bank.listaKontKlientow)
 	{
 		aktualny.wyswietlDane();
 	}
 }
 
-void Bank::ustawLogin()
+std::string ustawLogin(std::list<KontoKlienta> listaKont)
 {
 	std::string wyborLogin;
 	bool czyWolny = 0;
@@ -66,18 +74,42 @@ void Bank::ustawLogin()
 		std::cout << "Login: ";
 		std::getline(std::cin, wyborLogin);
 
-		czyWolny = czyWolnyLogin(wyborLogin);
+		czyWolny = czyWolnyLogin(listaKont, wyborLogin);
 
 		if (!czyWolny) std::cout << "Login zajety!";
 	} while (!czyWolny);
 
-
+	return wyborLogin;
 }
 
-bool Bank::czyWolnyLogin(std::string newLogin)
+std::string ustawHaslo()
+{
+	std::string wyborHaslo;
+	std::string powtorzHaslo;
+
+	do {
+		system("cls");
+		std::cout << "Haslo: ";
+		std::getline(std::cin, wyborHaslo);
+
+		system("cls");
+		std::cout << "Powtorz haslo: ";
+		std::getline(std::cin, powtorzHaslo);
+
+		if (wyborHaslo != powtorzHaslo)
+		{
+			system("cls");
+			std::cout << "Podane hasla roznia sie :c";
+		}
+	} while (wyborHaslo != powtorzHaslo);
+
+	return wyborHaslo;
+}
+
+bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 {
 	bool czyWolny = 1;
-	for (KontoKlienta konto : listaKontKlientow)
+	for (KontoKlienta konto : listaKont)
 	{
 		if (konto.login==newLogin)
 		{

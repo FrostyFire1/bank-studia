@@ -4,6 +4,11 @@ int main()
 {
 	std::cout << "BANK\n";
 
+	Bank bank;
+
+	bank.dodajKlienta();
+	wyswietlKlientow(bank);
+
 
 	return 0;
 }

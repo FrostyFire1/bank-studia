@@ -12,14 +12,16 @@ public:
 	Bank();
 	~Bank();
 	void dodajKlienta();
-	void wyswietlKlientow();
 	void usunKlienta();
-	bool czyWolnyLogin(std::string);
+
+protected:
 
 private:
 	int okresWeryfikacji = 100;
-	std::list<KontoKlienta> listaKlientow;
-
-	void ustawLogin();
 };
+
+std::string ustawLogin(std::list<KontoKlienta>);
+std::string ustawHaslo();
+bool czyWolnyLogin(std::list<KontoKlienta>, std::string);
+void wyswietlKlientow(Bank);
 

@@ -18,24 +18,26 @@ namespace UnitTestBank
 			for (int i = 0; i < 10; i++)
 			{
 				KontoKlienta* konto = new KontoKlienta(std::to_string(i+i*10));
-				bank.listaKontKlientow.push_back(*konto);
+				bank.listaKontKlientow.push_front(*konto);
 				delete konto;
 			}
 
 			KontoKlienta* konto = new KontoKlienta("papamobile");
-			bank.listaKontKlientow.push_back(*konto);
+			bank.listaKontKlientow.push_front(*konto);
 			delete konto;
 
 			for (int i = 10; i < 20; i++)
 			{
 				KontoKlienta* konto = new KontoKlienta(std::to_string(i+i*10));
-				bank.listaKontKlientow.push_back(*konto);
+				bank.listaKontKlientow.push_front(*konto);
 				delete konto;
 			}
 
 			std::string nowyLogin = "papamobile";
+			std::string nowyLogin2 = "pepenobile";
 
-			Assert::IsFalse(bank.czyWolnyLogin(nowyLogin));
+			Assert::IsFalse(czyWolnyLogin(bank.listaKontKlientow, nowyLogin));
+			Assert::IsTrue(czyWolnyLogin(bank.listaKontKlientow, nowyLogin2));
 		}
 	};
 }
