@@ -8,6 +8,7 @@ class Bank
 {
 public:
 	std::list<KontoKlienta> listaKontKlientow;
+
 	Bank();
 	~Bank();
 	void dodajKlienta();
@@ -15,10 +16,9 @@ public:
 	void usunKlienta();
 	bool czyWolnyLogin(std::string);
 
-
 private:
 	int okresWeryfikacji = 100;
-	std::list<Klient> listaKlientow;
+	std::list<KontoKlienta> listaKlientow;
 
 	void ustawLogin();
 };

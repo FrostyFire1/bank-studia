@@ -32,7 +32,7 @@ void Bank::dodajKlienta()
 	std::cout << "Adres Email: ";
 	std::getline(std::cin, mail);
 
-	Klient *nowy = new Klient(imie, nazwisko, adres, mail);
+	KontoKlienta *nowy = new KontoKlienta(imie, nazwisko, adres, mail);
 	listaKlientow.push_back(*nowy);
 	delete nowy;
 
@@ -43,16 +43,14 @@ void Bank::dodajKlienta()
 
 void Bank::usunKlienta()
 {
-	std::string confirmPassword;
-	std::cout << "Haslo: ";
-	std::getline(std::cin, confirmPassword);
+	//confirm passwort
 
 
 }
 
 void Bank::wyswietlKlientow()
 {
-	for (Klient aktualny : listaKlientow)
+	for (KontoKlienta aktualny : listaKlientow)
 	{
 		aktualny.wyswietlDane();
 	}
@@ -72,6 +70,8 @@ void Bank::ustawLogin()
 
 		if (!czyWolny) std::cout << "Login zajety!";
 	} while (!czyWolny);
+
+
 }
 
 bool Bank::czyWolnyLogin(std::string newLogin)

@@ -17,7 +17,7 @@ namespace UnitTestBank
 
 			for (int i = 0; i < 10; i++)
 			{
-				KontoKlienta* konto = new KontoKlienta(std::to_string(i+20*i));
+				KontoKlienta* konto = new KontoKlienta(std::to_string(i+i*10));
 				bank.listaKontKlientow.push_back(*konto);
 				delete konto;
 			}
@@ -28,7 +28,7 @@ namespace UnitTestBank
 
 			for (int i = 10; i < 20; i++)
 			{
-				KontoKlienta* konto = new KontoKlienta(std::to_string(i + 20 * i));
+				KontoKlienta* konto = new KontoKlienta(std::to_string(i+i*10));
 				bank.listaKontKlientow.push_back(*konto);
 				delete konto;
 			}

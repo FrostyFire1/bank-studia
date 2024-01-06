@@ -2,7 +2,12 @@
 #include <string>
 #include "klient.h"
 
-Klient::Klient(std::string new_imie, std::string new_nazwisko, std::string new_adres, std::string new_mail)
+KontoKlienta::KontoKlienta(std::string nowy_login)
+{
+	login = nowy_login;
+}
+
+KontoKlienta::KontoKlienta(std::string new_imie, std::string new_nazwisko, std::string new_adres, std::string new_mail)
 {
 	imie = new_imie;
 	nazwisko = new_nazwisko;
@@ -10,20 +15,11 @@ Klient::Klient(std::string new_imie, std::string new_nazwisko, std::string new_a
 	mail = new_mail;
 }
 
-Klient::~Klient() {}
+KontoKlienta::~KontoKlienta() {}
 
-void Klient::wyswietlDane()
+void KontoKlienta::wyswietlDane()
 {
 	std::cout << imie << " " << nazwisko << "\n" << adres << "\n" << mail << " \n";
 }
 
-KontoKlienta::KontoKlienta(std::string newLogin)
-{
-	login = newLogin;
-}
-
-KontoKlienta::~KontoKlienta()
-{
-
-}
 
