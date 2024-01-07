@@ -1,2 +1,6 @@
-﻿  bank.cpp
-  bank-studia.vcxproj -> C:\Users\gymzo\source\repos\bank-studia\x64\Debug\bank-studia.exe
+﻿  KontoKlienta.cpp
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(59,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(64,7): warning C4101: "testNumeru": lokalna zmienna, do której nie istnieje odwołanie
+  main.cpp
+  Generowanie kodu...
+  bank-studia.vcxproj -> C:\Users\barte\Desktop\bank-studia-MZ\x64\Debug\bank-studia.exe

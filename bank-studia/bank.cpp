@@ -36,7 +36,7 @@ void Bank::dodajKlienta()
 	std::cout << "Adres Email: ";
 	std::getline(std::cin, new_mail);
 
-	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
+	Konto *nowy = new Konto(new_imie, new_nazwisko, new_adres, new_mail);
 	listaKontKlientow.push_front(*nowy);
 	delete nowy;
 
@@ -63,14 +63,14 @@ void Bank::usunKlienta()
 void wyswietlKlientow(Bank bank)
 {
 	system("cls");
-	for (KontoKlienta aktualny : bank.listaKontKlientow)
+	for (Konto aktualny : bank.listaKontKlientow)
 	{
 		aktualny.wyswietlDane();
 		std::cout << "\n\n";
 	}
 }
 
-std::string ustawLogin(std::list<KontoKlienta> listaKont)
+std::string ustawLogin(std::list<Konto> listaKont)
 {
 	std::string wyborLogin;
 	bool czyWolny = 0;
@@ -117,10 +117,10 @@ std::string ustawHaslo()
 	return wyborHaslo;
 }
 
-bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
+bool czyWolnyLogin(std::list<Konto> listaKont, std::string newLogin)
 {
 	bool czyWolny = 1;
-	for (KontoKlienta konto : listaKont)
+	for (Konto konto : listaKont)
 	{
 		if (konto.login==newLogin)
 		{

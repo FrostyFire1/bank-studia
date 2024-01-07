@@ -7,7 +7,7 @@
 class Bank
 {
 public:
-	std::list<KontoKlienta> listaKontKlientow;
+	std::list<Konto> listaKontKlientow;
 
 	Bank();
 	~Bank();
@@ -20,8 +20,8 @@ private:
 	int okresWeryfikacji = 100;
 };
 
-std::string ustawLogin(std::list<KontoKlienta>);
+std::string ustawLogin(std::list<Konto>);
 std::string ustawHaslo();
-bool czyWolnyLogin(std::list<KontoKlienta>, std::string);
+bool czyWolnyLogin(std::list<Konto>, std::string);
 void wyswietlKlientow(Bank);
 
