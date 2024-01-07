@@ -11,7 +11,7 @@ public:
 
 	Bank();
 	~Bank();
-	void dodajKlienta(int*);
+	void dodajKlienta(int*, Bank*);
 	void usunKlienta();
 
 protected:
@@ -28,3 +28,9 @@ int getListaKlientow(Bank*);
 void setListaKlientow(int*, Bank*);
 void wczytajKlienta(Bank*, std::ifstream*);
 void zapiszKlienta(Bank*, std::ofstream*);
+
+
+namespace menu
+{
+	int start();
+}

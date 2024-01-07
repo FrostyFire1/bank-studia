@@ -2,21 +2,34 @@
 
 int main()
 {
-	std::cout << "BANK\n";
-
 	Bank *bank = new Bank;
 	int* iloscKlientow = new int;
 	*iloscKlientow = getListaKlientow(bank);
 
-	wyswietlKlientow(bank);
-	_getch();
+	int  menuWybor = 0;
 
-	bank->dodajKlienta(iloscKlientow);
+	while (menuWybor>=0)
+	{
+		switch (menuWybor)
+		{
+		case 0:
+			menuWybor = menu::start();
+			break;
 
-	wyswietlKlientow(bank);
-	_getch();
+		case 1:
+			menuWybor = 0;
+			break;
 
-	setListaKlientow(iloscKlientow, bank);
+		case 2:
+			bank->dodajKlienta(iloscKlientow, bank);
+			menuWybor = 0;
+			break;
+
+		default:
+			menuWybor = -1;
+			break;
+		}
+	}
 
 	delete bank;
 

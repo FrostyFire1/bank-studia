@@ -17,7 +17,7 @@ Bank::~Bank()
 
 }
 
-void Bank::dodajKlienta(int *iloscKlientow)
+void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
 {
 	(*iloscKlientow)++;
 
@@ -45,11 +45,13 @@ void Bank::dodajKlienta(int *iloscKlientow)
 
 	new_login = ustawLogin(listaKontKlientow);
 	listaKontKlientow.back().login = new_login;
-
 	new_haslo = ustawHaslo();
 	listaKontKlientow.back().haslo = new_haslo;
-
 	listaKontKlientow.back().numerKonta = *iloscKlientow;
+
+	setListaKlientow(iloscKlientow, bank);
+
+	std::cout << "Utworzono konto"; _getch();
 }
 
 void Bank::usunKlienta()
@@ -76,6 +78,7 @@ std::string ustawLogin(std::list<KontoKlienta> listaKont)
 	do
 	{
 		system("cls");
+		std::cout << "--------------------\n| ";
 		std::cout << "Login: ";
 		std::cin >> wyborLogin;
 
@@ -83,7 +86,7 @@ std::string ustawLogin(std::list<KontoKlienta> listaKont)
 
 		if (!czyWolny)
 		{
-			std::cout << "Login zajety!";
+			std::cout << "| Login zajety!";
 			_getch();
 		}
 	} while (!czyWolny || wyborLogin.length() < 2);
@@ -98,18 +101,19 @@ std::string ustawHaslo()
 
 	do {
 		system("cls");
+		std::cout << "--------------------\n| ";
 		std::cout << "Haslo: ";
 		std::cin.ignore();
 		std::cin >> wyborHaslo;
 
-		system("cls");
+		std::cout << "--------------------\n| ";
 		std::cout << "Powtorz haslo: ";
 		std::cin >> powtorzHaslo;
 
 		if (wyborHaslo != powtorzHaslo)
 		{
 			system("cls");
-			std::cout << "Podane hasla roznia sie :c";
+			std::cout << "| Podane hasla roznia sie :c";
 			_getch();
 		}
 	} while (wyborHaslo != powtorzHaslo);
@@ -214,4 +218,22 @@ void zapiszKlienta(Bank* bank, std::ofstream* plik)
 	*plik << std::endl;
 	*plik << bank->listaKontKlientow.front().mail;
 	*plik << std::endl;
+}
+
+
+int menu::start()
+{
+	int menuWybor;
+	system("cls");
+
+	std::cout << "--------------------\n"
+		<< "BANK\n"
+		<< "1. Zaloguj sie\n"
+		<< "2. Zarejestruj sie\n"
+		<< "3. Wyjdz\n"
+		<< "--------------------\n";
+
+	std::cin >> menuWybor;
+
+	return menuWybor;
 }
