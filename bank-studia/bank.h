@@ -24,7 +24,7 @@ std::string ustawLogin(std::list<KontoKlienta>);
 std::string ustawHaslo();
 bool czyWolnyLogin(std::list<KontoKlienta>, std::string);
 void wyswietlKlientow(Bank*);
-int getIloscKlientow(Bank*);
-void setIloscKlientow(int*);
+int getListaKlientow(Bank*);
+void setListaKlientow(int*, Bank*);
 void wczytajKlienta(Bank*, std::ifstream*);
-
+void zapiszKlienta(Bank*, std::ofstream*);

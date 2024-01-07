@@ -6,17 +6,17 @@ int main()
 
 	Bank *bank = new Bank;
 	int* iloscKlientow = new int;
-	*iloscKlientow = getIloscKlientow(bank);
+	*iloscKlientow = getListaKlientow(bank);
 
 	wyswietlKlientow(bank);
 	_getch();
 
 	bank->dodajKlienta(iloscKlientow);
-	wyswietlKlientow(bank);
 
-	_getch();
-	bank->dodajKlienta(iloscKlientow);
 	wyswietlKlientow(bank);
+	_getch();
+
+	setListaKlientow(iloscKlientow, bank);
 
 	delete bank;
 

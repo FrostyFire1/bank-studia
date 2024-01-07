@@ -40,16 +40,16 @@ void Bank::dodajKlienta(int *iloscKlientow)
 	std::cin >> new_mail;
 
 	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
-	listaKontKlientow.push_front(*nowy);
+	listaKontKlientow.push_back(*nowy);
 	delete nowy;
 
 	new_login = ustawLogin(listaKontKlientow);
-	listaKontKlientow.front().login = new_login;
+	listaKontKlientow.back().login = new_login;
 
 	new_haslo = ustawHaslo();
-	listaKontKlientow.front().haslo = new_haslo;
+	listaKontKlientow.back().haslo = new_haslo;
 
-	listaKontKlientow.front().numerKonta = *iloscKlientow;
+	listaKontKlientow.back().numerKonta = *iloscKlientow;
 }
 
 void Bank::usunKlienta()
@@ -132,24 +132,20 @@ bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 	return czyWolny;
 }
 
-int getIloscKlientow(Bank *bank)
+int getListaKlientow(Bank *bank)
 {
-	std::string new_imie;
-	std::string new_nazwisko;
-	std::string new_adres;
-	std::string new_mail;
-	std::string new_login;
-	std::string new_haslo;
-	int numerKonta;
 	std::ifstream* plikListaKlientow = new std::ifstream;
 	plikListaKlientow->open("listaKlientow.txt");
 
 	int iloscKlientow = 0;
-	if(plikListaKlientow->is_open()) *plikListaKlientow >> iloscKlientow;
-
-	for (int i = 0; i < iloscKlientow; i++)
+	if (plikListaKlientow->is_open())
 	{
-		wczytajKlienta(bank, plikListaKlientow);
+		*plikListaKlientow >> iloscKlientow;
+
+		for (int i = 0; i < iloscKlientow; i++)
+		{
+			wczytajKlienta(bank, plikListaKlientow);
+		}
 	}
 
 	plikListaKlientow->close();
@@ -158,21 +154,24 @@ int getIloscKlientow(Bank *bank)
 	return iloscKlientow;
 }
 
-void setIloscKlientow(int *iloscKlientow)
+void setListaKlientow(int *iloscKlientow, Bank *bank)
 {
-	std::ofstream plikListaKlientow;
-	plikListaKlientow.open("listaKlientow.txt");
+	std::ofstream* plikListaKlientow = new std::ofstream;
+	plikListaKlientow->open("listaKlientow.txt");
 
-	if (plikListaKlientow.is_open()) plikListaKlientow << *iloscKlientow;
-
-	for (int i = 0; i < *iloscKlientow; i++)
+	if (plikListaKlientow->is_open())
 	{
+		*plikListaKlientow << *iloscKlientow << std::endl;
 
+		for (int i = 0; i < *iloscKlientow; i++)
+		{
+			zapiszKlienta(bank, plikListaKlientow);
+			bank->listaKontKlientow.pop_front();
+		}
 	}
 
-	plikListaKlientow.close();
-
-	delete iloscKlientow;
+	plikListaKlientow->close();
+	delete plikListaKlientow;
 }
 
 void wczytajKlienta(Bank *bank, std::ifstream *plik)
@@ -185,9 +184,9 @@ void wczytajKlienta(Bank *bank, std::ifstream *plik)
 	std::string new_haslo;
 	int new_numerKonta;
 
+	*plik >> new_numerKonta;
 	*plik >> new_login;
 	*plik >> new_haslo;
-	*plik >> new_numerKonta;
 	*plik >> new_imie;
 	*plik >> new_nazwisko;
 	plik->ignore();
@@ -195,6 +194,24 @@ void wczytajKlienta(Bank *bank, std::ifstream *plik)
 	*plik >> new_mail;
 
 	KontoKlienta* nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail, new_login, new_haslo, new_numerKonta);
-	bank->listaKontKlientow.push_front(*nowy);
+	bank->listaKontKlientow.push_back(*nowy);
 	delete nowy;
+}
+
+void zapiszKlienta(Bank* bank, std::ofstream* plik)
+{
+	*plik << bank->listaKontKlientow.front().numerKonta;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().login;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().haslo;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().imie;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().nazwisko;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().adres;
+	*plik << std::endl;
+	*plik << bank->listaKontKlientow.front().mail;
+	*plik << std::endl;
 }
