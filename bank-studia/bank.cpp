@@ -17,7 +17,7 @@ Bank::~Bank()
 
 }
 
-void Bank::dodajKlienta()
+void Bank::dodajKlienta(int *iloscKlientow)
 {
 	std::string new_imie;
 	std::string new_nazwisko;
@@ -46,11 +46,9 @@ void Bank::dodajKlienta()
 	new_haslo = ustawHaslo();
 	listaKontKlientow.front().haslo = new_haslo;
 
-	int number = static_cast<int>(new_imie[0]);
-	number += 10 * static_cast<int>(new_imie[1]);
-	number += 100 * static_cast<int>(new_imie[2]);
-	number += 1000 * static_cast<int>(new_imie[3]);
-	listaKontKlientow.front().numerKonta = number;
+	listaKontKlientow.front().numerKonta = *iloscKlientow;
+
+	(*iloscKlientow)++;
 }
 
 void Bank::usunKlienta()
@@ -130,4 +128,27 @@ bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 	}
 
 	return czyWolny;
+}
+
+int getIloscKlientow()
+{
+	std::ifstream plilkListaKlientow;
+	plilkListaKlientow.open("listaKlientow.txt");
+
+	int iloscKlientow = 0;
+	if(plilkListaKlientow.is_open()) plilkListaKlientow >> iloscKlientow;
+	plilkListaKlientow.close();
+
+	return iloscKlientow;
+}
+
+void setIloscKlientow(int *iloscKlientow)
+{
+	std::ofstream plilkListaKlientow;
+	plilkListaKlientow.open("listaKlientow.txt");
+
+	if (plilkListaKlientow.is_open()) plilkListaKlientow << *iloscKlientow;
+	plilkListaKlientow.close();
+
+	delete iloscKlientow;
 }

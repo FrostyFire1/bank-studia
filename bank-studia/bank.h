@@ -11,7 +11,7 @@ public:
 
 	Bank();
 	~Bank();
-	void dodajKlienta();
+	void dodajKlienta(int*);
 	void usunKlienta();
 
 protected:
@@ -24,4 +24,6 @@ std::string ustawLogin(std::list<KontoKlienta>);
 std::string ustawHaslo();
 bool czyWolnyLogin(std::list<KontoKlienta>, std::string);
 void wyswietlKlientow(Bank);
+int getIloscKlientow();
+void setIloscKlientow(int*);
 
