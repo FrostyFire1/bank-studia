@@ -19,6 +19,8 @@ Bank::~Bank()
 
 void Bank::dodajKlienta(int *iloscKlientow)
 {
+	(*iloscKlientow)++;
+
 	std::string new_imie;
 	std::string new_nazwisko;
 	std::string new_adres;
@@ -28,13 +30,14 @@ void Bank::dodajKlienta(int *iloscKlientow)
 	
 	system("cls");
 	std::cout << "Imie: ";
-	std::getline(std::cin, new_imie);
+	std::cin >> new_imie;
 	std::cout << "Nazwisko: ";
-	std::getline(std::cin, new_nazwisko);
+	std::cin >> new_nazwisko;
 	std::cout << "Adres zamieszkania: ";
+	std::cin.ignore();
 	std::getline(std::cin, new_adres);
 	std::cout << "Adres Email: ";
-	std::getline(std::cin, new_mail);
+	std::cin >> new_mail;
 
 	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
 	listaKontKlientow.push_front(*nowy);
@@ -47,8 +50,6 @@ void Bank::dodajKlienta(int *iloscKlientow)
 	listaKontKlientow.front().haslo = new_haslo;
 
 	listaKontKlientow.front().numerKonta = *iloscKlientow;
-
-	(*iloscKlientow)++;
 }
 
 void Bank::usunKlienta()
@@ -58,10 +59,10 @@ void Bank::usunKlienta()
 
 }
 
-void wyswietlKlientow(Bank bank)
+void wyswietlKlientow(Bank *bank)
 {
 	system("cls");
-	for (KontoKlienta aktualny : bank.listaKontKlientow)
+	for (KontoKlienta aktualny : bank->listaKontKlientow)
 	{
 		aktualny.wyswietlDane();
 		std::cout << "\n\n";
@@ -76,7 +77,7 @@ std::string ustawLogin(std::list<KontoKlienta> listaKont)
 	{
 		system("cls");
 		std::cout << "Login: ";
-		std::getline(std::cin, wyborLogin);
+		std::cin >> wyborLogin;
 
 		czyWolny = czyWolnyLogin(listaKont, wyborLogin);
 
@@ -85,7 +86,7 @@ std::string ustawLogin(std::list<KontoKlienta> listaKont)
 			std::cout << "Login zajety!";
 			_getch();
 		}
-	} while (!czyWolny && wyborLogin.length() < 4);
+	} while (!czyWolny || wyborLogin.length() < 2);
 
 	return wyborLogin;
 }
@@ -98,11 +99,12 @@ std::string ustawHaslo()
 	do {
 		system("cls");
 		std::cout << "Haslo: ";
-		std::getline(std::cin, wyborHaslo);
+		std::cin.ignore();
+		std::cin >> wyborHaslo;
 
 		system("cls");
 		std::cout << "Powtorz haslo: ";
-		std::getline(std::cin, powtorzHaslo);
+		std::cin >> powtorzHaslo;
 
 		if (wyborHaslo != powtorzHaslo)
 		{
@@ -130,25 +132,69 @@ bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 	return czyWolny;
 }
 
-int getIloscKlientow()
+int getIloscKlientow(Bank *bank)
 {
-	std::ifstream plilkListaKlientow;
-	plilkListaKlientow.open("listaKlientow.txt");
+	std::string new_imie;
+	std::string new_nazwisko;
+	std::string new_adres;
+	std::string new_mail;
+	std::string new_login;
+	std::string new_haslo;
+	int numerKonta;
+	std::ifstream* plikListaKlientow = new std::ifstream;
+	plikListaKlientow->open("listaKlientow.txt");
 
 	int iloscKlientow = 0;
-	if(plilkListaKlientow.is_open()) plilkListaKlientow >> iloscKlientow;
-	plilkListaKlientow.close();
+	if(plikListaKlientow->is_open()) *plikListaKlientow >> iloscKlientow;
+
+	for (int i = 0; i < iloscKlientow; i++)
+	{
+		wczytajKlienta(bank, plikListaKlientow);
+	}
+
+	plikListaKlientow->close();
+	delete plikListaKlientow;
 
 	return iloscKlientow;
 }
 
 void setIloscKlientow(int *iloscKlientow)
 {
-	std::ofstream plilkListaKlientow;
-	plilkListaKlientow.open("listaKlientow.txt");
+	std::ofstream plikListaKlientow;
+	plikListaKlientow.open("listaKlientow.txt");
 
-	if (plilkListaKlientow.is_open()) plilkListaKlientow << *iloscKlientow;
-	plilkListaKlientow.close();
+	if (plikListaKlientow.is_open()) plikListaKlientow << *iloscKlientow;
+
+	for (int i = 0; i < *iloscKlientow; i++)
+	{
+
+	}
+
+	plikListaKlientow.close();
 
 	delete iloscKlientow;
+}
+
+void wczytajKlienta(Bank *bank, std::ifstream *plik)
+{
+	std::string new_imie;
+	std::string new_nazwisko;
+	std::string new_adres;
+	std::string new_mail;
+	std::string new_login;
+	std::string new_haslo;
+	int new_numerKonta;
+
+	*plik >> new_login;
+	*plik >> new_haslo;
+	*plik >> new_numerKonta;
+	*plik >> new_imie;
+	*plik >> new_nazwisko;
+	plik->ignore();
+	std::getline(*plik, new_adres);
+	*plik >> new_mail;
+
+	KontoKlienta* nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail, new_login, new_haslo, new_numerKonta);
+	bank->listaKontKlientow.push_front(*nowy);
+	delete nowy;
 }

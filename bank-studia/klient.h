@@ -8,6 +8,7 @@ class KontoKlienta
 public:
 	KontoKlienta(std::string);
 	KontoKlienta(std::string, std::string, std::string, std::string);
+	KontoKlienta(std::string, std::string, std::string, std::string, std::string, std::string, int);
 	~KontoKlienta();
 	void wyswietlDane();
 

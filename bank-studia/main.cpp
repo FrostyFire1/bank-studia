@@ -4,22 +4,21 @@ int main()
 {
 	std::cout << "BANK\n";
 
-	Bank bank;
+	Bank *bank = new Bank;
 	int* iloscKlientow = new int;
-	*iloscKlientow = getIloscKlientow();
+	*iloscKlientow = getIloscKlientow(bank);
 
-	bank.dodajKlienta(iloscKlientow);
+	wyswietlKlientow(bank);
+	_getch();
+
+	bank->dodajKlienta(iloscKlientow);
 	wyswietlKlientow(bank);
 
 	_getch();
-	bank.dodajKlienta(iloscKlientow);
+	bank->dodajKlienta(iloscKlientow);
 	wyswietlKlientow(bank);
 
-	_getch();
-	bank.dodajKlienta(iloscKlientow);
-	wyswietlKlientow(bank);
-
-	setIloscKlientow(iloscKlientow);
+	delete bank;
 
 	return 0;
 }

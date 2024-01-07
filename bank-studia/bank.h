@@ -23,7 +23,8 @@ private:
 std::string ustawLogin(std::list<KontoKlienta>);
 std::string ustawHaslo();
 bool czyWolnyLogin(std::list<KontoKlienta>, std::string);
-void wyswietlKlientow(Bank);
-int getIloscKlientow();
+void wyswietlKlientow(Bank*);
+int getIloscKlientow(Bank*);
 void setIloscKlientow(int*);
+void wczytajKlienta(Bank*, std::ifstream*);
 
