@@ -83,12 +83,15 @@ bool Bank::weryfikacjaTozsamosc(std::list<KontoKlienta> listaKont, KontoKlienta 
 
 	if (czyIstnieje)
 	{
-		std::cout << "Haslo: ";
-		std::cin >> cinHaslo;
-		if (aktualnyKlient->haslo == cinHaslo) return 1;
-		else
+		while (aktualnyKlient->haslo != cinHaslo)
 		{
-			std::cout << "Niepoprawne haslo!;"; _getch();
+			std::cout << "Haslo: ";
+			std::cin >> cinHaslo;
+			if (aktualnyKlient->haslo == cinHaslo) return 1;
+			else
+			{
+				std::cout << "Niepoprawne haslo!;"; _getch();
+			}
 		}
 	}
 	else
