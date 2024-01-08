@@ -3,6 +3,7 @@
 int main()
 {
 	Bank *bank = new Bank;
+	KontoKlienta* aktualnyKlient = new KontoKlienta;
 	int* iloscKlientow = new int;
 	*iloscKlientow = getListaKlientow(bank);
 
@@ -17,7 +18,15 @@ int main()
 			break;
 
 		case 1:
-			menuWybor = 0;
+			if (bank->weryfikacjaTozsamosc(bank->listaKontKlientow, aktualnyKlient))
+			{
+				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
+				menuWybor = 0;
+			}
+			else
+			{
+				menuWybor = 0;
+			}
 			break;
 
 		case 2:
@@ -31,6 +40,7 @@ int main()
 		}
 	}
 
+	delete aktualnyKlient;
 	delete bank;
 
 	return 0;

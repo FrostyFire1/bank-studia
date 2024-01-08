@@ -61,6 +61,43 @@ void Bank::usunKlienta()
 
 }
 
+bool Bank::weryfikacjaTozsamosc(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
+{
+	std::string cinLogin;
+	std::string cinHaslo;
+	bool czyIstnieje = 0;
+
+	system("cls");
+	std::cout << "Login: ";
+	std::cin >> cinLogin;
+
+	for (KontoKlienta konto : listaKont)
+	{
+		if (konto.login == cinLogin)
+		{
+			*aktualnyKlient = konto;
+			czyIstnieje = 1;
+			break;
+		}
+	}
+
+	if (czyIstnieje)
+	{
+		std::cout << "Haslo: ";
+		std::cin >> cinHaslo;
+		if (aktualnyKlient->haslo == cinHaslo) return 1;
+		else
+		{
+			std::cout << "Niepoprawne haslo!;"; _getch();
+		}
+	}
+	else
+	{
+		std::cout << "Nie odnaleziono loginu!"; _getch();
+		return 0;
+	}
+}
+
 void wyswietlKlientow(Bank *bank)
 {
 	system("cls");
@@ -173,6 +210,8 @@ void setListaKlientow(int *iloscKlientow, Bank *bank)
 			bank->listaKontKlientow.pop_front();
 		}
 	}
+
+	*iloscKlientow = getListaKlientow(bank);
 
 	plikListaKlientow->close();
 	delete plikListaKlientow;

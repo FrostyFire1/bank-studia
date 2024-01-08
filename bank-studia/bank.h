@@ -13,6 +13,7 @@ public:
 	~Bank();
 	void dodajKlienta(int*, Bank*);
 	void usunKlienta();
+	bool weryfikacjaTozsamosc(std::list<KontoKlienta>, KontoKlienta*);
 
 protected:
 

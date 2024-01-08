@@ -2,6 +2,8 @@
 #include <string>
 #include "klient.h"
 
+KontoKlienta::KontoKlienta() {};
+
 KontoKlienta::KontoKlienta(std::string nowy_login)
 {
 	login = nowy_login;
@@ -37,6 +39,11 @@ void KontoKlienta::wyswietlDane()
 			  << login << " "
 			  << haslo << "\n"
 			  << numerKonta;
+}
+
+std::string KontoKlienta::getLogin()
+{
+	return login;
 }
 
 
