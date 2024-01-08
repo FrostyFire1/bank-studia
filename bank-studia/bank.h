@@ -13,7 +13,7 @@ public:
 	~Bank();
 	void dodajKlienta();
 	void usunKlienta();
-
+	bool logowanie();
 protected:
 
 private:

@@ -3,19 +3,12 @@
 #include "KontoBankowe.h"
 
 
-KontoBankowe::KontoBankowe(std::string new_login, std::string new_haslo, std::string new_nrKonta)
+KontoBankowe::KontoBankowe(std::string new_nrKonta, RodzajKonta new_rodzajKonta)
 {
-	login = new_login;
-	haslo = new_haslo;
 	numerKonta = new_nrKonta;
-	
+	rodzaj = new_rodzajKonta;
 }
 
-KontoBankowe::KontoBankowe()
-{
-	login = "brak";
-	haslo = "brak";
-}
 
 KontoBankowe::~KontoBankowe()
 {
@@ -23,5 +16,5 @@ KontoBankowe::~KontoBankowe()
 
 void KontoBankowe::wyswietlDane()
 {
-	std::cout << "Login:" << login << "\n" << "Haslo: " << haslo << "\n" << "Nr konta bankowego: "<<numerKonta;
+	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<<rodzaj;
 }

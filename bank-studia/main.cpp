@@ -1,26 +1,38 @@
-#include "KontoKlienta.h"
 #include <conio.h>
-#include "KontoBankowe.h"
 #include <iostream>
+#include <stdlib.h>
+#include "KontoKlienta.h"
+#include "KontoBankowe.h"
+#include "Bank.h"
+#include "Lokata.h"
 
 int main()
 {
+
 	std::cout << "BANK\n";
+	Bank bank;
 	KontoKlienta klient;
+	Lokata lokata;
 
-	klient.dodajKontoBankowe();
+	bank.dodajKlienta();
+	wyswietlKlientow(bank);
+
+	klient.dodajKontoBankowe(bank);
 	wyswietlKontaBankowe(klient);
+
 
 	_getch();
-	klient.dodajKontoBankowe();
-	wyswietlKontaBankowe(klient);
+	klient.dodajLokate(bank);
+	wyswietlLokaty(klient);
 
 	_getch();
-	std::string test;
-	std::cout << "Podaj numer konta do usuniecia: \n";
-	std::getline(std::cin, test);
-	klient.usunKontoBankowe(test);
-	wyswietlKontaBankowe(klient);
+	std::cout << "Podaj numer konta do usuniecia: ";
+	std::string test2;
+	std::cin >> test2;
+	_getch();
+	klient.usunLokate(test2);
+	wyswietlLokaty(klient);
+	_getch();
 
 	return 0;
 }

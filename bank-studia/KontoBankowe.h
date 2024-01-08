@@ -1,19 +1,20 @@
 #pragma once
 #include <list>
+#include "Blokada.h"
+#include "RodzajKonta.h"
 
 class KontoBankowe {
 	friend class KontoKlienta;
-	friend bool czyWolnyLoginBankowy(std::list<KontoBankowe> listaKont, std::string newLogin);
 private:
-
+	double srodki;
+	std::list<Blokada> blokady;
 protected:
+	RodzajKonta rodzaj;
 	std::string numerKonta;
-	std::string haslo;
-	std::string login;
+
 
 public:
-	KontoBankowe(std::string,std::string ,std::string );
-	KontoBankowe();
+	KontoBankowe(std::string,RodzajKonta );
 	~KontoBankowe();
 	void wyswietlDane();
 

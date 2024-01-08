@@ -1,6 +1,9 @@
 ﻿  KontoKlienta.cpp
-C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(59,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(64,7): warning C4101: "testNumeru": lokalna zmienna, do której nie istnieje odwołanie
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(114,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+  Lokata.cpp
   main.cpp
   Generowanie kodu...
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(174): warning C4715: "menuWyboruKonta”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(238): warning C4715: "menuWyboruLokaty”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\barte\Desktop\bank-studia-MZ\bank-studia\KontoKlienta.cpp(301): warning C4715: "menuWyboruCzasuLokaty”: niewszystkie ścieżki kodu zwracają wartość
   bank-studia.vcxproj -> C:\Users\barte\Desktop\bank-studia-MZ\x64\Debug\bank-studia.exe

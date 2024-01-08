@@ -55,9 +55,39 @@ void Bank::dodajKlienta()
 
 void Bank::usunKlienta()
 {
-	//confirm passwort
+}
+bool Bank::logowanie()
+{
+	std::string login;
+	std::string haslo;
+	std::list<Konto>::iterator it;
+	bool czyZalogowany = false;
+	int proba = 0;
+	do
+	{
+		system("cls");
+		std::cout << "Login: ";
+		std::getline(std::cin, login);
+		std::cout << "Haslo: ";
+		std::getline(std::cin, haslo);
 
+		for (it = listaKontKlientow.begin(); it != listaKontKlientow.end(); it++)
+		{
+			if (it->login == login && it->haslo == haslo)
+			{
+				czyZalogowany = true;
+				break;
+			}
+		}
+		if (!czyZalogowany)
+		{
+			std::cout << "Niepoprawne dane logowania!";
+			_getch();
+			proba++;
+		}
+	} while (!czyZalogowany && proba < 3);
 
+	return czyZalogowany;
 }
 
 void wyswietlKlientow(Bank bank)

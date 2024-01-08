@@ -30,6 +30,9 @@
     <ClCompile Include="KontoBankowe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lokata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="klient.h">
@@ -45,6 +48,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lokata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blokada.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodzajCzasuLokaty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodzajKonta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodzajLokaty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
