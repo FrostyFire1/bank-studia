@@ -2,21 +2,48 @@
 
 int main()
 {
-	std::cout << "BANK\n";
+	Bank *bank = new Bank;
+	KontoKlienta* aktualnyKlient = new KontoKlienta;
+	int* iloscKlientow = new int;
+	*iloscKlientow = getListaKlientow(bank);
 
-	Bank bank;
+	int  menuWybor = 0;
 
-	bank.dodajKlienta();
-	wyswietlKlientow(bank);
+	while (menuWybor>=0)
+	{
+		switch (menuWybor)
+		{
+		case 0: //glowne menu przed zalogowaniem
+			menuWybor = menu::start();
+			break;
 
-	_getch();
-	bank.dodajKlienta();
-	wyswietlKlientow(bank);
+		case 1: // logowanie do konta klienta
+			if (bank->Logowanie(bank->listaKontKlientow, aktualnyKlient))
+			{	//pomyslne zalogowanie sie do konta
+				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
+				menu::main(aktualnyKlient, bank, iloscKlientow);
+			}
 
-	_getch();
-	bank.dodajKlienta();
-	wyswietlKlientow(bank);
+			menuWybor = 0;
+			break;
 
+		case 2: // dodanie konta klienta
+			bank->dodajKlienta(iloscKlientow, bank);
+			menuWybor = 0;
+			break;
+
+		case 3:
+			menuWybor = -1;
+			break;
+
+		default:
+			menuWybor = 0;
+			break;
+		}
+	}
+
+	delete aktualnyKlient;
+	delete bank;
 
 	return 0;
 }
