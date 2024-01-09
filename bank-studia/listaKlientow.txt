@@ -1,43 +1,8 @@
-6
+1
 1
 login1
 haslo1
-imie1
+login1
 nazwisko1
 nazwa1 ulicy1 111
 mail@pierwszy
-2
-login2
-haslo2
-imie2
-nazwisko2
-nazwa2 ulicy2 222
-mail@drugi
-3
-login3
-halso3
-imie3
-nazwisko3
-nazwa3
-mial@trzeci
-4
-edigora
-GoraEdi
-Edyta
-Gorniak
-ul. Jana Papieza Drugiego 21/37
-edi.gora@susmail.com
-5
-miczawa2
-miczawa
-Michal
-Zawada
-Psina 21
-mich.zaw@bank.studia.pl
-6
-wonker
-wonker
-willy
-wonka
-Fabryka Czekolady
-willy.wonker@umpa.lumpa.choco

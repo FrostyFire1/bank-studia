@@ -28,6 +28,7 @@ void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
 	std::string new_mail;
 	std::string new_login;
 	std::string new_haslo;
+	int new_numer = listaKontKlientow.back().numerKonta +1;
 	
 	system("cls");
 	std::cout << "| Imie: ";
@@ -48,18 +49,55 @@ void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
 	listaKontKlientow.back().login = new_login;
 	new_haslo = ustawHaslo();
 	listaKontKlientow.back().haslo = new_haslo;
-	listaKontKlientow.back().numerKonta = *iloscKlientow;
+	listaKontKlientow.back().numerKonta = new_numer;
 
 	setListaKlientow(iloscKlientow, bank);
 
 	std::cout << "| Utworzono konto"; _getch();
 }
 
-void Bank::usunKlienta()
+void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
-	//confirm passwort
+	std::string zgoda;
 
+	std::cout << "| Czy na pewno chcesz usunac swoje konto klienta?\n"
+		<< "| Jest to akcja nieodwracalna!\n"
+		<< "| [tak/nie]\n"
+		<< "| >";
 
+	std::cin >> zgoda;
+
+	if (zgoda == "tak")
+	{
+		if (weryfikacjaTozsamosci(aktualnyKlient))
+		{
+			std::ofstream* plikListaKlientow = new std::ofstream;
+			plikListaKlientow->open("listaKlientow.txt");
+
+			if (plikListaKlientow->is_open())
+			{
+				*plikListaKlientow << ((*iloscKlientow)-1) << std::endl;
+
+				for (int i = 1; i <= *iloscKlientow; i++)
+				{
+					if (i != aktualnyKlient->numerKonta)
+					{
+						zapiszKlienta(this, plikListaKlientow);
+					}
+					this->listaKontKlientow.pop_front();
+				}
+			}
+
+			*iloscKlientow = getListaKlientow(bank);
+
+			plikListaKlientow->close();
+			delete plikListaKlientow;
+		}
+		else
+		{
+			std::cout << "| Niepoprawnie haslo!"; _getch();
+		}
+	}
 }
 
 bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
@@ -102,6 +140,17 @@ bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKl
 		std::cout << "| Nie odnaleziono loginu!"; _getch();
 		return 0;
 	}
+}
+
+bool Bank::weryfikacjaTozsamosci(KontoKlienta* aktualnyKlient)
+{
+	std::string cinHaslo;
+
+	std::cout << "\n| Haslo: ";
+	cinHaslo = getHaslo(1);
+
+	if (aktualnyKlient->haslo == cinHaslo) return 1;
+	else return 0;
 }
 
 void wyswietlKlientow(Bank *bank)
@@ -264,42 +313,57 @@ void zapiszKlienta(Bank* bank, std::ofstream* plik)
 	*plik << std::endl;
 }
 
+void zapiszKlienta(KontoKlienta* aktualnyKlient, std::ofstream* plik)
+{
+	*plik << aktualnyKlient->numerKonta;
+	*plik << std::endl;
+	*plik << aktualnyKlient->login;
+	*plik << std::endl;
+	*plik << aktualnyKlient->haslo;
+	*plik << std::endl;
+	*plik << aktualnyKlient->imie;
+	*plik << std::endl;
+	*plik << aktualnyKlient->nazwisko;
+	*plik << std::endl;
+	*plik << aktualnyKlient->adres;
+	*plik << std::endl;
+	*plik << aktualnyKlient->mail;
+	*plik << std::endl;
+}
+
 std::string getHaslo(bool show_asterisk = true)
 {
 	const char BACKSPACE = 8;
 	const char RETURN = 13;
 
-	std::string wpisaneHaslo;
+	std::string password;
 	unsigned char ch = 0;
 
-	DWORD con_mode;
-	DWORD dwRead;
-
-	HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
-
-	GetConsoleMode(hIn, &con_mode);
-	SetConsoleMode(hIn, con_mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
-
-	while (ReadConsoleA(hIn, &ch, 1, &dwRead, NULL) && ch != RETURN)
+	while ((ch = _getch()) != RETURN)
 	{
 		if (ch == BACKSPACE)
 		{
-			if (wpisaneHaslo.length() != 0)
+			if (password.length() != 0)
 			{
 				if (show_asterisk)
 					std::cout << "\b \b";
-				wpisaneHaslo.resize(wpisaneHaslo.length() - 1);
+				password.resize(password.length() - 1);
 			}
+		}
+		else if (ch == 0 || ch == 224) // handle escape sequences
+		{
+			_getch(); // ignore non printable chars
+			continue;
 		}
 		else
 		{
-			wpisaneHaslo += ch;
+			password += ch;
 			if (show_asterisk)
 				std::cout << '*';
 		}
 	}
 	std::cout << std::endl;
-	return wpisaneHaslo;
+	return password;
 }
 
 int menu::start()
@@ -321,50 +385,139 @@ int menu::start()
 	return menuWybor;
 }
 
-int menu::main(KontoKlienta *aktualnyKlient)
+void menu::main(KontoKlienta *aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	int menuWybor;
-	system("cls");
+	int czyUsuniete = *iloscKlientow;
+	
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| " << aktualnyKlient->getImie() << " "
+			<< "| " << aktualnyKlient->getNazwisko() << "\n"
+			<< "| 1. Konta Bankowe\n"
+			<< "| 2. Lokaty\n"
+			<< "| 3. Zarzadzanie kontem\n"
+			<< "| 4. Wyloguj\n"
+			<< "--------------------\n"
+			<< "| >";
 
-	std::cout << "--------------------\n"
-		<< "| " << aktualnyKlient->getImie() << " "
-		<< "| " << aktualnyKlient->getNazwisko() << "\n"
-		<< "| 1. Konta Bankowe\n"
-		<< "| 2. Lokaty\n"
-		<< "| 3. Zarzadzanie kontem\n"
-		<< "| 4. Wyloguj\n"
-		<< "--------------------\n"
-		<< "| >";
+		std::cin >> menuWybor;
 
-	std::cin >> menuWybor;
+		switch (menuWybor)
+		{
+		case 1:
+			break;
 
-	if (menuWybor == 4) menuWybor = 0;
-	else if (menuWybor<1 || menuWybor>3) menuWybor = 10;
-	else menuWybor += 10;
-	return menuWybor;
+		case 2:
+			break;
+
+		case 3:
+			menu::zarzadzanie(aktualnyKlient, bank, iloscKlientow);
+			if (czyUsuniete != *iloscKlientow) return;
+			break;
+
+		case 4:
+			return;
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
-int menu::zarzadzanie(KontoKlienta* aktualnyKlient)
+void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	int menuWybor;
-	system("cls");
+	int czyUsuniete = *iloscKlientow;
 
-	std::cout << "--------------------\n"
-		<< "| Login: " << aktualnyKlient->getLogin() << "\n"
-		<< "| Imie: " << aktualnyKlient->getImie() << "\n"
-		<< "| Nazwisko: " << aktualnyKlient->getNazwisko() << "\n"
-		<< "| Adres mailowy: " << aktualnyKlient->getMail() << "\n"
-		<< "| Adres zamieszkania: " << aktualnyKlient->getAdres() << "\n"
-		<< "| Numer Konta: " << aktualnyKlient->getNumerKonta() << "\n"
-		<< "--------------------\n"
-		<< "| 1. Edytuj dane osobowe\n"
-		<< "| 2. Edytuj login\n"
-		<< "| 3. Resetuj haslo\n"
-		<< "| 4. Usun konto\n"
-		<< "| 5. Wroc\n"
-		<< "--------------------\n"
-		<< "| >";
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| Login: " << aktualnyKlient->getLogin() << "\n"
+			<< "| Imie: " << aktualnyKlient->getImie() << "\n"
+			<< "| Nazwisko: " << aktualnyKlient->getNazwisko() << "\n"
+			<< "| Adres mailowy: " << aktualnyKlient->getMail() << "\n"
+			<< "| Adres zamieszkania: " << aktualnyKlient->getAdres() << "\n"
+			<< "| Numer Konta: " << aktualnyKlient->getNumerKonta() << "\n"
+			<< "--------------------\n"
+			<< "| 1. Zmien login\n"
+			<< "| 2. Zmien imie\n"
+			<< "| 3. Zmien nazwisko\n"
+			<< "| 4. Zmien adres mailowy\n"
+			<< "| 5. Zmien adres zamieszkania\n"
+			<< "| 6. Usun konto\n"
+			<< "| 7. Wroc\n"
+			<< "--------------------\n"
+			<< "| >";
 
-	std::cin >> menuWybor;
-	return menuWybor;
+		std::cin >> menuWybor;
+		switch (menuWybor)
+		{
+		case 1:
+			if (bank->weryfikacjaTozsamosci(aktualnyKlient))
+			{
+				std::string new_login;
+				std::cout << "|\n| Nowy login: ";
+				std::cin >> new_login;
+				aktualnyKlient->setLogin(new_login);
+			}
+			break;
+
+		case 2:
+			if (bank->weryfikacjaTozsamosci(aktualnyKlient))
+			{
+				std::string new_imie;
+				std::cout << "|\n| Nowe imie: ";
+				std::cin >> new_imie;
+				aktualnyKlient->setImie(new_imie);
+			}
+			break;
+
+		case 3:
+			if (bank->weryfikacjaTozsamosci(aktualnyKlient))
+			{
+				std::string new_nazwisko;
+				std::cout << "|\n| Nowe nazwisko: ";
+				std::cin >> new_nazwisko;
+				aktualnyKlient->setNazwisko(new_nazwisko);
+			}
+			break;
+
+		case 4:
+			if (bank->weryfikacjaTozsamosci(aktualnyKlient))
+			{
+				std::string new_mail;
+				std::cout << "|\n| Nowy mail: ";
+				std::cin >> new_mail;
+				aktualnyKlient->setMail(new_mail);
+			}
+			break;
+
+		case 5:
+			if (bank->weryfikacjaTozsamosci(aktualnyKlient))
+			{
+				std::string new_adres;
+				std::cout << "|\n| Nowy adres: ";
+				std::cin >> new_adres;
+				aktualnyKlient->setAdres(new_adres);
+			}
+			break;
+
+		case 6:
+			bank->usunKlienta(aktualnyKlient, bank, iloscKlientow);
+			if (czyUsuniete != *iloscKlientow) return;
+			break;
+
+		case 7:
+			return;
+			break;
+
+		default:
+			break;
+		}
+	}
 }

@@ -46,6 +46,11 @@ std::string KontoKlienta::getLogin()
 	return login;
 }
 
+std::string KontoKlienta::getHaslo()
+{
+	return haslo;
+}
+
 std::string KontoKlienta::getImie()
 {
 	return imie;
@@ -69,6 +74,31 @@ std::string KontoKlienta::getAdres()
 int KontoKlienta::getNumerKonta()
 {
 	return numerKonta;
+}
+
+void KontoKlienta::setLogin(std::string new_login)
+{
+	login = new_login;
+}
+
+void KontoKlienta::setImie(std::string new_imie)
+{
+	imie = new_imie;
+}
+
+void KontoKlienta::setNazwisko(std::string new_nazwisko)
+{
+	nazwisko = new_nazwisko;
+}
+
+void KontoKlienta::setMail(std::string new_mail)
+{
+	mail = new_mail;
+}
+
+void KontoKlienta::setAdres(std::string new_adres)
+{
+	adres = new_adres;
 }
 
 

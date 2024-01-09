@@ -21,12 +21,10 @@ int main()
 			if (bank->Logowanie(bank->listaKontKlientow, aktualnyKlient))
 			{	//pomyslne zalogowanie sie do konta
 				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
-				menuWybor = 10;
+				menu::main(aktualnyKlient, bank, iloscKlientow);
 			}
-			else
-			{	//niudane logowanie do konta
-				menuWybor = 0;
-			}
+
+			menuWybor = 0;
 			break;
 
 		case 2: // dodanie konta klienta
@@ -34,28 +32,12 @@ int main()
 			menuWybor = 0;
 			break;
 
-		//----------------------------------------------
-		//PO ZALOGOWANIU
-
-		case 10: //glowne menu po zalogowaniu
-			menuWybor = menu::main(aktualnyKlient);
-			break;
-
-		case 11:
-			menuWybor = 10;
-			break;
-
-		case 12:
-			menuWybor = 10;
-			break;
-
-		case 13: // menu zarzadzania kontem
-			menuWybor = menu::zarzadzanie(aktualnyKlient);
-			menuWybor = 10;
+		case 3:
+			menuWybor = -1;
 			break;
 
 		default:
-			menuWybor = -1;
+			menuWybor = 0;
 			break;
 		}
 	}
