@@ -14,6 +14,11 @@ public:
 	~KontoKlienta();
 	void wyswietlDane();
 	std::string getLogin();
+	std::string getImie();
+	std::string getNazwisko();
+	std::string getMail();
+	std::string getAdres();
+	int getNumerKonta();
 
 
 	

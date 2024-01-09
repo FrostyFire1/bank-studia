@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <iostream>
@@ -29,14 +30,14 @@ void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
 	std::string new_haslo;
 	
 	system("cls");
-	std::cout << "Imie: ";
+	std::cout << "| Imie: ";
 	std::cin >> new_imie;
-	std::cout << "Nazwisko: ";
+	std::cout << "| Nazwisko: ";
 	std::cin >> new_nazwisko;
-	std::cout << "Adres zamieszkania: ";
+	std::cout << "| Adres zamieszkania: ";
 	std::cin.ignore();
 	std::getline(std::cin, new_adres);
-	std::cout << "Adres Email: ";
+	std::cout << "| Adres Email: ";
 	std::cin >> new_mail;
 
 	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
@@ -51,7 +52,7 @@ void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
 
 	setListaKlientow(iloscKlientow, bank);
 
-	std::cout << "Utworzono konto"; _getch();
+	std::cout << "| Utworzono konto"; _getch();
 }
 
 void Bank::usunKlienta()
@@ -61,14 +62,14 @@ void Bank::usunKlienta()
 
 }
 
-bool Bank::weryfikacjaTozsamosc(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
+bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
 {
 	std::string cinLogin;
 	std::string cinHaslo;
 	bool czyIstnieje = 0;
 
 	system("cls");
-	std::cout << "Login: ";
+	std::cout << "| Login: ";
 	std::cin >> cinLogin;
 
 	for (KontoKlienta konto : listaKont)
@@ -85,18 +86,20 @@ bool Bank::weryfikacjaTozsamosc(std::list<KontoKlienta> listaKont, KontoKlienta 
 	{
 		while (aktualnyKlient->haslo != cinHaslo)
 		{
-			std::cout << "Haslo: ";
-			std::cin >> cinHaslo;
+			std::cout << "| Haslo: ";
+			cinHaslo = getHaslo(1);
 			if (aktualnyKlient->haslo == cinHaslo) return 1;
 			else
 			{
-				std::cout << "Niepoprawne haslo!;"; _getch();
+				std::cout << "| Niepoprawne haslo!"; _getch();
+				system("cls");
+				std::cout << "| Login: " << aktualnyKlient->login << "\n";
 			}
 		}
 	}
 	else
 	{
-		std::cout << "Nie odnaleziono loginu!"; _getch();
+		std::cout << "| Nie odnaleziono loginu!"; _getch();
 		return 0;
 	}
 }
@@ -141,14 +144,13 @@ std::string ustawHaslo()
 
 	do {
 		system("cls");
-		std::cout << "--------------------\n| ";
-		std::cout << "Haslo: ";
-		std::cin.ignore();
-		std::cin >> wyborHaslo;
+		std::cout << "--------------------\n";
+		std::cout << "| Haslo: ";
+		wyborHaslo = getHaslo(1);
 
-		std::cout << "--------------------\n| ";
-		std::cout << "Powtorz haslo: ";
-		std::cin >> powtorzHaslo;
+		std::cout << "--------------------\n";
+		std::cout << "| Powtorz haslo: ";
+		powtorzHaslo = getHaslo(1);
 
 		if (wyborHaslo != powtorzHaslo)
 		{
@@ -262,6 +264,43 @@ void zapiszKlienta(Bank* bank, std::ofstream* plik)
 	*plik << std::endl;
 }
 
+std::string getHaslo(bool show_asterisk = true)
+{
+	const char BACKSPACE = 8;
+	const char RETURN = 13;
+
+	std::string wpisaneHaslo;
+	unsigned char ch = 0;
+
+	DWORD con_mode;
+	DWORD dwRead;
+
+	HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+
+	GetConsoleMode(hIn, &con_mode);
+	SetConsoleMode(hIn, con_mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+
+	while (ReadConsoleA(hIn, &ch, 1, &dwRead, NULL) && ch != RETURN)
+	{
+		if (ch == BACKSPACE)
+		{
+			if (wpisaneHaslo.length() != 0)
+			{
+				if (show_asterisk)
+					std::cout << "\b \b";
+				wpisaneHaslo.resize(wpisaneHaslo.length() - 1);
+			}
+		}
+		else
+		{
+			wpisaneHaslo += ch;
+			if (show_asterisk)
+				std::cout << '*';
+		}
+	}
+	std::cout << std::endl;
+	return wpisaneHaslo;
+}
 
 int menu::start()
 {
@@ -269,13 +308,63 @@ int menu::start()
 	system("cls");
 
 	std::cout << "--------------------\n"
-		<< "BANK\n"
-		<< "1. Zaloguj sie\n"
-		<< "2. Zarejestruj sie\n"
-		<< "3. Wyjdz\n"
-		<< "--------------------\n";
+		<< "| BANK\n"
+		<< "| 1. Zaloguj sie\n"
+		<< "| 2. Zarejestruj sie\n"
+		<< "| 3. Wyjdz\n"
+		<< "--------------------\n"
+		<< "| >";
 
 	std::cin >> menuWybor;
 
+	if (menuWybor < 1 || menuWybor>2) menuWybor = 3;
+	return menuWybor;
+}
+
+int menu::main(KontoKlienta *aktualnyKlient)
+{
+	int menuWybor;
+	system("cls");
+
+	std::cout << "--------------------\n"
+		<< "| " << aktualnyKlient->getImie() << " "
+		<< "| " << aktualnyKlient->getNazwisko() << "\n"
+		<< "| 1. Konta Bankowe\n"
+		<< "| 2. Lokaty\n"
+		<< "| 3. Zarzadzanie kontem\n"
+		<< "| 4. Wyloguj\n"
+		<< "--------------------\n"
+		<< "| >";
+
+	std::cin >> menuWybor;
+
+	if (menuWybor == 4) menuWybor = 0;
+	else if (menuWybor<1 || menuWybor>3) menuWybor = 10;
+	else menuWybor += 10;
+	return menuWybor;
+}
+
+int menu::zarzadzanie(KontoKlienta* aktualnyKlient)
+{
+	int menuWybor;
+	system("cls");
+
+	std::cout << "--------------------\n"
+		<< "| Login: " << aktualnyKlient->getLogin() << "\n"
+		<< "| Imie: " << aktualnyKlient->getImie() << "\n"
+		<< "| Nazwisko: " << aktualnyKlient->getNazwisko() << "\n"
+		<< "| Adres mailowy: " << aktualnyKlient->getMail() << "\n"
+		<< "| Adres zamieszkania: " << aktualnyKlient->getAdres() << "\n"
+		<< "| Numer Konta: " << aktualnyKlient->getNumerKonta() << "\n"
+		<< "--------------------\n"
+		<< "| 1. Edytuj dane osobowe\n"
+		<< "| 2. Edytuj login\n"
+		<< "| 3. Resetuj haslo\n"
+		<< "| 4. Usun konto\n"
+		<< "| 5. Wroc\n"
+		<< "--------------------\n"
+		<< "| >";
+
+	std::cin >> menuWybor;
 	return menuWybor;
 }

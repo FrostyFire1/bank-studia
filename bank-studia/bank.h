@@ -13,7 +13,7 @@ public:
 	~Bank();
 	void dodajKlienta(int*, Bank*);
 	void usunKlienta();
-	bool weryfikacjaTozsamosc(std::list<KontoKlienta>, KontoKlienta*);
+	bool Logowanie(std::list<KontoKlienta>, KontoKlienta*);
 
 protected:
 
@@ -29,9 +29,11 @@ int getListaKlientow(Bank*);
 void setListaKlientow(int*, Bank*);
 void wczytajKlienta(Bank*, std::ifstream*);
 void zapiszKlienta(Bank*, std::ofstream*);
-
+std::string getHaslo(bool);
 
 namespace menu
 {
 	int start();
+	int main(KontoKlienta*);
+	int zarzadzanie(KontoKlienta*);
 }
