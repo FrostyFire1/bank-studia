@@ -10,7 +10,7 @@
 
 Bank::Bank()
 {
-	okresWeryfikacji = 10;
+	okresWeryfikacji = 100;
 }
 
 Bank::~Bank()
