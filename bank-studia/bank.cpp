@@ -71,27 +71,9 @@ void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 	{
 		if (weryfikacjaTozsamosci(aktualnyKlient))
 		{
-			std::ofstream* plikListaKlientow = new std::ofstream;
-			plikListaKlientow->open("listaKlientow.txt");
-
-			if (plikListaKlientow->is_open())
-			{
-				*plikListaKlientow << ((*iloscKlientow)-1) << std::endl;
-
-				for (int i = 1; i <= *iloscKlientow; i++)
-				{
-					if (i != aktualnyKlient->numerKonta)
-					{
-						zapiszKlienta(this, plikListaKlientow);
-					}
-					this->listaKontKlientow.pop_front();
-				}
-			}
-
-			*iloscKlientow = getListaKlientow(bank);
-
-			plikListaKlientow->close();
-			delete plikListaKlientow;
+			this->listaKontKlientow.remove_if([&](KontoKlienta n) { return n.getNumerKonta() == aktualnyKlient->numerKonta; });
+			(*iloscKlientow)--;
+			setListaKlientow(iloscKlientow, bank);
 		}
 		else
 		{
@@ -513,6 +495,9 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 
 		case 7:
+
+			//tu update danych
+
 			return;
 			break;
 

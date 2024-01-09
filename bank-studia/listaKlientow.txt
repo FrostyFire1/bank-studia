@@ -1,4 +1,4 @@
-1
+3
 1
 login1
 haslo1
@@ -6,3 +6,17 @@ login1
 nazwisko1
 nazwa1 ulicy1 111
 mail@pierwszy
+2
+sonic
+tails
+Sonic
+Hedgehog
+Christmas Island
+fasterthansound@eggmail.com
+6
+login6
+haslo6
+login6
+nazwisko6
+nazwa6 ulicy6 6
+mail@szosty
