@@ -154,9 +154,9 @@ RodzajKonta menuWyboruKonta()
 {
 	 RodzajKonta wybranyTyp = wybierzTypKonta();
 	switch (wybranyTyp) {
-	case RODZAJ_KONTO_OSZCZĘDNOŚCIOWE:
+	case RODZAJ_KONTO_OSZCZĘDNOSCIOWE:
 		std::cout << "Wybrano konto oszczędnościowe.\n";
-		return RODZAJ_KONTO_OSZCZĘDNOŚCIOWE;
+		return RODZAJ_KONTO_OSZCZĘDNOSCIOWE;
 		break;
 	case RODZAJ_KONTO_ROZLICZENIOWE:
 		std::cout << "Wybrano konto rozliczeniowe.\n";
@@ -179,7 +179,7 @@ void wyswietlMenuWyboruKonta(int aktualnaOpcja) {
 		if (i == aktualnaOpcja) {
 			std::cout << "-> ";
 		}
-		std::cout << (i == RODZAJ_KONTO_OSZCZĘDNOŚCIOWE+1 ? "Konto oszczędnościowe" :
+		std::cout << (i == RODZAJ_KONTO_OSZCZĘDNOSCIOWE+1 ? "Konto oszczędnościowe" :
 			(i == RODZAJ_KONTO_ROZLICZENIOWE+1 ? "Konto rozliczeniowe" : "Konto walutowe")) << "\n";
 	}
 }
