@@ -1,7 +1,7 @@
 #include "Przelew.h"
-
+int Przelew::przelewCount = 0;
 Przelew::Przelew() {
-
+	this->idPrzelewu = ++(Przelew::przelewCount);
 }
 Przelew::Przelew(double kwota, std::string opis, RodzajPrzelewu rodzajPrzelewu, std::string nadawca, std::string adresat,
 	int timestamp, Waluta waluta, int idPrzelewu, int okres, int ostatnieRozliczenie) {
@@ -12,7 +12,7 @@ Przelew::Przelew(double kwota, std::string opis, RodzajPrzelewu rodzajPrzelewu, 
 	this->adresat = adresat;
 	this->timestamp = timestamp;
 	this->waluta = waluta;
-	this->idPrzelewu = idPrzelewu;
+	this->idPrzelewu = ++(Przelew::przelewCount);
 	this->okres = okres;
 	this->ostatnieRozliczenie = ostatnieRozliczenie;
 

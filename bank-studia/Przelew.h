@@ -11,6 +11,7 @@ public:
 	int timestamp;
 	Waluta waluta;
 	int idPrzelewu;
+	static int przelewCount;
 	int okres;
 	int ostatnieRozliczenie;
 	Przelew();

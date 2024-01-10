@@ -64,7 +64,6 @@ Przelew KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrz
 	if (rodzajPrzelewu == RodzajPrzelewu::WALUTOWY) result.waluta = waluta;
 	else result.waluta = this->waluta;
 	result.timestamp = 0;
-	result.idPrzelewu = 0;
 	result.ostatnieRozliczenie = result.timestamp;
 	if (rodzajPrzelewu == RodzajPrzelewu::OKRESOWY) result.okres = okres;
 	else result.okres = 0;
