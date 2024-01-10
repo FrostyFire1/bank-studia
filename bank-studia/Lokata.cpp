@@ -3,6 +3,7 @@
 #include <ctime>
 #include <chrono>
 #include <iomanip>
+#include <conio.h>
 #include "Lokata.h"
 #include "RodzajLokaty.h"
 #include "RodzajCzasuLokaty.h"
@@ -18,7 +19,15 @@ Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_
 	ostatnieNaliczenie = Data(okres);
 }
 
-
+Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_srodki, std::string new_nrLokaty,std::string new_dataRozpoczecia,std::string new_ostatnieNaliczenie)
+{
+	rodzaj = new_rodzaj;
+	okres = new_okres;
+	srodki = new_srodki;
+	nrLokaty = new_nrLokaty;
+	dataRozpoczecia = new_dataRozpoczecia;
+	ostatnieNaliczenie = new_ostatnieNaliczenie;
+}
 
 Lokata::Lokata()
 {
@@ -75,6 +84,37 @@ void Lokata::wyswietlDaneLokat()
 {
 
 	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << rodzaj<<"\nCzas trwania lokaty: "<< okres<<"\nSrodki: "<<srodki<<"\nData rozpoczecia: "<< dataRozpoczecia<<"\nData zakończenia loakty: "<< ostatnieNaliczenie;
+	_getch();
 
+}
+
+RodzajLokaty Lokata::getRodzajLokaty()
+{
+	return rodzaj;
+}
+
+RodzajCzasuLokaty Lokata::getRodzajCzasuLokaty()
+{
+	return okres;
+}
+
+double Lokata::getSrodki()
+{
+	return srodki;
+}
+
+std::string Lokata::getNrLokaty()
+{
+	return nrLokaty;
+}
+
+std::string Lokata::getDataRozpoczecia()
+{
+	return dataRozpoczecia;
+}
+
+std::string Lokata::getOstatnieNaliczenie()
+{
+	return ostatnieNaliczenie;
 }
 

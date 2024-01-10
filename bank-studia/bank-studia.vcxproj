@@ -22,7 +22,6 @@
     <ClCompile Include="bank.cpp" />
     <ClCompile Include="klient.cpp" />
     <ClCompile Include="KontoBankowe.cpp" />
-    <ClCompile Include="KontoKlienta.cpp" />
     <ClCompile Include="Lokata.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

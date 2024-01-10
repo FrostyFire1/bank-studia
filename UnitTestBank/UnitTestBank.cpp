@@ -39,5 +39,13 @@ namespace UnitTestBank
 			Assert::IsFalse(czyWolnyLogin(bank.listaKontKlientow, nowyLogin));
 			Assert::IsTrue(czyWolnyLogin(bank.listaKontKlientow, nowyLogin2));
 		}
+
+		TEST_METHOD(TestGetIloscKlientow)
+		{
+			Bank bank;
+			int expected = 0;
+			int actual = getListaKlientow(&bank);
+			Assert::AreEqual(expected, actual);
+		}
 	};
 }

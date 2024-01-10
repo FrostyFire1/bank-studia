@@ -1,38 +1,51 @@
-#include <conio.h>
-#include <iostream>
-#include <stdlib.h>
-#include "KontoKlienta.h"
-#include "KontoBankowe.h"
-#include "Bank.h"
-#include "Lokata.h"
+#include "bank.h"
 
 int main()
 {
+	Bank* bank = new Bank;
+	KontoKlienta* aktualnyKlient = new KontoKlienta;
+	int* iloscKlientow = new int;
 
-	std::cout << "BANK\n";
-	Bank bank;
-	KontoKlienta klient;
-	Lokata lokata;
+	*iloscKlientow = getListaKlientow(bank);
 
-	bank.dodajKlienta();
-	wyswietlKlientow(bank);
+	int  menuWybor = 0;
 
-	klient.dodajKontoBankowe(bank);
-	wyswietlKontaBankowe(klient);
+	while (menuWybor >= 0)
+	{
+		switch (menuWybor)
+		{
+		case 0: //glowne menu przed zalogowaniem
+			menuWybor = menu::start();
+			break;
 
+		case 1: // logowanie do konta klienta
+			if (bank->Logowanie(bank->listaKontKlientow, aktualnyKlient))
+			{	//pomyslne zalogowanie sie do konta
+				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
+				//załadowanie kont bankowych z pliku
+				menu::main(aktualnyKlient, bank, iloscKlientow);
+			}
 
-	_getch();
-	klient.dodajLokate(bank);
-	wyswietlLokaty(klient);
+			menuWybor = 0;
+			break;
 
-	_getch();
-	std::cout << "Podaj numer konta do usuniecia: ";
-	std::string test2;
-	std::cin >> test2;
-	_getch();
-	klient.usunLokate(test2);
-	wyswietlLokaty(klient);
-	_getch();
+		case 2: // dodanie konta klienta
+			bank->dodajKlienta(iloscKlientow, bank);
+			menuWybor = 0;
+			break;
+
+		case 3:
+			menuWybor = -1;
+			break;
+
+		default:
+			menuWybor = 0;
+			break;
+		}
+	}
+
+	delete aktualnyKlient;
+	delete bank;
 
 	return 0;
 }
