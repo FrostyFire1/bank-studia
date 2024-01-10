@@ -20,6 +20,8 @@ public:
 	KontoKlienta(std::string, std::string, std::string, std::string);
 	KontoKlienta(std::string, std::string, std::string, std::string, std::string, std::string, int);
 	~KontoKlienta();
+	bool operator==(KontoKlienta);
+
 	void wyswietlDane();
 
 	std::string getLogin();

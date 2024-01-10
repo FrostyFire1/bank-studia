@@ -6,7 +6,10 @@
 #include "klient.h"
 #include "bank.h"
 
-KontoKlienta::KontoKlienta() {};
+KontoKlienta::KontoKlienta()
+{
+	numerKonta = 0;
+};
 
 KontoKlienta::KontoKlienta(std::string nowy_login)
 {
@@ -34,6 +37,11 @@ KontoKlienta::KontoKlienta(std::string new_imie, std::string new_nazwisko, std::
 
 KontoKlienta::~KontoKlienta() {}
 
+bool KontoKlienta::operator==(KontoKlienta konto1)
+{
+	return (this->numerKonta == konto1.numerKonta);
+}
+
 void KontoKlienta::wyswietlDane()
 {
 	std::cout << imie << " "
@@ -44,6 +52,8 @@ void KontoKlienta::wyswietlDane()
 		<< haslo << "\n"
 		<< numerKonta;
 }
+
+//gettery i settery --------------------------------------------
 
 std::string KontoKlienta::getLogin()
 {

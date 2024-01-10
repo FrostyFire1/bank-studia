@@ -49,3 +49,19 @@ namespace UnitTestBank
 		}
 	};
 }
+
+namespace UnitTestKlient
+{
+	TEST_CLASS(OperatorOverloads)
+	{
+	public:
+
+		TEST_METHOD(TestEqualOperator)
+		{
+			KontoKlienta konto1;
+			KontoKlienta konto2;
+
+			Assert::IsTrue(konto1 == konto2);
+		}
+	};
+}
