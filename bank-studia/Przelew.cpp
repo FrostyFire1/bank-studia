@@ -1,21 +1,19 @@
+#include "Przelew.h"
 
-class Przelew {
+Przelew::Przelew() {
 
-private:
-	double kwota;
-	string opis;
-	RodzajPrzelewu rodzajPrzelewu;
-	int nadawca;
-	int adresat;
-	int timestamp;
-	Waluta waluta;
-	int idPrzelewu;
-	boolean jestOkresowy;
-	int okres;
-	int ostatnieRozliczenie;
-};
+}
+Przelew::Przelew(double kwota, std::string opis, RodzajPrzelewu rodzajPrzelewu, std::string nadawca, std::string adresat,
+	int timestamp, Waluta waluta, int idPrzelewu, int okres, int ostatnieRozliczenie) {
+	this->kwota = kwota;
+	this->opis = opis;
+	this->rodzajPrzelewu = rodzajPrzelewu;
+	this->nadawca = nadawca;
+	this->adresat = adresat;
+	this->timestamp = timestamp;
+	this->waluta = waluta;
+	this->idPrzelewu = idPrzelewu;
+	this->okres = okres;
+	this->ostatnieRozliczenie = ostatnieRozliczenie;
 
-enum RodzajPrzelewu {
-	OKRESOWY,
-	NATYCHMIASTOWY,
-};
+}

@@ -1,1 +1,10 @@
-﻿
+﻿  bank.cpp
+  klient.cpp
+D:\Studia\PROJEKT\bank-studia\klient.cpp(224,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  main.cpp
+  Generating Code...
+D:\Studia\PROJEKT\bank-studia\klient.cpp(282): warning C4715: 'KontoKlienta::menuWyboruKonta': not all control paths return a value
+D:\Studia\PROJEKT\bank-studia\klient.cpp(409): warning C4715: 'KontoKlienta::menuWyboruCzasuLokaty': not all control paths return a value
+D:\Studia\PROJEKT\bank-studia\klient.cpp(346): warning C4715: 'KontoKlienta::menuWyboruLokaty': not all control paths return a value
+D:\Studia\PROJEKT\bank-studia\bank.cpp(68): warning C4715: 'Bank::Logowanie': not all control paths return a value
+  bank-studia.vcxproj -> D:\Studia\PROJEKT\x64\Debug\bank-studia.exe
