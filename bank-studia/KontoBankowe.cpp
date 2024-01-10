@@ -61,11 +61,11 @@ Waluta KontoBankowe::getWaluta() {
 	return this->waluta;
 }
 
-std::vector<Blokada> KontoBankowe::getBlokady() {
-	return this->blokady;
+std::vector<Blokada>* KontoBankowe::getBlokady() {
+	return &(this->blokady);
 }
-std::list<Przelew> KontoBankowe::getPrzelewy() {
-	return this->przelewy;
+std::list<Przelew>* KontoBankowe::getPrzelewy() {
+	return &(this->przelewy);
 }
 void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
 	Przelew result = Przelew();

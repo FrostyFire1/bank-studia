@@ -32,9 +32,9 @@ std::list<KontoBankowe*> Bank::wszystkieKontaBankowe(){
 void Bank::przetworzPrzelewy() {
 	std::list<KontoBankowe*> kontaBankowe = this->wszystkieKontaBankowe();
 	for (KontoBankowe *konto : kontaBankowe) {
-		std::list<Przelew> przelewy = konto->getPrzelewy();
-		while(przelewy.size() != 0) {
-			Przelew przelew = przelewy.front();
+		std::list<Przelew> *przelewy = konto->getPrzelewy();
+		while(przelewy->size() != 0) {
+			Przelew przelew = przelewy->front();
 			//Znajdz odbiorce przelewu
 			KontoBankowe *odbiorca;
 			for (KontoBankowe *kontoOdbiorcy : kontaBankowe) {
@@ -51,12 +51,13 @@ void Bank::przetworzPrzelewy() {
 
 			//Usuniecie blokady
 			int indexBlokady = -1;
-			for (int i = 0; i < konto->getBlokady().size(); i++) {
-				if (konto->getBlokady()[i].idPrzelewu == przelew.idPrzelewu) { indexBlokady = i; break; }
+			std::vector<Blokada> *blokady = konto->getBlokady();
+			for (int i = 0; i < konto->getBlokady()->size(); i++) {
+				if ((*blokady)[i].idPrzelewu == przelew.idPrzelewu) { indexBlokady = i; break; }
 			}
-			if (indexBlokady != -1) konto->getBlokady().erase(konto->getBlokady().begin()+indexBlokady);
+			if (indexBlokady != -1) (*blokady).erase((*blokady).begin() + indexBlokady);
 
-			przelewy.pop_front();
+			przelewy->pop_front();
 		}
 	}
 }

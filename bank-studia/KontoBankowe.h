@@ -25,8 +25,8 @@ public:
 	void wyswietlDane();
 	RodzajKonta getTypKontaBankowego();
 	std::string getNrKontaBankowego();
-	std::vector<Blokada> getBlokady();
-	std::list<Przelew> getPrzelewy();
+	std::vector<Blokada>* getBlokady();
+	std::list<Przelew>* getPrzelewy();
 	double getSrodki();
 	Waluta getWaluta();
 	void setSrodki(double);
