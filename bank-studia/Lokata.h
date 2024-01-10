@@ -9,6 +9,7 @@
 
 
 class Lokata {
+	friend class KontaKlienta;
 	friend class KontoKlienta;
 private:
 protected:
@@ -21,9 +22,17 @@ protected:
 	std::string ostatnieNaliczenie;
 public:
 	Lokata(RodzajLokaty , RodzajCzasuLokaty ,double, std::string );
+	Lokata(RodzajLokaty, RodzajCzasuLokaty, double, std::string,std::string,std::string);
 	Lokata();
 	void wyswietlDaneLokat();
 	std::string Data(RodzajCzasuLokaty);
+
+	RodzajLokaty getRodzajLokaty();
+	RodzajCzasuLokaty getRodzajCzasuLokaty();
+	double getSrodki();	
+	std::string getNrLokaty();
+	std::string getDataRozpoczecia();
+	std::string getOstatnieNaliczenie();
 
 };
 
