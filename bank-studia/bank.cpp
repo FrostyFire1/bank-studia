@@ -18,9 +18,53 @@ Bank::~Bank()
 
 }
 
+std::list<KontoBankowe*> Bank::wszystkieKontaBankowe(){
+	std::list<KontoBankowe*> kontaBankowe;
+	for (KontoKlienta klient : this->listaKontKlientow) {
+		for (KontoBankowe kontoBankowe : klient.listaKontBankowe) {
+			kontaBankowe.push_back(&kontoBankowe);
+		}
+	}
+	return kontaBankowe;
+}
+
+//Funkcja zakłada, że każdy przelew ma poprawne dane
+void Bank::przetworzPrzelewy() {
+	std::list<KontoBankowe*> kontaBankowe = this->wszystkieKontaBankowe();
+	for (KontoBankowe *konto : kontaBankowe) {
+		std::list<Przelew> *przelewy = konto->getPrzelewy();
+		while(przelewy->size() != 0) {
+			Przelew przelew = przelewy->front();
+			//Znajdz odbiorce przelewu
+			KontoBankowe *odbiorca;
+			for (KontoBankowe *kontoOdbiorcy : kontaBankowe) {
+				if (kontoOdbiorcy->getNrKontaBankowego() == przelew.adresat) { odbiorca = kontoOdbiorcy; break; }
+			}
+			double przelicznikOdbiorcy = przelew.waluta.przelicznik / odbiorca->getWaluta().przelicznik;
+			double kwotaOdbiorcy = przelicznikOdbiorcy * przelew.kwota;
+
+			//Podatek od konta niewalutowego i rozniacych sie walut
+			if (odbiorca->getTypKontaBankowego() != RodzajKonta::RODZAJ_KONTO_WALUTOWE && odbiorca->getWaluta() != przelew.waluta) {
+				kwotaOdbiorcy *= 0.95;
+			}
+			odbiorca->setSrodki(odbiorca->getSrodki() + kwotaOdbiorcy);
+
+			//Usuniecie blokady
+			int indexBlokady = -1;
+			std::vector<Blokada> *blokady = konto->getBlokady();
+			for (int i = 0; i < konto->getBlokady()->size(); i++) {
+				if ((*blokady)[i].idPrzelewu == przelew.idPrzelewu) { indexBlokady = i; break; }
+			}
+			if (indexBlokady != -1) (*blokady).erase((*blokady).begin() + indexBlokady);
+
+			przelewy->pop_front();
+		}
+	}
+}
+
 //logins and verify -------------------------------------
 
-bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
+bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 {
 	std::string cinLogin;
 	std::string cinHaslo;
@@ -33,7 +77,7 @@ bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKl
 
 	if (cinLogin == "0") return 0;
 
-	for (KontoKlienta konto : listaKont)
+	for (KontoKlienta konto : this->listaKontKlientow)
 	{
 		if (konto.login == cinLogin)
 		{
@@ -179,7 +223,7 @@ bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 
 //database management ---------------------------------
 
-void Bank::dodajKlienta(int* iloscKlientow, Bank* bank)
+void Bank::dodajKlienta(int* iloscKlientow)
 {
 	(*iloscKlientow)++;
 
@@ -213,12 +257,12 @@ void Bank::dodajKlienta(int* iloscKlientow, Bank* bank)
 	listaKontKlientow.back().haslo = new_haslo;
 	listaKontKlientow.back().numerKonta = new_numer;
 
-	setListaKlientow(iloscKlientow, bank);
+	setListaKlientow(iloscKlientow, this);
 
 	std::cout << "| Utworzono konto"; _getch();
 }
 
-void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
+void Bank::usunKlienta(KontoKlienta* aktualnyKlient, int* iloscKlientow)
 {
 	std::string zgoda;
 
@@ -235,7 +279,7 @@ void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 		{
 			this->listaKontKlientow.remove_if([&](KontoKlienta n) { return n.getNumerKonta() == aktualnyKlient->numerKonta; });
 			(*iloscKlientow)--;
-			setListaKlientow(iloscKlientow, bank);
+			setListaKlientow(iloscKlientow, this);
 		}
 		else
 		{
@@ -352,19 +396,19 @@ void updateListaKlientow(int* iloscKlientow, Bank* bank, KontoKlienta* aktualnyK
 
 void zapiszKlienta(Bank* bank, std::ofstream* plik)
 {
-	*plik << bank->listaKontKlientow.front().numerKonta;
+	*plik << bank->listaKontKlientow.front().getNumerKonta();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().login;
+	*plik << bank->listaKontKlientow.front().getLogin();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().haslo;
+	*plik << bank->listaKontKlientow.front().getHaslo();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().imie;
+	*plik << bank->listaKontKlientow.front().getImie();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().nazwisko;
+	*plik << bank->listaKontKlientow.front().getNazwisko();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().adres;
+	*plik << bank->listaKontKlientow.front().getAdres();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().mail;
+	*plik << bank->listaKontKlientow.front().getMail();
 	*plik << std::endl;
 }
 
@@ -533,7 +577,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 
 		case 6:
-			bank->usunKlienta(aktualnyKlient, bank, iloscKlientow);
+			bank->usunKlienta(aktualnyKlient, iloscKlientow);
 			if (czyUsuniete != *iloscKlientow) return;
 			break;
 

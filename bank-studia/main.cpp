@@ -19,7 +19,7 @@ int main()
 			break;
 
 		case 1: // logowanie do konta klienta
-			if (bank->Logowanie(bank->listaKontKlientow, aktualnyKlient))
+			if (bank->Logowanie(aktualnyKlient))
 			{	//pomyslne zalogowanie sie do konta
 				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
 				//załadowanie kont bankowych z pliku
@@ -30,7 +30,7 @@ int main()
 			break;
 
 		case 2: // dodanie konta klienta
-			bank->dodajKlienta(iloscKlientow, bank);
+			bank->dodajKlienta(iloscKlientow);
 			menuWybor = 0;
 			break;
 

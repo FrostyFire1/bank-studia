@@ -21,10 +21,23 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnitTestKontoBankowe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="..\bank-studia\x64\Debug\main.obj" />
+    <Object Include="..\bank-studia\x64\Debug\bank.obj" />
+    <Object Include="..\bank-studia\x64\Debug\klient.obj" />
+    <Object Include="..\bank-studia\x64\Debug\Lokata.obj" />
+    <Object Include="..\bank-studia\x64\Debug\KontoBankowe.obj" />
+    <Object Include="..\bank-studia\x64\Debug\Waluta.obj" />
+    <Object Include="..\bank-studia\x64\Debug\Przelew.obj" />
+    <Object Include="..\bank-studia\x64\Debug\RodzajPrzelewu.obj" />
   </ItemGroup>
 </Project>

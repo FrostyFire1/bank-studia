@@ -24,13 +24,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KontoKlienta.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KontoBankowe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Lokata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Waluta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Przelew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RodzajPrzelewu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RodzajLokaty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Przelew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodzajPrzelewu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Waluta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

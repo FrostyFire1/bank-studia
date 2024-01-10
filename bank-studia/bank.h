@@ -10,11 +10,13 @@ public:
 	std::list<KontoKlienta> listaKontKlientow;
 	Bank();
 	~Bank();
-	void dodajKlienta(int*, Bank*);
-	void usunKlienta(KontoKlienta*, Bank*, int*);
+	void dodajKlienta(int*);
+	void usunKlienta(KontoKlienta*, int*);
 
-	bool Logowanie(std::list<KontoKlienta>, KontoKlienta*);
+	bool Logowanie(KontoKlienta*);
 	bool weryfikacjaTozsamosci(KontoKlienta*);
+	std::list<KontoBankowe*> wszystkieKontaBankowe();
+	void przetworzPrzelewy();
 protected:
 
 private:
