@@ -14,16 +14,18 @@ Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_
 	rodzaj = new_rodzaj;
 	okres = new_okres;
 	srodki = new_srodki;
+	oprocentowanie = obliczOprocentowanie(rodzaj, okres);
 	nrLokaty = new_nrLokaty;
 	dataRozpoczecia = Data(BRAK);
 	ostatnieNaliczenie = Data(okres);
 }
 
-Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_srodki, std::string new_nrLokaty,std::string new_dataRozpoczecia,std::string new_ostatnieNaliczenie)
+Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_srodki,double new_oprocentowanie, std::string new_nrLokaty,std::string new_dataRozpoczecia,std::string new_ostatnieNaliczenie)
 {
 	rodzaj = new_rodzaj;
 	okres = new_okres;
 	srodki = new_srodki;
+	oprocentowanie = new_oprocentowanie;
 	nrLokaty = new_nrLokaty;
 	dataRozpoczecia = new_dataRozpoczecia;
 	ostatnieNaliczenie = new_ostatnieNaliczenie;
@@ -83,7 +85,7 @@ std::string Lokata::Data(RodzajCzasuLokaty okres)
 void Lokata::wyswietlDaneLokat()
 {
 
-	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << rodzaj<<"\nCzas trwania lokaty: "<< okres<<"\nSrodki: "<<srodki<<"\nData rozpoczecia: "<< dataRozpoczecia<<"\nData zakończenia loakty: "<< ostatnieNaliczenie;
+	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << wyswietlRodzajLokaty(rodzaj)<<"\nCzas trwania lokaty: "<< wyswietlRodzajCzasuLokaty(okres)<<"\nSrodki: "<<srodki<<"\nOprocentowanie: "<<oprocentowanie<< "%\nData rozpoczecia: " << dataRozpoczecia << "\nData zakończenia loakty: " << ostatnieNaliczenie;
 	_getch();
 
 }
@@ -116,5 +118,107 @@ std::string Lokata::getDataRozpoczecia()
 std::string Lokata::getOstatnieNaliczenie()
 {
 	return ostatnieNaliczenie;
+}
+
+std::double_t Lokata::getOprocentowanie()
+{
+	return oprocentowanie;
+}
+
+std::string wyswietlRodzajLokaty(RodzajLokaty rodzaj)
+{
+	switch (rodzaj)
+	{
+	case RODZAJ_LOKATA_ZWYKLA:
+		return "Lokata zwykla";
+		break;
+	case RODZAJ_LOKATA_OSZCZEDNOSCIOWA:
+		return "Lokata oszczednosciowa";
+		break;
+	case RODZAJ_LOKATA_WALUTOWA:
+		return "Lokata walurowa";
+		break;
+	default:
+		return "brak loakty";
+		break;
+	}
+}
+
+std::string wyswietlRodzajCzasuLokaty(RodzajCzasuLokaty okres)
+{
+	switch (okres)
+	{
+	case RODZAJ_CZASU_LOKATA_3MIESIECZNA:
+		return "3 miesiace";
+		break;
+	case RODZAJ_CZASU_LOKATA_6MIESIECZNA:
+		return "6 miesiecy";
+		break;
+	case RODZAJ_CZASU_LOKATA_12MIESIECZNA:
+		return "12 miesiecy";
+		break;
+	default:
+		return "brak okresu";
+		break;
+	}
+}
+
+double obliczOprocentowanie(RodzajLokaty rodzaj, RodzajCzasuLokaty okres)
+{
+	double lokataZwykla = 2;
+	double lokataOszczednosciowa = 4;
+	double lokataWalutowa = 3;
+	double okres3Miesieczny = 1;
+	double okres6Miesieczny = 1.5;
+	double okres12Miesieczny = 2;
+	switch (rodzaj)
+	{
+	case RODZAJ_LOKATA_ZWYKLA:
+		switch (okres)
+		{
+		case RODZAJ_CZASU_LOKATA_3MIESIECZNA:
+			return lokataZwykla*okres3Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_6MIESIECZNA:
+			return lokataZwykla*okres6Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_12MIESIECZNA:
+			return lokataZwykla*okres12Miesieczny;
+			break;
+		}
+		break;
+	case RODZAJ_LOKATA_OSZCZEDNOSCIOWA:
+		switch (okres)
+		{
+		case RODZAJ_CZASU_LOKATA_3MIESIECZNA:
+			return lokataOszczednosciowa*okres3Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_6MIESIECZNA:
+			return lokataOszczednosciowa*okres6Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_12MIESIECZNA:
+			return lokataOszczednosciowa*okres12Miesieczny;
+			break;
+		}
+		break;
+	case RODZAJ_LOKATA_WALUTOWA:
+		switch (okres)
+		{
+		case RODZAJ_CZASU_LOKATA_3MIESIECZNA:
+			return lokataWalutowa*okres3Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_6MIESIECZNA:
+			return lokataWalutowa*okres6Miesieczny;
+			break;
+		case RODZAJ_CZASU_LOKATA_12MIESIECZNA:
+			return lokataWalutowa * okres12Miesieczny;
+			break;
+		}
+		break;
+	default:
+		return 0.0;
+		break;
+	}
+	
 }
 

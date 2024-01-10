@@ -6,7 +6,10 @@
 #include "klient.h"
 #include "bank.h"
 
-KontoKlienta::KontoKlienta() {};
+KontoKlienta::KontoKlienta()
+{
+	numerKonta = 0;
+};
 
 KontoKlienta::KontoKlienta(std::string nowy_login)
 {
@@ -34,6 +37,11 @@ KontoKlienta::KontoKlienta(std::string new_imie, std::string new_nazwisko, std::
 
 KontoKlienta::~KontoKlienta() {}
 
+bool KontoKlienta::operator==(KontoKlienta konto1)
+{
+	return (this->numerKonta == konto1.numerKonta);
+}
+
 void KontoKlienta::wyswietlDane()
 {
 	std::cout << imie << " "
@@ -44,6 +52,8 @@ void KontoKlienta::wyswietlDane()
 		<< haslo << "\n"
 		<< numerKonta;
 }
+
+//gettery i settery --------------------------------------------
 
 std::string KontoKlienta::getLogin()
 {
@@ -131,7 +141,7 @@ void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualny
 		if (it->numerKonta == numerKonta)
 		{
 			listaKontBankowe.erase(it);
-			usunKontoBankoweZPliku(aktualnyKlient, aktualnyKlient->getLogin(), numerKonta);
+			usunKontoBankoweZPliku( aktualnyKlient->getLogin(), numerKonta);
 			std::cout << "Konto zostalo usuniete!";
 			_getch();
 			return;
@@ -177,7 +187,7 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 		if (it->nrLokaty == nrLokaty)
 		{
 			listaLokat.erase(it);
-			usunLokateZPliku(aktualnyKlient, aktualnyKlient->getLogin(), nrLokaty);
+			usunLokateZPliku( aktualnyKlient->getLogin(), nrLokaty);
 			std::cout << "Lokata zostala usunieta!";
 			_getch();
 			return;
@@ -453,7 +463,7 @@ void KontoKlienta::zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string na
 	plik << konto->getSrodki() << "\n";
 	plik.close();
 }
-void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata, std::string nazwaPliku)
+void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -465,12 +475,13 @@ void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata, std::string nazwaPliku)
 	plik << lokata->getRodzajCzasuLokaty() << "\n";
 	plik << lokata->getNrLokaty() << "\n";
 	plik << lokata->getSrodki() << "\n";
+	plik << lokata->getOprocentowanie() << "\n";
 	plik << lokata->getDataRozpoczecia() << "\n";
 	plik << lokata->getOstatnieNaliczenie() << "\n";
 	plik.close();
 }
 
-void KontoKlienta::wczytajKontaBankoweZPliku(KontoKlienta* konto,std::string nazwaPliku)
+void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -499,7 +510,7 @@ void KontoKlienta::wczytajKontaBankoweZPliku(KontoKlienta* konto,std::string naz
 	}
 	else std::cout << "Nie można otworzyć pliku";
 }
-void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
+void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -511,6 +522,7 @@ void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
 	int rodzaj;
 	int okres;
 	double srodki;
+	double oprocentowanie;
 	std::string dataRozpoczecia;
 	std::string ostatnieNaliczenie;
 	if (plik.is_open())
@@ -521,9 +533,10 @@ void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
 			plik >> okres;
 			plik >> nrLokaty;
 			plik >> srodki;
+			plik >> oprocentowanie;
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
-			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
+			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
 			listaLokat.push_front(*nowa);
 			delete nowa;
 			getline(plik, linia);
@@ -533,7 +546,7 @@ void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
 	else std::cout << "Nie można otworzyć pliku";
 }	
 
-void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::string nazwaPliku, std::string numerKonta)
+void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string numerKonta)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -587,7 +600,7 @@ void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::str
 		std::cout << "Nie można otworzyć pliku";
 	}
 }
-void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string nazwaPliku, std::string nrLokaty)
+void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -598,6 +611,7 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 	int rodzaj;
 	int okres;
 	double srodki;
+	double oprocentowanie;
 	std::string linia;
 	std::string numerLokaty;
 	std::string dataRozpoczecia;
@@ -615,10 +629,11 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 			plik >> okres;
 			plik >> numerLokaty;
 			plik >> srodki;
+			plik >> oprocentowanie;
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
 
-			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki, numerLokaty, dataRozpoczecia, ostatnieNaliczenie);
+			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, numerLokaty, dataRozpoczecia, ostatnieNaliczenie);
 
 			if (nowa->getNrLokaty() != nrLokaty)
 			{
@@ -626,6 +641,7 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 				tempFile << okres << "\n";
 				tempFile << numerLokaty << "\n";
 				tempFile << srodki << "\n";
+				tempFile << oprocentowanie << "\n";
 				tempFile << dataRozpoczecia << "\n";
 				tempFile << ostatnieNaliczenie << "\n";
 			}

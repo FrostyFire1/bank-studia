@@ -20,6 +20,8 @@ public:
 	KontoKlienta(std::string, std::string, std::string, std::string);
 	KontoKlienta(std::string, std::string, std::string, std::string, std::string, std::string, int);
 	~KontoKlienta();
+	bool operator==(KontoKlienta);
+
 	void wyswietlDane();
 
 	std::string getLogin();
@@ -44,8 +46,8 @@ public:
 	void wyswietlKontaBankowe(KontoKlienta);
 	void wyswietlLokaty(KontoKlienta);
 
-	void wczytajKontaBankoweZPliku(KontoKlienta*, std::string);
-	void wczytajLokatyZPliku(KontoKlienta*, std::string);
+	void wczytajKontaBankoweZPliku( std::string);
+	void wczytajLokatyZPliku( std::string);
 
 protected:
 	std::string login;
@@ -84,7 +86,7 @@ private:
 
 
 
-	void usunKontoBankoweZPliku(KontoKlienta*, std::string,std::string);
-	void usunLokateZPliku(KontoKlienta*, std::string,std::string);
+	void usunKontoBankoweZPliku( std::string,std::string);
+	void usunLokateZPliku( std::string,std::string);
 
 };

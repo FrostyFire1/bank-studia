@@ -32,7 +32,7 @@ KontoBankowe::~KontoBankowe()
 
 void KontoBankowe::wyswietlDane()
 {
-	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<<rodzaj;
+	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<< wyswietlRodzajKontaBankowego(rodzaj);
 	_getch();
 }
 
@@ -48,4 +48,25 @@ std::string KontoBankowe::getNrKontaBankowego()
 double KontoBankowe::getSrodki()
 {
 	return srodki;
+}
+
+
+std::string wyswietlRodzajKontaBankowego(RodzajKonta konto)
+{
+	switch (konto)
+	{
+	case RODZAJ_KONTO_OSZCZEDNOSCIOWE:
+		return "Konto Oszczednosciowe";
+		break;
+	case RODZAJ_KONTO_ROZLICZENIOWE:
+		return "Konto Rozliczeniowe";
+		break;
+	case RODZAJ_KONTO_WALUTOWE:
+		return "Konto Walutowe";
+		break;
+	default:
+		return "Nieznany rodzaj konta";
+		break;
+	}
+
 }

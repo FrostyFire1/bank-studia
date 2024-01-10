@@ -1,1 +1,3 @@
-﻿
+﻿  bank.cpp
+C:\Users\barte\Pictures\BetterProjekt\bank-studia\bank.cpp(68): warning C4715: "Bank::Logowanie”: niewszystkie ścieżki kodu zwracają wartość
+  bank-studia.vcxproj -> C:\Users\barte\Pictures\BetterProjekt\x64\Debug\bank-studia.exe
