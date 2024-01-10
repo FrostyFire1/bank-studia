@@ -79,13 +79,13 @@ void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzele
 
 	przelewy.push_back(result);
 	Blokada blokada = Blokada();
-	blokada.kwota = result.kwota;
-	blokada.waluta = result.waluta;
 	blokada.idPrzelewu = result.idPrzelewu;
 	blokada.numerBlokujacego = result.adresat;
-	blokady.push_back(blokada);
 
 	double toTake = (result.waluta.przelicznik / this->waluta.przelicznik) * result.kwota;
+	blokada.srodki = toTake;
+	blokady.push_back(blokada);
+
 	this->srodki -= toTake;
 	
 }

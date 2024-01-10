@@ -9,13 +9,27 @@ namespace UnitTestBank
     TEST_CLASS(UtworzPrzelew)
     {
     public:
+
         KontoBankowe tested = KontoBankowe("101", RodzajKonta::RODZAJ_KONTO_ROZLICZENIOWE);
         //UNIT TESTY WYKONYWANE SA ALFABETYCZNIE!!!!
+
+        TEST_METHOD(SprawdzaRodzajPrzelewu) {
+            //Waluta w funkcji powinna zostac zignorowana
+            tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("EUR", 4.0));
+            Przelew przelew = tested.getPrzelewy().front();
+
+            Assert::AreEqual(-20.0, tested.getSrodki(), 1e-10);
+
+        }
         TEST_METHOD(TworzyBlokade) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
             std::list<Blokada> blokady = tested.getBlokady();
 
             Assert::AreEqual((int)blokady.size(), 1);
+
+            Blokada blokada = blokady.front();
+            Assert::AreEqual(20.0, blokada.srodki);
+
 
 
         }
@@ -31,7 +45,7 @@ namespace UnitTestBank
             Assert::AreEqual(0, przelew.timestamp);
             Assert::AreEqual(std::string("PLN"), przelew.waluta.nazwa);
             Assert::AreEqual(1.0, przelew.waluta.przelicznik,1e-10);
-            Assert::AreEqual(2, przelew.idPrzelewu); //To jest drugi przelew unit testu
+            Assert::AreEqual(3, przelew.idPrzelewu); //To jest drugi przelew unit testu
             Assert::AreEqual(0,przelew.okres);
             Assert::AreEqual(0, przelew.ostatnieRozliczenie);
 
@@ -41,11 +55,12 @@ namespace UnitTestBank
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
             Przelew przelew = tested.getPrzelewy().front();
 
-            Assert::AreEqual(3, przelew.idPrzelewu); //Trzeci przelew unit testu
+            Assert::AreEqual(4, przelew.idPrzelewu); //Trzeci przelew unit testu
             Assert::AreEqual(-20.0, tested.getSrodki(), 1e-10);
         }
+
         TEST_METHOD(ZabieraPieniadzePoKonwersji) {
-            tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("EUR", 4.0));
+            tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::WALUTOWY, "Keks", 0, Waluta("EUR", 4.0));
             Przelew przelew = tested.getPrzelewy().front();
             Assert::AreEqual(-80.0, tested.getSrodki(), 1e-10);
 

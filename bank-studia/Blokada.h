@@ -4,8 +4,7 @@
 class Blokada {
 
 public:
-	double kwota;
-	Waluta waluta;
+	double srodki;
 	std::string numerBlokujacego;
 	int idPrzelewu;
 };
