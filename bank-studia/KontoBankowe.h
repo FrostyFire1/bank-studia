@@ -9,6 +9,7 @@ class KontoBankowe {
 private:
 	double srodki;
 	std::list<Blokada> blokady;
+	std::list<Przelew> przelewy;
 	Waluta waluta;
 protected:
 	RodzajKonta rodzaj;

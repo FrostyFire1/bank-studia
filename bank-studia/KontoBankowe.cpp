@@ -69,6 +69,7 @@ Przelew KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrz
 	if (rodzajPrzelewu == RodzajPrzelewu::OKRESOWY) result.okres = okres;
 	else result.okres = 0;
 
+	przelewy.push_back(result);
 	return result;
 }
 
