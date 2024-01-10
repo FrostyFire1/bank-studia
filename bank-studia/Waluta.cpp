@@ -8,3 +8,9 @@ Waluta::Waluta(std::string nazwa, double przelicznik) {
 	this->przelicznik = przelicznik;
 
 }
+bool Waluta::operator==(const Waluta& b) {
+	return this->nazwa == b.nazwa && this->przelicznik == b.przelicznik;
+}
+bool Waluta::operator!=(const Waluta& b) {
+	return this->nazwa != b.nazwa || this->przelicznik != b.przelicznik;
+}

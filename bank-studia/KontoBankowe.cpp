@@ -57,7 +57,11 @@ void KontoBankowe::setSrodki(double srodki) {
 	this->srodki = srodki;
 }
 
-std::list<Blokada> KontoBankowe::getBlokady() {
+Waluta KontoBankowe::getWaluta() {
+	return this->waluta;
+}
+
+std::vector<Blokada> KontoBankowe::getBlokady() {
 	return this->blokady;
 }
 std::list<Przelew> KontoBankowe::getPrzelewy() {

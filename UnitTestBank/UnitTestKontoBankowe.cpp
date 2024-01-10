@@ -23,7 +23,7 @@ namespace UnitTestBank
         }
         TEST_METHOD(TworzyBlokade) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
-            std::list<Blokada> blokady = tested.getBlokady();
+            std::vector<Blokada> blokady = tested.getBlokady();
 
             Assert::AreEqual((int)blokady.size(), 1);
 

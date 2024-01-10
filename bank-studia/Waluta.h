@@ -6,4 +6,6 @@ public:
 	double przelicznik;
 	Waluta();
 	Waluta(std::string, double);
+	bool operator==(const Waluta&);
+	bool operator!=(const Waluta&);
 };

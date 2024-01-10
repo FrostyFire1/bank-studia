@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include "Blokada.h"
 #include "RodzajKonta.h"
 #include "Przelew.h"
@@ -8,7 +9,7 @@ class KontoBankowe {
 	friend class KontoKlienta;
 private:
 	double srodki;
-	std::list<Blokada> blokady;
+	std::vector<Blokada> blokady;
 	std::list<Przelew> przelewy;
 	Waluta waluta;
 protected:
@@ -24,9 +25,10 @@ public:
 	void wyswietlDane();
 	RodzajKonta getTypKontaBankowego();
 	std::string getNrKontaBankowego();
-	std::list<Blokada> getBlokady();
+	std::vector<Blokada> getBlokady();
 	std::list<Przelew> getPrzelewy();
 	double getSrodki();
+	Waluta getWaluta();
 	void setSrodki(double);
 	void utworzPrzelew(std::string, double, RodzajPrzelewu, std::string, int, Waluta);
 
