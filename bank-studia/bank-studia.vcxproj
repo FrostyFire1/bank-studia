@@ -21,11 +21,20 @@
   <ItemGroup>
     <ClCompile Include="bank.cpp" />
     <ClCompile Include="klient.cpp" />
+    <ClCompile Include="KontoBankowe.cpp" />
+    <ClCompile Include="Lokata.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bank.h" />
+    <ClInclude Include="Blokada.h" />
     <ClInclude Include="klient.h" />
+    <ClInclude Include="KontoBankowe.h" />
+    <ClInclude Include="KontoKlienta.h" />
+    <ClInclude Include="Lokata.h" />
+    <ClInclude Include="RodzajCzasuLokaty.h" />
+    <ClInclude Include="RodzajKonta.h" />
+    <ClInclude Include="RodzajLokaty.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
