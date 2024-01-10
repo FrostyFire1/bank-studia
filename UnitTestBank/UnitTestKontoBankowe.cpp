@@ -42,7 +42,13 @@ namespace UnitTestBank
             Przelew przelew = tested.getPrzelewy().front();
 
             Assert::AreEqual(3, przelew.idPrzelewu); //Trzeci przelew unit testu
-            Assert::AreEqual(tested.getSrodki(), -20.0, 1e-10);
+            Assert::AreEqual(-20.0, tested.getSrodki(), 1e-10);
+        }
+        TEST_METHOD(ZabieraPieniadzePoKonwersji) {
+            tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("EUR", 4.0));
+            Przelew przelew = tested.getPrzelewy().front();
+            Assert::AreEqual(-80.0, tested.getSrodki(), 1e-10);
+
         }
     };
 }
