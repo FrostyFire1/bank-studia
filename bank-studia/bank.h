@@ -15,7 +15,6 @@ public:
 
 	bool Logowanie(std::list<KontoKlienta>, KontoKlienta*);
 	bool weryfikacjaTozsamosci(KontoKlienta*);
-
 protected:
 
 private:
