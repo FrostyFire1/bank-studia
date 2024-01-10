@@ -43,7 +43,7 @@ namespace UnitTestBank
 		TEST_METHOD(TestGetIloscKlientow)
 		{
 			Bank bank;
-			int expected = 0;
+			int expected = 8;
 			int actual = getListaKlientow(&bank);
 			Assert::AreEqual(expected, actual);
 		}

@@ -1,6 +1,2 @@
-﻿  pch.cpp
-  UnitTestBank.cpp
-  UnitTestKontoBankowe.cpp
-  Generating Code...
-..\bank-studia\Debug\KontoBankowe.obj : warning LNK4042: object specified more than once; extras ignored
-..\bank-studia\x64\Debug\bank.obj : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'
+﻿  UnitTestBank.cpp
+  UnitTestBank.vcxproj -> C:\Users\gymzo\source\repos\bank-studia\Debug\UnitTestBank.dll
