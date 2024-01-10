@@ -20,7 +20,7 @@ Bank::~Bank()
 
 //logins and verify -------------------------------------
 
-bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
+bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 {
 	std::string cinLogin;
 	std::string cinHaslo;
@@ -33,7 +33,7 @@ bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKl
 
 	if (cinLogin == "0") return 0;
 
-	for (KontoKlienta konto : listaKont)
+	for (KontoKlienta konto : this->listaKontKlientow)
 	{
 		if (konto.login == cinLogin)
 		{
@@ -352,19 +352,19 @@ void updateListaKlientow(int* iloscKlientow, Bank* bank, KontoKlienta* aktualnyK
 
 void zapiszKlienta(Bank* bank, std::ofstream* plik)
 {
-	*plik << bank->listaKontKlientow.front().numerKonta;
+	*plik << bank->listaKontKlientow.front().getNumerKonta();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().login;
+	*plik << bank->listaKontKlientow.front().getLogin();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().haslo;
+	*plik << bank->listaKontKlientow.front().getHaslo();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().imie;
+	*plik << bank->listaKontKlientow.front().getImie();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().nazwisko;
+	*plik << bank->listaKontKlientow.front().getNazwisko();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().adres;
+	*plik << bank->listaKontKlientow.front().getAdres();
 	*plik << std::endl;
-	*plik << bank->listaKontKlientow.front().mail;
+	*plik << bank->listaKontKlientow.front().getMail();
 	*plik << std::endl;
 }
 
@@ -589,7 +589,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 
 		case 6:
-			bank->usunKlienta(aktualnyKlient, bank, iloscKlientow);
+			bank->usunKlienta(aktualnyKlient, iloscKlientow);
 			if (czyUsuniete != *iloscKlientow) return;
 			break;
 

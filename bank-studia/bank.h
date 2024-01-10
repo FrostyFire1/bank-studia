@@ -13,7 +13,7 @@ public:
 	void dodajKlienta(int*);
 	void usunKlienta(KontoKlienta*, int*);
 
-	bool Logowanie(std::list<KontoKlienta>, KontoKlienta*);
+	bool Logowanie(KontoKlienta*);
 	bool weryfikacjaTozsamosci(KontoKlienta*);
 protected:
 
