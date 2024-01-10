@@ -18,69 +18,7 @@ Bank::~Bank()
 
 }
 
-void Bank::dodajKlienta(int *iloscKlientow, Bank* bank)
-{
-	(*iloscKlientow)++;
-
-	std::string new_imie;
-	std::string new_nazwisko;
-	std::string new_adres;
-	std::string new_mail;
-	std::string new_login;
-	std::string new_haslo;
-	int new_numer = listaKontKlientow.back().numerKonta +1;
-	
-	system("cls");
-	std::cout << "| Imie: ";
-	std::cin >> new_imie;
-	std::cout << "| Nazwisko: ";
-	std::cin >> new_nazwisko;
-	std::cout << "| Adres zamieszkania: ";
-	std::cin.ignore();
-	std::getline(std::cin, new_adres);
-	std::cout << "| Adres Email: ";
-	std::cin >> new_mail;
-
-	KontoKlienta *nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
-	listaKontKlientow.push_back(*nowy);
-	delete nowy;
-
-	new_login = ustawLogin(listaKontKlientow);
-	listaKontKlientow.back().login = new_login;
-	new_haslo = ustawHaslo();
-	listaKontKlientow.back().haslo = new_haslo;
-	listaKontKlientow.back().numerKonta = new_numer;
-
-	setListaKlientow(iloscKlientow, bank);
-
-	std::cout << "| Utworzono konto"; _getch();
-}
-
-void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
-{
-	std::string zgoda;
-
-	std::cout << "| Czy na pewno chcesz usunac swoje konto klienta?\n"
-		<< "| Jest to akcja nieodwracalna!\n"
-		<< "| [tak/nie]\n"
-		<< "| >";
-
-	std::cin >> zgoda;
-
-	if (zgoda == "tak")
-	{
-		if (weryfikacjaTozsamosci(aktualnyKlient))
-		{
-			this->listaKontKlientow.remove_if([&](KontoKlienta n) { return n.getNumerKonta() == aktualnyKlient->numerKonta; });
-			(*iloscKlientow)--;
-			setListaKlientow(iloscKlientow, bank);
-		}
-		else
-		{
-			std::cout << "| Niepoprawnie haslo!"; _getch();
-		}
-	}
-}
+//logins and verify -------------------------------------
 
 bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKlient)
 {
@@ -89,8 +27,11 @@ bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKl
 	bool czyIstnieje = 0;
 
 	system("cls");
-	std::cout << "| Login: ";
+	std::cout << "| 0. Powrot\n|\n"
+			<< "| Login: ";
 	std::cin >> cinLogin;
+
+	if (cinLogin == "0") return 0;
 
 	for (KontoKlienta konto : listaKont)
 	{
@@ -108,12 +49,14 @@ bool Bank::Logowanie(std::list<KontoKlienta> listaKont, KontoKlienta *aktualnyKl
 		{
 			std::cout << "| Haslo: ";
 			cinHaslo = getHaslo(1);
+			if (cinHaslo == "0") return 0;
 			if (aktualnyKlient->haslo == cinHaslo) return 1;
 			else
 			{
 				std::cout << "| Niepoprawne haslo!"; _getch();
 				system("cls");
-				std::cout << "| Login: " << aktualnyKlient->login << "\n";
+				std::cout << "| 0. Powrot\n|\n" 
+						  << "| Login: " << aktualnyKlient->login << "\n";
 			}
 		}
 	}
@@ -133,16 +76,6 @@ bool Bank::weryfikacjaTozsamosci(KontoKlienta* aktualnyKlient)
 
 	if (aktualnyKlient->haslo == cinHaslo) return 1;
 	else return 0;
-}
-
-void wyswietlKlientow(Bank *bank)
-{
-	system("cls");
-	for (KontoKlienta aktualny : bank->listaKontKlientow)
-	{
-		aktualny.wyswietlDane();
-		std::cout << "\n\n";
-	}
 }
 
 std::string ustawLogin(std::list<KontoKlienta> listaKont)
@@ -194,6 +127,41 @@ std::string ustawHaslo()
 	return wyborHaslo;
 }
 
+std::string getHaslo(bool show_asterisk = true)
+{
+	const char BACKSPACE = 8;
+	const char RETURN = 13;
+
+	std::string password;
+	unsigned char ch = 0;
+
+	while ((ch = _getch()) != RETURN)
+	{
+		if (ch == BACKSPACE)
+		{
+			if (password.length() != 0)
+			{
+				if (show_asterisk)
+					std::cout << "\b \b";
+				password.resize(password.length() - 1);
+			}
+		}
+		else if (ch == 0 || ch == 224) // handle escape sequences
+		{
+			_getch(); // ignore non printable chars
+			continue;
+		}
+		else
+		{
+			password += ch;
+			if (show_asterisk)
+				std::cout << '*';
+		}
+	}
+	std::cout << std::endl;
+	return password;
+}
+
 bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 {
 	bool czyWolny = 1;
@@ -207,6 +175,73 @@ bool czyWolnyLogin(std::list<KontoKlienta> listaKont, std::string newLogin)
 	}
 
 	return czyWolny;
+}
+
+//database management ---------------------------------
+
+void Bank::dodajKlienta(int* iloscKlientow, Bank* bank)
+{
+	(*iloscKlientow)++;
+
+	std::string new_imie;
+	std::string new_nazwisko;
+	std::string new_adres;
+	std::string new_mail;
+	std::string new_login;
+	std::string new_haslo;
+	int new_numer = listaKontKlientow.back().numerKonta + 1;
+
+	system("cls"); 
+	std::cout << "| 0. Powrot\n|\n";
+	std::cout << "| Imie: ";
+	std::cin >> new_imie;
+	std::cout << "| Nazwisko: ";
+	std::cin >> new_nazwisko;
+	std::cout << "| Adres zamieszkania: ";
+	std::cin.ignore();
+	std::getline(std::cin, new_adres);
+	std::cout << "| Adres Email: ";
+	std::cin >> new_mail;
+
+	KontoKlienta* nowy = new KontoKlienta(new_imie, new_nazwisko, new_adres, new_mail);
+	listaKontKlientow.push_back(*nowy);
+	delete nowy;
+
+	new_login = ustawLogin(listaKontKlientow);
+	listaKontKlientow.back().login = new_login;
+	new_haslo = ustawHaslo();
+	listaKontKlientow.back().haslo = new_haslo;
+	listaKontKlientow.back().numerKonta = new_numer;
+
+	setListaKlientow(iloscKlientow, bank);
+
+	std::cout << "| Utworzono konto"; _getch();
+}
+
+void Bank::usunKlienta(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
+{
+	std::string zgoda;
+
+	std::cout << "| Czy na pewno chcesz usunac swoje konto klienta?\n"
+		<< "| Jest to akcja nieodwracalna!\n"
+		<< "| [tak/nie]\n"
+		<< "| >";
+
+	std::cin >> zgoda;
+
+	if (zgoda == "tak")
+	{
+		if (weryfikacjaTozsamosci(aktualnyKlient))
+		{
+			this->listaKontKlientow.remove_if([&](KontoKlienta n) { return n.getNumerKonta() == aktualnyKlient->numerKonta; });
+			(*iloscKlientow)--;
+			setListaKlientow(iloscKlientow, bank);
+		}
+		else
+		{
+			std::cout << "| Niepoprawnie haslo!"; _getch();
+		}
+	}
 }
 
 int getListaKlientow(Bank *bank)
@@ -351,40 +386,7 @@ void zapiszKlienta(KontoKlienta* aktualnyKlient, std::ofstream* plik)
 	*plik << std::endl;
 }
 
-std::string getHaslo(bool show_asterisk = true)
-{
-	const char BACKSPACE = 8;
-	const char RETURN = 13;
-
-	std::string password;
-	unsigned char ch = 0;
-
-	while ((ch = _getch()) != RETURN)
-	{
-		if (ch == BACKSPACE)
-		{
-			if (password.length() != 0)
-			{
-				if (show_asterisk)
-					std::cout << "\b \b";
-				password.resize(password.length() - 1);
-			}
-		}
-		else if (ch == 0 || ch == 224) // handle escape sequences
-		{
-			_getch(); // ignore non printable chars
-			continue;
-		}
-		else
-		{
-			password += ch;
-			if (show_asterisk)
-				std::cout << '*';
-		}
-	}
-	std::cout << std::endl;
-	return password;
-}
+//menu layouts ------------------------------------------
 
 int menu::start()
 {
@@ -415,7 +417,7 @@ void menu::main(KontoKlienta *aktualnyKlient, Bank* bank, int* iloscKlientow)
 		system("cls");
 		std::cout << "--------------------\n"
 			<< "| " << aktualnyKlient->getImie() << " "
-			<< "| " << aktualnyKlient->getNazwisko() << "\n"
+			<< " " << aktualnyKlient->getNazwisko() << "\n"
 			<< "| 1. Konta Bankowe\n"
 			<< "| 2. Lokaty\n"
 			<< "| 3. Zarzadzanie kontem\n"

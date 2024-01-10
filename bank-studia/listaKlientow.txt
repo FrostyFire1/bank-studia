@@ -1,4 +1,4 @@
-3
+8
 1
 login1
 haslo1
@@ -20,3 +20,31 @@ jozef
 zgronia
 nazwa6 ulicy6 6
 mail@szosty
+7
+dagothur
+nerevar
+Voryn
+Dagoth
+Red Mountain Keep
+dagothur@sixth.house
+8
+vivec
+fucknerevar
+Vivec
+Falsegod
+Vivec City Temple
+vivec@almsivi.god
+9
+papasmurf
+smurfette
+Papa
+Smurf
+Wioska smerfow 35
+papa@smurf.sus
+11
+fyrmaster
+4daughters
+Divayth
+Fyr
+Tel Fyr Tower
+divaythfyr@telvanni.house
