@@ -24,8 +24,11 @@ public:
 	void wyswietlDane();
 	RodzajKonta getTypKontaBankowego();
 	std::string getNrKontaBankowego();
+	std::list<Blokada> getBlokady();
+	std::list<Przelew> getPrzelewy();
 	double getSrodki();
-	Przelew utworzPrzelew(std::string, double, RodzajPrzelewu, std::string, int, Waluta);
+	void setSrodki(double);
+	void utworzPrzelew(std::string, double, RodzajPrzelewu, std::string, int, Waluta);
 
 
 };

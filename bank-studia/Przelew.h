@@ -16,4 +16,5 @@ public:
 	int ostatnieRozliczenie;
 	Przelew();
 	Przelew(double, std::string, RodzajPrzelewu, std::string, std::string, int, Waluta, int, int, int);
+	~Przelew();
 };

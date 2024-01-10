@@ -17,3 +17,5 @@ Przelew::Przelew(double kwota, std::string opis, RodzajPrzelewu rodzajPrzelewu, 
 	this->ostatnieRozliczenie = ostatnieRozliczenie;
 
 }
+Przelew::~Przelew() {
+}

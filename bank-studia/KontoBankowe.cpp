@@ -53,8 +53,17 @@ double KontoBankowe::getSrodki()
 {
 	return srodki;
 }
+void KontoBankowe::setSrodki(double srodki) {
+	this->srodki = srodki;
+}
 
-Przelew KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
+std::list<Blokada> KontoBankowe::getBlokady() {
+	return this->blokady;
+}
+std::list<Przelew> KontoBankowe::getPrzelewy() {
+	return this->przelewy;
+}
+void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
 	Przelew result = Przelew();
 	result.nadawca = this->numerKonta;
 	result.adresat = adresat;
@@ -69,6 +78,15 @@ Przelew KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrz
 	else result.okres = 0;
 
 	przelewy.push_back(result);
-	return result;
+	Blokada blokada = Blokada();
+	blokada.kwota = result.kwota;
+	blokada.waluta = result.waluta;
+	blokada.idPrzelewu = result.idPrzelewu;
+	blokada.numerBlokujacego = result.adresat;
+	blokady.push_back(blokada);
+
+	double toTake = (result.waluta.przelicznik / this->waluta.przelicznik) * result.kwota;
+	this->srodki -= toTake;
+	
 }
 
