@@ -43,4 +43,6 @@ namespace menu
 	int start();
 	void main(KontoKlienta*, Bank*, int*);
 	void zarzadzanie(KontoKlienta*, Bank*, int*);
+	void kontoBankowe(KontoKlienta*, Bank*);
+	void lokata(KontoKlienta*, Bank*);
 }

@@ -34,3 +34,5 @@ public:
 
 
 };
+
+std::string wyswietlRodzajKontaBankowego(RodzajKonta);

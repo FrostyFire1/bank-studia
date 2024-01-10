@@ -36,7 +36,7 @@ KontoBankowe::~KontoBankowe()
 
 void KontoBankowe::wyswietlDane()
 {
-	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<<rodzaj;
+	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<< wyswietlRodzajKontaBankowego(rodzaj);
 	_getch();
 }
 
