@@ -120,10 +120,11 @@ std::string Lokata::getOstatnieNaliczenie()
 	return ostatnieNaliczenie;
 }
 
-std::double_t Lokata::getOprocentowanie()
+double Lokata::getOprocentowanie()
 {
 	return oprocentowanie;
 }
+
 
 std::string wyswietlRodzajLokaty(RodzajLokaty rodzaj)
 {

@@ -33,7 +33,7 @@ public:
 	std::string getNrLokaty();
 	std::string getDataRozpoczecia();
 	std::string getOstatnieNaliczenie();
-	std::double_t getOprocentowanie();
+	double getOprocentowanie();
 
 };
 std::string wyswietlRodzajLokaty(RodzajLokaty);
