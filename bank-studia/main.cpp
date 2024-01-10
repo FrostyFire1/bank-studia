@@ -2,14 +2,15 @@
 
 int main()
 {
-	Bank *bank = new Bank;
+	Bank* bank = new Bank;
 	KontoKlienta* aktualnyKlient = new KontoKlienta;
 	int* iloscKlientow = new int;
+
 	*iloscKlientow = getListaKlientow(bank);
 
 	int  menuWybor = 0;
 
-	while (menuWybor>=0)
+	while (menuWybor >= 0)
 	{
 		switch (menuWybor)
 		{
@@ -21,6 +22,7 @@ int main()
 			if (bank->Logowanie(bank->listaKontKlientow, aktualnyKlient))
 			{	//pomyslne zalogowanie sie do konta
 				std::cout << "Zalogowano do konta: " << aktualnyKlient->getLogin(); _getch();
+				//załadowanie kont bankowych z pliku
 				menu::main(aktualnyKlient, bank, iloscKlientow);
 			}
 
