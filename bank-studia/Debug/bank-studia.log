@@ -1,3 +1,5 @@
 ﻿  bank.cpp
+  main.cpp
+  Generating Code...
 C:\Users\gymzo\source\repos\bank-studia\bank-studia\bank.cpp(125): warning C4715: 'Bank::Logowanie': not all control paths return a value
   bank-studia.vcxproj -> C:\Users\gymzo\source\repos\bank-studia\Debug\bank-studia.exe

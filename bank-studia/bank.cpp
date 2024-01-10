@@ -277,6 +277,44 @@ void wczytajKlienta(Bank *bank, std::ifstream *plik)
 	delete nowy;
 }
 
+int znajdzKlienta(Bank* bank, KontoKlienta* aktualnyKlient)
+{
+	int znajdz = 0;
+	int i = 0;
+	for (KontoKlienta konto : bank->listaKontKlientow)
+	{
+		if (konto == *aktualnyKlient) znajdz = i;
+		i++;
+	}
+	return znajdz;
+}
+
+void updateListaKlientow(int* iloscKlientow, Bank* bank, KontoKlienta* aktualnyKlient, int aktualny)
+{
+	std::ofstream* plikListaKlientow = new std::ofstream;
+	plikListaKlientow->open("listaKlientow.txt");
+
+	if (plikListaKlientow->is_open())
+	{
+		*plikListaKlientow << *iloscKlientow << std::endl;
+
+		for (int i = 0; i < *iloscKlientow; i++)
+		{
+			if (i == aktualny)
+			{
+				zapiszKlienta(aktualnyKlient, plikListaKlientow);
+			}
+			else zapiszKlienta(bank, plikListaKlientow);
+			bank->listaKontKlientow.pop_front();
+		}
+	}
+
+	*iloscKlientow = getListaKlientow(bank);
+
+	plikListaKlientow->close();
+	delete plikListaKlientow;
+}
+
 void zapiszKlienta(Bank* bank, std::ofstream* plik)
 {
 	*plik << bank->listaKontKlientow.front().numerKonta;
@@ -415,6 +453,8 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 	int menuWybor;
 	int czyUsuniete = *iloscKlientow;
 
+	int aktualnyKlientIndex = znajdzKlienta(bank, aktualnyKlient);
+
 	for (;;)
 	{
 		system("cls");
@@ -437,6 +477,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			<< "| >";
 
 		std::cin >> menuWybor;
+
 		switch (menuWybor)
 		{
 		case 1:
@@ -495,9 +536,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 
 		case 7:
-
-			//std::list<KontoKlienta>::iterator znajdzKlienta = std::find(bank->listaKontKlientow.begin(), bank->listaKontKlientow.end(), 1);
-
+			updateListaKlientow(iloscKlientow, bank, aktualnyKlient, aktualnyKlientIndex);
 			return;
 			break;
 
