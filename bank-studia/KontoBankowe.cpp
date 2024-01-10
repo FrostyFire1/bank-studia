@@ -4,12 +4,13 @@
 #include "KontoBankowe.h"
 #include "RodzajKonta.h"
 
-
 KontoBankowe::KontoBankowe(std::string new_nrKonta, RodzajKonta new_rodzajKonta)
 {
 	numerKonta = new_nrKonta;
 	rodzaj = new_rodzajKonta;
 	srodki=0.0;
+	this->waluta = Waluta("PLN", 1.0);
+
 }
 
 KontoBankowe::KontoBankowe(std::string new_nrKonta, RodzajKonta new_rodzajKonta,double new_srodki)
@@ -17,12 +18,15 @@ KontoBankowe::KontoBankowe(std::string new_nrKonta, RodzajKonta new_rodzajKonta,
 	numerKonta = new_nrKonta;
 	rodzaj = new_rodzajKonta;
 	srodki = new_srodki;
+	this->waluta = Waluta("PLN", 1.0);
+
 }
 KontoBankowe::KontoBankowe()
 {
 	numerKonta = "00000000000000000000000000";
 	rodzaj = RODZAJ_KONTO_OSZCZEDNOSCIOWE;
 	srodki = 0.0;
+	this->waluta = Waluta("PLN", 1.0);
 }
 
 
@@ -49,3 +53,22 @@ double KontoBankowe::getSrodki()
 {
 	return srodki;
 }
+
+Przelew KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
+	Przelew result = Przelew();
+	result.nadawca = this->numerKonta;
+	result.adresat = adresat;
+	result.kwota = kwota;
+	result.rodzajPrzelewu = rodzajPrzelewu;
+	result.opis = opis;
+	if (rodzajPrzelewu == RodzajPrzelewu::WALUTOWY) result.waluta = waluta;
+	else result.waluta = this->waluta;
+	result.timestamp = 0;
+	result.idPrzelewu = 0;
+	result.ostatnieRozliczenie = result.timestamp;
+	if (rodzajPrzelewu == RodzajPrzelewu::OKRESOWY) result.okres = okres;
+	else result.okres = 0;
+
+	return result;
+}
+

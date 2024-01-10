@@ -25,6 +25,7 @@
     <ClCompile Include="Lokata.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Przelew.cpp" />
+    <ClCompile Include="RodzajPrzelewu.cpp" />
     <ClCompile Include="Waluta.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -165,6 +165,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UnitTestBank.cpp" />
+    <ClCompile Include="UnitTestKontoBankowe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -180,6 +181,9 @@
     <Object Include="..\bank-studia\x64\Debug\KontoBankowe.obj" />
     <Object Include="..\bank-studia\x64\Debug\Lokata.obj" />
     <Object Include="..\bank-studia\x64\Debug\main.obj" />
+    <Object Include="..\bank-studia\x64\Debug\Przelew.obj" />
+    <Object Include="..\bank-studia\x64\Debug\RodzajPrzelewu.obj" />
+    <Object Include="..\bank-studia\x64\Debug\Waluta.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
