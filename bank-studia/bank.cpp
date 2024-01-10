@@ -496,7 +496,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 
 		case 7:
 
-			//tu update danych
+			//std::list<KontoKlienta>::iterator znajdzKlienta = std::find(bank->listaKontKlientow.begin(), bank->listaKontKlientow.end(), 1);
 
 			return;
 			break;
