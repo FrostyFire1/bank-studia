@@ -33,14 +33,14 @@ nerevar
 Voryn
 Dagoth
 Red Mountain Keep
-dagothur@sixth.house
+dagothur@sixth.house.mw
 8
 vivec
 fucknerevar
 Vivec
 Falsegod
 Vivec City Temple
-vivec@almsivi.god
+vivec@almsivi.mw
 9
 papasmurf
 smurfette
@@ -54,4 +54,4 @@ fyrmaster
 Divayth
 Fyr
 Tel Fyr Tower
-divaythfyr@telvanni.house
+divaythfyr@telvanni.house.mw
