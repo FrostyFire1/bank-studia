@@ -18,11 +18,11 @@ Bank::~Bank()
 
 }
 
-std::list<KontoBankowe> Bank::wszystkieKontaBankowe(){
-	std::list<KontoBankowe> kontaBankowe;
+std::list<KontoBankowe*> Bank::wszystkieKontaBankowe(){
+	std::list<KontoBankowe*> kontaBankowe;
 	for (KontoKlienta klient : this->listaKontKlientow) {
 		for (KontoBankowe kontoBankowe : klient.listaKontBankowe) {
-			kontaBankowe.push_back(kontoBankowe);
+			kontaBankowe.push_back(&kontoBankowe);
 		}
 	}
 	return kontaBankowe;
@@ -30,30 +30,33 @@ std::list<KontoBankowe> Bank::wszystkieKontaBankowe(){
 
 //Funkcja zakłada, że każdy przelew ma poprawne dane
 void Bank::przetworzPrzelewy() {
-	std::list<KontoBankowe> kontaBankowe = this->wszystkieKontaBankowe();
-	for (KontoBankowe konto : kontaBankowe) {
-		std::list<Przelew> przelewy = konto.getPrzelewy();
-		for (Przelew przelew : przelewy) {
+	std::list<KontoBankowe*> kontaBankowe = this->wszystkieKontaBankowe();
+	for (KontoBankowe *konto : kontaBankowe) {
+		std::list<Przelew> przelewy = konto->getPrzelewy();
+		while(przelewy.size() != 0) {
+			Przelew przelew = przelewy.front();
 			//Znajdz odbiorce przelewu
-			KontoBankowe odbiorca;
-			for (KontoBankowe kontoOdbiorcy : kontaBankowe) {
-				if (kontoOdbiorcy.getNrKontaBankowego() == przelew.adresat) { odbiorca = kontoOdbiorcy; break; }
+			KontoBankowe *odbiorca;
+			for (KontoBankowe *kontoOdbiorcy : kontaBankowe) {
+				if (kontoOdbiorcy->getNrKontaBankowego() == przelew.adresat) { odbiorca = kontoOdbiorcy; break; }
 			}
-			double przelicznikOdbiorcy = przelew.waluta.przelicznik / odbiorca.getWaluta().przelicznik;
+			double przelicznikOdbiorcy = przelew.waluta.przelicznik / odbiorca->getWaluta().przelicznik;
 			double kwotaOdbiorcy = przelicznikOdbiorcy * przelew.kwota;
 
 			//Podatek od konta niewalutowego i rozniacych sie walut
-			if (odbiorca.getTypKontaBankowego() != RodzajKonta::RODZAJ_KONTO_WALUTOWE && odbiorca.getWaluta() != przelew.waluta) {
+			if (odbiorca->getTypKontaBankowego() != RodzajKonta::RODZAJ_KONTO_WALUTOWE && odbiorca->getWaluta() != przelew.waluta) {
 				kwotaOdbiorcy *= 0.95;
 			}
-			odbiorca.setSrodki(odbiorca.getSrodki() + kwotaOdbiorcy);
+			odbiorca->setSrodki(odbiorca->getSrodki() + kwotaOdbiorcy);
 
 			//Usuniecie blokady
 			int indexBlokady = -1;
-			for (int i = 0; i < konto.getBlokady().size(); i++) {
-				if (konto.getBlokady()[i].idPrzelewu == przelew.idPrzelewu) { indexBlokady = i; break; }
+			for (int i = 0; i < konto->getBlokady().size(); i++) {
+				if (konto->getBlokady()[i].idPrzelewu == przelew.idPrzelewu) { indexBlokady = i; break; }
 			}
-			if (indexBlokady != -1) konto.getBlokady().erase(konto.getBlokady().begin()+indexBlokady);
+			if (indexBlokady != -1) konto->getBlokady().erase(konto->getBlokady().begin()+indexBlokady);
+
+			przelewy.pop_front();
 		}
 	}
 }

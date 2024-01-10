@@ -15,7 +15,7 @@ public:
 
 	bool Logowanie(KontoKlienta*);
 	bool weryfikacjaTozsamosci(KontoKlienta*);
-	std::list<KontoBankowe> wszystkieKontaBankowe();
+	std::list<KontoBankowe*> wszystkieKontaBankowe();
 	void przetworzPrzelewy();
 protected:
 
