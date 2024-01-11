@@ -1,10 +1,8 @@
-#ifndef RODZAJKONTA_H
-#define RODZAJKONTA_H
+#pragma once
+#include <iostream>
 
 enum RodzajKonta {
 	RODZAJ_KONTO_OSZCZEDNOSCIOWE=0,
 	RODZAJ_KONTO_ROZLICZENIOWE=1,
 	RODZAJ_KONTO_WALUTOWE=2
 };
-
-#endif

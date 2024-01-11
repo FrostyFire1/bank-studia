@@ -1,6 +1,5 @@
 #pragma once
-#ifndef RODZAJCZASULOKATY_H
-#define RODZAJCZASULOKATY_H
+#include <iostream>
 
 enum RodzajCzasuLokaty {
 	RODZAJ_CZASU_LOKATA_3MIESIECZNA = 0,
@@ -8,5 +7,3 @@ enum RodzajCzasuLokaty {
 	RODZAJ_CZASU_LOKATA_12MIESIECZNA = 2,
 	BRAK = 3
 };
-
-#endif // !RODZAJCZASULOKATY_H

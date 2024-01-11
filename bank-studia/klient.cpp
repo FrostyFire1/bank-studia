@@ -90,6 +90,16 @@ int KontoKlienta::getNumerKonta()
 	return numerKonta;
 }
 
+std::list<KontoBankowe> KontoKlienta::getListaKontBankowych()
+{
+	return listaKontBankowe;
+}
+
+std::list<Lokata> KontoKlienta::getListaLokat()
+{
+	return listaLokat;
+}
+
 void KontoKlienta::setLogin(std::string new_login)
 {
 	login = new_login;
@@ -126,7 +136,7 @@ void KontoKlienta::dodajKontoBankowe(KontoKlienta* aktualnyKlient,Bank* aktualny
 		return;
 	}
 	RodzajKonta typKonta = menuWyboruKonta();
-	std::string nrKonta = generujNumerKonta();
+	std::string nrKonta = generujNumerKonta(aktualnyKlient);
 	KontoBankowe* nowy = new KontoBankowe(nrKonta, typKonta);
 	listaKontBankowe.push_front(*nowy);
 	zapiszKontoBankoweDoPliku(nowy, aktualnyKlient->getLogin());
@@ -162,7 +172,7 @@ void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank)
 	}
 	RodzajLokaty typLokaty = menuWyboruLokaty();
 	RodzajCzasuLokaty czasLokaty = menuWyboruCzasuLokaty();
-	std::string nrKonta = generujNumerKonta();
+	std::string nrKonta = generujNumerKonta(aktualnyKlient);
 	double srodki;
 	std::cout << "Podaj kwotę lokaty: ";
 	std::cin >> srodki;
@@ -198,27 +208,31 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 
 }
 
-void KontoKlienta::wyswietlKontaBankowe(KontoKlienta bank)
+void KontoKlienta::wyswietlKontaBankowe(KontoKlienta klient)
 {
 	system("cls");
-	for (KontoBankowe aktualny : bank.listaKontBankowe)
+	for (KontoBankowe aktualny : klient.listaKontBankowe)
 	{
 		aktualny.wyswietlDane();
 		std::cout << "\n\n";
 	}
+	std::cout << "Nacisnij dowolny klawisz aby kontynuowac";
+	_getch();
 }
-void KontoKlienta::wyswietlLokaty(KontoKlienta bank)
+void KontoKlienta::wyswietlLokaty(KontoKlienta klient)
 {
 	system("cls");
-	for (Lokata aktualna : bank.listaLokat)
+	for (Lokata aktualna : klient.listaLokat)
 	{
 		aktualna.wyswietlDaneLokat();
 		std::cout << "\n\n";
 	}
+	std::cout << "Nacisnij dowolny klawisz aby kontynuowac";
+	_getch();
 }
 
 
-std::string KontoKlienta::generujNumerKonta()
+std::string generujNumerKonta(KontoKlienta* klient)
 {
 	std::string numerKonta;
 	srand(time(NULL));
@@ -233,7 +247,7 @@ std::string KontoKlienta::generujNumerKonta()
 				temp = temp += std::to_string(rand() % 10);
 			}
 		}
-		test = sprawdzNumerKontaBankowego(listaKontBankowe, temp);
+		test = sprawdzNumerKontaBankowego(klient->getListaKontBankowych(), klient->getListaLokat(), temp);
 		if (test == true)
 		{
 			numerKonta = "7021372405" + temp;
@@ -244,12 +258,19 @@ std::string KontoKlienta::generujNumerKonta()
 	return numerKonta;
 
 }
-bool KontoKlienta::sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKont, std::string numerKonta)
+bool sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKontBankowych,std::list<Lokata> listaLokat,std::string numerKonta)
 {
 	bool czyWolny = true;
-	for (KontoBankowe konto : listaKont)
+	for (KontoBankowe konto : listaKontBankowych)
 	{
-		if (konto.numerKonta == numerKonta)
+		if (konto.getNrKontaBankowego() == numerKonta)
+		{
+			czyWolny = false;
+		}
+	}
+	for (Lokata konto : listaLokat)
+	{
+		if (konto.getNrLokaty() == numerKonta)
 		{
 			czyWolny = false;
 		}
@@ -258,7 +279,7 @@ bool KontoKlienta::sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKont,
 	return czyWolny;
 }
 
-RodzajKonta KontoKlienta::menuWyboruKonta()
+RodzajKonta menuWyboruKonta()
 {
 
 	int menuWybor;
@@ -284,7 +305,7 @@ RodzajKonta KontoKlienta::menuWyboruKonta()
 		}
 	}
 }
-RodzajLokaty KontoKlienta::menuWyboruLokaty()
+RodzajLokaty menuWyboruLokaty()
 {
 	int menuWybor;
 	for (;;)
@@ -309,7 +330,7 @@ RodzajLokaty KontoKlienta::menuWyboruLokaty()
 		}
 	}
 }
-RodzajCzasuLokaty KontoKlienta::menuWyboruCzasuLokaty()
+RodzajCzasuLokaty menuWyboruCzasuLokaty()
 {
 	int menuWybor;
 	for (;;)
@@ -336,7 +357,7 @@ RodzajCzasuLokaty KontoKlienta::menuWyboruCzasuLokaty()
 }
 
 
-void KontoKlienta::zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
+void zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
 {
 
 	char* cwd = _getcwd(0, 0);
@@ -349,7 +370,7 @@ void KontoKlienta::zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string na
 	plik << konto->getSrodki() << "\n";
 	plik.close();
 }
-void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
+void zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -383,11 +404,10 @@ void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 	{
 		while (getline(plik, linia))
 		{
-			 nrKonta=linia;
+			nrKonta=linia;
 			plik >> typKonta;
 			plik >> srodki;
 			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta));
-			nowe->srodki = srodki;
 			listaKontBankowe.push_front(*nowe);
 			delete nowe;
 			getline(plik, linia);
@@ -423,7 +443,6 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
 			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
-			listaLokat.push_front(*nowa);
 			delete nowa;
 			getline(plik, linia);
 		}
@@ -446,9 +465,9 @@ void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string n
 	double srodki;
 
 	// plik tymczasowy do zapisu kont, ktore nie zostaną usunięte
-	std::string tempFilename = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
-	std::ofstream tempFile(tempFilename);
-	if (plik.is_open() && tempFile.is_open())
+	std::string temp_pelnaSciezka = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+	if (plik.is_open() && temp_plik.is_open())
 	{
 		while (getline(plik, linia))
 		{
@@ -459,9 +478,9 @@ void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string n
 			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta),srodki);
 			if (nowe->getNrKontaBankowego() != numerKonta)
 			{
-				tempFile << nrKonta << "\n";
-				tempFile << typKonta << "\n";
-				tempFile << srodki << "\n";
+				temp_plik << nrKonta << "\n";
+				temp_plik << typKonta << "\n";
+				temp_plik << srodki << "\n";
 			}
 
 			delete nowe;
@@ -469,14 +488,14 @@ void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string n
 		}
 		plik.close();
 		plik.clear();
-		tempFile.close();
-		tempFile.clear();
+		temp_plik.close();
+		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
 			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
 		}
 
-		if (std::rename(tempFilename.c_str(), pelnaSciezka.c_str()) != 0)
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
 			std::cout << "Nie można zastąpić pliku";
 		}
@@ -504,10 +523,10 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 	std::string ostatnieNaliczenie;
 
 	// Create a temporary file
-	std::string tempFilename = working_directory + "\\Lokaty\\tempLokaty.txt";
-	std::ofstream tempFile(tempFilename);
+	std::string temp_pelnaSciezka = working_directory + "\\Lokaty\\tempLokaty.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
 
-	if (plik.is_open() && tempFile.is_open())
+	if (plik.is_open() && temp_plik.is_open())
 	{
 		while (getline(plik, linia))
 		{
@@ -523,13 +542,13 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 
 			if (nowa->getNrLokaty() != nrLokaty)
 			{
-				tempFile << rodzaj << "\n";
-				tempFile << okres << "\n";
-				tempFile << numerLokaty << "\n";
-				tempFile << srodki << "\n";
-				tempFile << oprocentowanie << "\n";
-				tempFile << dataRozpoczecia << "\n";
-				tempFile << ostatnieNaliczenie << "\n";
+				temp_plik << rodzaj << "\n";
+				temp_plik << okres << "\n";
+				temp_plik << numerLokaty << "\n";
+				temp_plik << srodki << "\n";
+				temp_plik << oprocentowanie << "\n";
+				temp_plik << dataRozpoczecia << "\n";
+				temp_plik << ostatnieNaliczenie << "\n";
 			}
 
 			delete nowa;
@@ -538,14 +557,14 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 		}
 		plik.close();
 		plik.clear();
-		tempFile.close();
-		tempFile.clear();
+		temp_plik.close();
+		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
 			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
 		}
 
-		if (std::rename(tempFilename.c_str(), pelnaSciezka.c_str()) != 0)
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
 			std::cout << "Nie można zastąpić pliku";
 		}
@@ -554,4 +573,92 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 	{
 		std::cout << "Nie można otworzyć pliku";
 	}
+}
+
+void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> listaKont, std::string nazwaPliku)
+{
+	char* cwd = _getcwd(0, 0);
+	std::string working_directory(cwd);
+	std::free(cwd);
+	std::string pelnaSciezka = working_directory + "\\KontaBankowe\\" + nazwaPliku + "KontaBankowe.txt";
+	std::ifstream plik(pelnaSciezka);
+
+	std::string linia;
+	std::string nrKonta;
+	int typKonta;
+	double srodki;
+
+	// plik tymczasowy do zapisu kont, ktore nie zostaną usunięte
+	std::string temp_pelnaSciezka = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+	if (!temp_plik.is_open()) {
+		std::cerr << "Błąd otwierania pliku do zapisu." << std::endl;
+		return;
+	}
+
+	for (std::list<KontoBankowe>::iterator it = listaKont.begin(); it != listaKont.end(); ++it) {
+		temp_plik << konto->getNrKontaBankowego() << "\n";
+		temp_plik << konto->getTypKontaBankowego() << "\n";
+		temp_plik << konto->getSrodki() << "\n";
+		getline(plik, linia);
+	}
+		temp_plik.close();
+		temp_plik.clear();
+
+		if (std::remove(pelnaSciezka.c_str()) != 0) {
+			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+		}
+
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
+		{
+			std::cout << "Nie można zastąpić pliku";
+		}
+}
+void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::string nazwaPliku)
+{
+	char* cwd = _getcwd(0, 0);
+	std::string working_directory(cwd);
+	std::free(cwd);
+	std::string pelnaSciezka = working_directory + "\\Lokaty\\" + nazwaPliku + "Lokaty.txt";
+	std::ifstream plik(pelnaSciezka);
+
+	int rodzaj;
+	int okres;
+	double srodki;
+	double oprocentowanie;
+	std::string linia;
+	std::string numerLokaty;
+	std::string dataRozpoczecia;
+	std::string ostatnieNaliczenie;
+
+	// Create a temporary file
+	std::string temp_pelnaSciezka = working_directory + "\\Lokaty\\tempLokaty.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+
+	if (!temp_plik.is_open()) {
+		std::cerr << "Błąd otwierania pliku do zapisu." << std::endl;
+		return;
+	}
+
+	for (std::list<Lokata>::iterator it = listaLokat.begin(); it != listaLokat.end(); ++it) {
+		temp_plik << lokata->getRodzajLokaty() << "\n";
+		temp_plik << lokata->getRodzajCzasuLokaty() << "\n";
+		temp_plik << lokata->getNrLokaty() << "\n";
+		temp_plik << lokata->getSrodki() << "\n";
+		temp_plik << lokata->getOprocentowanie() << "\n";
+		temp_plik << lokata->getDataRozpoczecia() << "\n";
+		temp_plik << lokata->getOstatnieNaliczenie() << "\n";
+		getline(plik, linia);
+	}
+		temp_plik.close();
+		temp_plik.clear();
+
+		if (std::remove(pelnaSciezka.c_str()) != 0) {
+			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+		}
+
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
+		{
+			std::cout << "Nie można zastąpić pliku";
+		}
 }

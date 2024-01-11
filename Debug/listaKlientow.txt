@@ -1,0 +1,64 @@
+9
+1
+login1
+haslo1
+login1
+nazwisko1
+nazwa1 ulicy1 111
+mail@pierwszy
+2
+sonic
+tails
+Sonic
+Hedgehog
+Christmas Island
+fasterthansound@eggmail.com
+6
+login6
+haslo6
+jozef
+zgronia
+nazwa6 ulicy6 6
+mail@szosty
+7
+dagothur
+nerevar
+Voryn
+Dagoth
+Red Mountain Keep
+dagothur@sixth.house
+8
+vivec
+fucknerevar
+Vivec
+Falsegod
+Vivec City Temple
+vivec@almsivi.god
+9
+papasmurf
+smurfette
+Papa
+Smurf
+Wioska smerfow 35
+papa@smurf.sus
+11
+fyrmaster
+4daughters
+Divayth
+Fyr
+Tel Fyr Tower
+divaythfyr@telvanni.house
+12
+loginE
+hasloE
+imieE
+nazwE
+adredsE
+mailE
+13
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa

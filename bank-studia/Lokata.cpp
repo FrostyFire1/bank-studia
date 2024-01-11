@@ -41,7 +41,7 @@ Lokata::Lokata()
 
 }
 
-std::string Lokata::Data(RodzajCzasuLokaty okres)
+std::string Data(RodzajCzasuLokaty okres)
 {
 	// Pobierz bieżącą datę i czas
 	std::chrono::system_clock::time_point teraz = std::chrono::system_clock::now();
@@ -85,8 +85,7 @@ std::string Lokata::Data(RodzajCzasuLokaty okres)
 void Lokata::wyswietlDaneLokat()
 {
 
-	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << wyswietlRodzajLokaty(rodzaj)<<"\nCzas trwania lokaty: "<< wyswietlRodzajCzasuLokaty(okres)<<"\nSrodki: "<<srodki<<"\nOprocentowanie: "<<oprocentowanie<< "%\nData rozpoczecia: " << dataRozpoczecia << "\nData zakończenia loakty: " << ostatnieNaliczenie;
-	_getch();
+	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << wyswietlRodzajLokaty(rodzaj)<<"\nCzas trwania lokaty: "<< wyswietlRodzajCzasuLokaty(okres)<<"\nSrodki: "<<srodki<<"\nOprocentowanie: "<<oprocentowanie*100<< "%\nData rozpoczecia: " << dataRozpoczecia << "\nData zakończenia loakty: " << ostatnieNaliczenie;
 
 }
 
@@ -166,9 +165,9 @@ std::string wyswietlRodzajCzasuLokaty(RodzajCzasuLokaty okres)
 
 double obliczOprocentowanie(RodzajLokaty rodzaj, RodzajCzasuLokaty okres)
 {
-	double lokataZwykla = 2;
-	double lokataOszczednosciowa = 4;
-	double lokataWalutowa = 3;
+	double lokataZwykla = 0.02;
+	double lokataOszczednosciowa = 0.04;
+	double lokataWalutowa = 0.03;
 	double okres3Miesieczny = 1;
 	double okres6Miesieczny = 1.5;
 	double okres12Miesieczny = 2;

@@ -36,7 +36,8 @@ void Bank::przetworzPrzelewy() {
 		while(przelewy->size() != 0) {
 			Przelew przelew = przelewy->front();
 			//Znajdz odbiorce przelewu
-			KontoBankowe *odbiorca;
+			KontoBankowe* odbiorca=nullptr;
+
 			for (KontoBankowe *kontoOdbiorcy : kontaBankowe) {
 				if (kontoOdbiorcy->getNrKontaBankowego() == przelew.adresat) { odbiorca = kontoOdbiorcy; break; }
 			}
@@ -436,6 +437,7 @@ int menu::start()
 {
 	int menuWybor;
 	system("cls");
+
 
 	std::cout << "--------------------\n"
 		<< "| BANK\n"
