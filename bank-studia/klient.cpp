@@ -441,6 +441,7 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 	std::free(cwd);
 	std::string pelnaSciezka = working_directory + "\\Lokaty\\" + nazwaPliku + "Lokaty.txt";
 	std::ifstream plik(pelnaSciezka);
+
 	std::string linia;
 	std::string nrLokaty;
 	int rodzaj;
@@ -449,6 +450,7 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 	double oprocentowanie;
 	std::string dataRozpoczecia;
 	std::string ostatnieNaliczenie;
+
 	if (plik.is_open())
 	{
 		while (getline(plik, linia))
@@ -461,6 +463,7 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
 			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
+			listaLokat.push_front(*nowa);
 			delete nowa;
 			getline(plik, linia);
 		}
