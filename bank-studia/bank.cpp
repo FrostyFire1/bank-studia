@@ -72,11 +72,8 @@ bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 	bool czyIstnieje = 0;
 
 	system("cls");
-	std::cout << "| 0. Powrot\n|\n"
-			<< "| Login: ";
+	std::cout << "| Login: ";
 	std::cin >> cinLogin;
-
-	if (cinLogin == "0") return 0;
 
 	for (KontoKlienta konto : this->listaKontKlientow)
 	{
@@ -94,14 +91,12 @@ bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 		{
 			std::cout << "| Haslo: ";
 			cinHaslo = getHaslo(1);
-			if (cinHaslo == "0") return 0;
 			if (aktualnyKlient->haslo == cinHaslo) return 1;
 			else
 			{
 				std::cout << "| Niepoprawne haslo!"; _getch();
 				system("cls");
-				std::cout << "| 0. Powrot\n|\n" 
-						  << "| Login: " << aktualnyKlient->login << "\n";
+				std::cout << "| Login: " << aktualnyKlient->login << "\n";
 			}
 		}
 	}
@@ -237,7 +232,6 @@ void Bank::dodajKlienta(int* iloscKlientow)
 	int new_numer = listaKontKlientow.back().numerKonta + 1;
 
 	system("cls"); 
-	std::cout << "| 0. Powrot\n|\n";
 	std::cout << "| Imie: ";
 	std::cin >> new_imie;
 	std::cout << "| Nazwisko: ";
