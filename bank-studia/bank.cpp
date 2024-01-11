@@ -635,14 +635,33 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 		case 4:
 		{
 			Waluta waluta;
-			std::string adresat;;
+			std::string adresat;
+			std::string nadawca;
 			std::string opis;
 			double kwota;
-			std::cout << "Podaj numer konta bankowego: ";
+			int wyborKonto;
+
+			system("cls");
+			std::cout << "Wybierz konto:\n\n";
+
+			for (KontoBankowe aktualny : aktualnyKlient->listaKontBankowe)
+			{
+				aktualny.wyswietlDane();
+				std::cout << "\n\n";
+			}
+
+			wyborKonto = _getch()-48;
+			if (wyborKonto > (aktualnyKlient->listaKontBankowe).size()) wyborKonto = aktualnyKlient->listaKontBankowe.size()-1;
+			if (wyborKonto < 0) wyborKonto = 1;
+
+			*aktualneKontoBankowe = get(aktualnyKlient->listaKontBankowe, wyborKonto);
+
+			std::cout << "Numer konta bankowego odbiorcy: ";
 			std::cin >> adresat;
 			std::cout << "Podaj kwote: ";
 			std::cin >> kwota;
 			std::cout << "Podaj opis: ";
+			std::cin.ignore();
 			getline(std::cin, opis);
 			aktualneKontoBankowe->utworzPrzelew(adresat, kwota, NATYCHMIASTOWY, opis, 1, waluta);
 			break;
