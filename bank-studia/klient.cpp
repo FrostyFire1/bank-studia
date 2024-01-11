@@ -209,7 +209,7 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 
 }
 
-//funkcja do wyswietlania konta bankowego lub lokaty
+//funkcje do wyswietlania konta bankowego lub lokaty
 void KontoKlienta::wyswietlKontaBankowe(KontoKlienta klient)
 {
 	system("cls");
@@ -393,7 +393,6 @@ void zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
 	plik << konto->getNrKontaBankowego() << "\n";
 	plik << konto->getTypKontaBankowego() << "\n";
 	plik << konto->getSrodki() << "\n";
-	plik << konto->getWaluta()<<"\n";
 	plik.close();
 }
 
@@ -435,7 +434,7 @@ void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 			nrKonta=linia;
 			plik >> typKonta;
 			plik >> srodki;
-			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta));
+			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta),srodki);
 			listaKontBankowe.push_front(*nowe);
 			delete nowe;
 			getline(plik, linia);
