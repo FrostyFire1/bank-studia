@@ -75,6 +75,12 @@ namespace UnitTestBank
 			Assert::AreEqual(expected, wyswietlRodzajKontaBankowego(RODZAJ_KONTO_OSZCZEDNOSCIOWE));
 		}
 
+		TEST_METHOD(TestRodzajLokaty)
+		{
+			std::string expected = "Lokata zwykla";
+			Assert::AreEqual(expected, wyswietlRodzajLokaty(RODZAJ_LOKATA_ZWYKLA));
+		}
+
 		TEST_METHOD(TestSrodki)
 		{
 			double expected = 0;
