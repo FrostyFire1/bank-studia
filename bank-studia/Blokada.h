@@ -1,11 +1,11 @@
 #ifndef BLOKADA_H
 #define BLOKADA_H
-
+#include "Waluta.h"
 class Blokada {
 
-private:
-	double kwota;
-	int numerBlokujacego;
+public:
+	double srodki;
+	std::string numerBlokujacego;
 	int idPrzelewu;
 };
 
