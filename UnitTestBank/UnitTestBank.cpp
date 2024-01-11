@@ -47,6 +47,69 @@ namespace UnitTestBank
 			int actual = getListaKlientow(&bank);
 			Assert::AreEqual(expected, actual);
 		}
+
+		TEST_METHOD(TestZnajdzKlienta)
+		{
+			int znajdz = 0;
+			Bank* bank = new Bank();
+			KontoKlienta* aktualny = new KontoKlienta();
+
+			Assert::AreEqual(znajdz, znajdzKlienta(bank, aktualny));
+		}
+
+		TEST_METHOD(TestGetListaKlientow)
+		{
+			Bank* bank = new Bank();
+			int expected = 0;
+			Assert::AreEqual(expected, getListaKlientow(bank));
+		}
+
+	};
+
+	TEST_CLASS(BankAccount)
+	{
+	public:
+		TEST_METHOD(TestRodzajKonta)
+		{
+			std::string expected = "Konto oszczednosciowe";
+			Assert::AreEqual(expected, wyswietlRodzajKontaBankowego(RODZAJ_KONTO_OSZCZEDNOSCIOWE));
+		}
+
+		TEST_METHOD(TestSrodki)
+		{
+			double expected = 0;
+			KontoBankowe* actual = new KontoBankowe();
+
+			Assert::AreEqual(expected, actual->getSrodki());
+		}
+
+		TEST_METHOD(TestSrodkiLokata)
+		{
+			double expected = 0;
+			Lokata* actual = new Lokata();
+
+			Assert::AreEqual(expected, actual->getSrodki());
+		}
+
+		TEST_METHOD(TestProcentLokata)
+		{
+			double expected = 0;
+			Lokata* actual = new Lokata();
+
+			Assert::AreEqual(expected, actual->getOprocentowanie());
+		}
+
+		TEST_METHOD(TestCzasLokata)
+		{
+			std::string expected = "3 miesiace";
+			Assert::AreEqual(expected, wyswietlRodzajCzasuLokaty(RODZAJ_CZASU_LOKATA_3MIESIECZNA));
+		}
+
+		TEST_METHOD(TestOprocetowanie)
+		{
+			double expected = 0.02;
+			Assert::AreEqual(expected, obliczOprocentowanie(RODZAJ_LOKATA_ZWYKLA, RODZAJ_CZASU_LOKATA_3MIESIECZNA));
+		}
 	};
 }
 

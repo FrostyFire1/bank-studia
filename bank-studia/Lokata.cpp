@@ -33,7 +33,7 @@ Lokata::Lokata(RodzajLokaty new_rodzaj, RodzajCzasuLokaty new_okres, double new_
 
 Lokata::Lokata()
 {
-
+	oprocentowanie = 0;
 	rodzaj = RODZAJ_LOKATA_ZWYKLA;
 	okres = RODZAJ_CZASU_LOKATA_3MIESIECZNA;
 	srodki = 0.0;
