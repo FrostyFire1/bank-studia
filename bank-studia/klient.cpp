@@ -6,6 +6,7 @@
 #include "klient.h"
 #include "bank.h"
 
+
 KontoKlienta::KontoKlienta()
 {
 	numerKonta = 0;
@@ -54,7 +55,6 @@ void KontoKlienta::wyswietlDane()
 }
 
 //gettery i settery --------------------------------------------
-
 std::string KontoKlienta::getLogin()
 {
 	return login;
@@ -99,7 +99,6 @@ std::list<Lokata> KontoKlienta::getListaLokat()
 {
 	return listaLokat;
 }
-
 void KontoKlienta::setLogin(std::string new_login)
 {
 	login = new_login;
@@ -125,7 +124,7 @@ void KontoKlienta::setAdres(std::string new_adres)
 	adres = new_adres;
 }
 
-
+//funkcja do dodawania konta bankowego lub lokaty
 void KontoKlienta::dodajKontoBankowe(KontoKlienta* aktualnyKlient,Bank* aktualnyBank) {
 	std::cout << "Zaloguj się ponownie w celu weryfikacji danych\n";
 	_getch();
@@ -142,23 +141,6 @@ void KontoKlienta::dodajKontoBankowe(KontoKlienta* aktualnyKlient,Bank* aktualny
 	zapiszKontoBankoweDoPliku(nowy, aktualnyKlient->getLogin());
 	delete nowy;
 
-}
-void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualnyBank,std::string numerKonta) {
-	int poczatek = 0;
-	std::list<KontoBankowe>::iterator it;
-	for (it = listaKontBankowe.begin(); it != listaKontBankowe.end(); it++)
-	{
-		if (it->numerKonta == numerKonta)
-		{
-			listaKontBankowe.erase(it);
-			usunKontoBankoweZPliku( aktualnyKlient->getLogin(), numerKonta);
-			std::cout << "Konto zostalo usuniete!";
-			_getch();
-			return;
-		}
-	}
-	std::cout << "Nie znaleziono konta!";
-	_getch();
 }
 
 void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank) {
@@ -183,6 +165,25 @@ void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank)
 	delete nowa;
 
 }
+//funkcja do usuwania konta bankowego lub lokaty
+void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualnyBank,std::string numerKonta) {
+	int poczatek = 0;
+	std::list<KontoBankowe>::iterator it;
+	for (it = listaKontBankowe.begin(); it != listaKontBankowe.end(); it++)
+	{
+		if (it->numerKonta == numerKonta)
+		{
+			listaKontBankowe.erase(it);
+			usunKontoBankoweZPliku( aktualnyKlient->getLogin(), numerKonta);
+			std::cout << "Konto zostalo usuniete!";
+			_getch();
+			return;
+		}
+	}
+	std::cout << "Nie znaleziono konta!";
+	_getch();
+}
+
 void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, std::string nrLokaty) {
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
@@ -208,6 +209,7 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 
 }
 
+//funkcja do wyswietlania konta bankowego lub lokaty
 void KontoKlienta::wyswietlKontaBankowe(KontoKlienta klient)
 {
 	system("cls");
@@ -219,6 +221,7 @@ void KontoKlienta::wyswietlKontaBankowe(KontoKlienta klient)
 	std::cout << "Nacisnij dowolny klawisz aby kontynuowac";
 	_getch();
 }
+
 void KontoKlienta::wyswietlLokaty(KontoKlienta klient)
 {
 	system("cls");
@@ -231,7 +234,7 @@ void KontoKlienta::wyswietlLokaty(KontoKlienta klient)
 	_getch();
 }
 
-
+//funkcje do generowania numeru konta bankowego i sprawdzania czy jest wolny
 std::string generujNumerKonta(KontoKlienta* klient)
 {
 	std::string numerKonta;
@@ -258,6 +261,7 @@ std::string generujNumerKonta(KontoKlienta* klient)
 	return numerKonta;
 
 }
+
 bool sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKontBankowych,std::list<Lokata> listaLokat,std::string numerKonta)
 {
 	bool czyWolny = true;
@@ -279,6 +283,7 @@ bool sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKontBankowych,std::
 	return czyWolny;
 }
 
+//funkcje do wyboru rodzaju konta bankowego lub lokaty
 RodzajKonta menuWyboruKonta()
 {
 
@@ -311,6 +316,7 @@ RodzajKonta menuWyboruKonta()
 		}
 	}
 }
+
 RodzajLokaty menuWyboruLokaty()
 {
 	int menuWybor;
@@ -342,6 +348,7 @@ RodzajLokaty menuWyboruLokaty()
 		}
 	}
 }
+//funkcja do wyboru czasu trwania lokaty
 RodzajCzasuLokaty menuWyboruCzasuLokaty()
 {
 	int menuWybor;
@@ -374,7 +381,7 @@ RodzajCzasuLokaty menuWyboruCzasuLokaty()
 	}
 }
 
-
+//funckje do zapisu Konta bankoewgo lub Lokaty do pliku.txt
 void zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
 {
 
@@ -386,8 +393,10 @@ void zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
 	plik << konto->getNrKontaBankowego() << "\n";
 	plik << konto->getTypKontaBankowego() << "\n";
 	plik << konto->getSrodki() << "\n";
+	plik << konto->getWaluta()<<"\n";
 	plik.close();
 }
+
 void zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
@@ -406,6 +415,7 @@ void zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
 	plik.close();
 }
 
+//funckje do wczytywania Konta bankoewgo lub Lokaty z pliku.txt
 void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
@@ -434,6 +444,7 @@ void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 	}
 	else std::cout << "Nie mozna otworzyc pliku";
 }
+
 void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
@@ -472,6 +483,7 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 	else std::cout << "Nie mozna otworzyc pliku";
 }	
 
+//funckje do usuwania Konta bankoewgo lub Lokaty z pliku.txt
 void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string numerKonta)
 {
 	char* cwd = _getcwd(0, 0);
@@ -526,6 +538,7 @@ void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string n
 		std::cout << "Nie mozna otworzyc pliku";
 	}
 }
+
 void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty)
 {
 	char* cwd = _getcwd(0, 0);
@@ -596,6 +609,7 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 	}
 }
 
+//funckje do aktualizacji Konta bankoewgo lub Lokaty w pliku.txt
 void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> listaKont, std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
@@ -635,6 +649,7 @@ void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> lis
 			std::cout << "Nie mozna zastapic pliku";
 		}
 }
+
 void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);

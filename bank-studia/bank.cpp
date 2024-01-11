@@ -446,6 +446,7 @@ int menu::start()
 	return menuWybor;
 }
 
+
 void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	KontoBankowe* aktualneKontoBankowe = new KontoBankowe;
@@ -494,6 +495,7 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 	}
 }
 
+//funckaj odpowiadajaca za modyfikowanie konta
 void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	int menuWybor;
@@ -592,8 +594,9 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 		}
 	}
-}\
+}
 
+//funckja odpowiadajaca za menu dla konta bankowego
 void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 {
 	int menuWybor;
@@ -636,7 +639,7 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 		}
 	}
 }
-
+//funkcja odpowiadajaca za menu lokat
 void menu::lokata(KontoKlienta* aktualnyKlient, Bank* bank)
 {
 	int menuWybor;
