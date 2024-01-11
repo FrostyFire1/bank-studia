@@ -81,14 +81,14 @@ std::string Data(RodzajCzasuLokaty okres)
 	return czasBuff;
 }
 
-
+//funckja do wyswietlania danych lokaty
 void Lokata::wyswietlDaneLokat()
 {
 
 	std::cout << "Nr Lokaty: " << nrLokaty << "\nRodzaj lokaty: " << wyswietlRodzajLokaty(rodzaj)<<"\nCzas trwania lokaty: "<< wyswietlRodzajCzasuLokaty(okres)<<"\nSrodki: "<<srodki<<"\nOprocentowanie: "<<oprocentowanie*100<< "%\nData rozpoczecia: " << dataRozpoczecia << "\nData zakończenia loakty: " << ostatnieNaliczenie;
 
 }
-
+//getter i setter
 RodzajLokaty Lokata::getRodzajLokaty()
 {
 	return rodzaj;
@@ -124,7 +124,7 @@ double Lokata::getOprocentowanie()
 	return oprocentowanie;
 }
 
-
+//funkcja do konwersji enuma wyswietlania rodzaju lokaty na string
 std::string wyswietlRodzajLokaty(RodzajLokaty rodzaj)
 {
 	switch (rodzaj)
@@ -144,6 +144,7 @@ std::string wyswietlRodzajLokaty(RodzajLokaty rodzaj)
 	}
 }
 
+//funkcja do konwersji enuma wyswietlRodzajCzasuLokaty rodzaju lokaty na string
 std::string wyswietlRodzajCzasuLokaty(RodzajCzasuLokaty okres)
 {
 	switch (okres)
@@ -163,6 +164,7 @@ std::string wyswietlRodzajCzasuLokaty(RodzajCzasuLokaty okres)
 	}
 }
 
+//funkcja do obliczania oprocentowania
 double obliczOprocentowanie(RodzajLokaty rodzaj, RodzajCzasuLokaty okres)
 {
 	double lokataZwykla = 0.02;

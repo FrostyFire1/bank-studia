@@ -446,6 +446,7 @@ int menu::start()
 	return menuWybor;
 }
 
+
 void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	KontoBankowe* aktualneKontoBankowe = new KontoBankowe;
@@ -494,6 +495,7 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 	}
 }
 
+//funckaj odpowiadajaca za modyfikowanie konta
 void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	int menuWybor;
@@ -592,10 +594,12 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 		}
 	}
-}\
+}
 
+//funckja odpowiadajaca za menu dla konta bankowego
 void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 {
+	KontoBankowe* aktualneKontoBankowe = new KontoBankowe;
 	int menuWybor;
 	for (;;)
 	{
@@ -604,12 +608,13 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 			<< "| 1. Dodanie Konta bankowego\n"
 			<< "| 2. Wyswietlenie kont bankowych\n"
 			<< "| 3. Usuniecie konta bankowego\n"
+			<< "| 4. Przelewy\n"
 			<< "| esc. Wroc\n"
 			<< "--------------------\n";
 
 		menuWybor = _getch();
 
-		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
+		if (menuWybor < 53 && menuWybor > 48) menuWybor -= 48;
 
 		switch (menuWybor)
 		{
@@ -627,6 +632,21 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 			aktualnyKlient->usunKontoBankowe(aktualnyKlient, bank, numerKonta);
 			break;
 		}
+		case 4:
+		{
+			Waluta waluta;
+			std::string adresat;;
+			std::string opis;
+			double kwota;
+			std::cout << "Podaj numer konta bankowego: ";
+			std::cin >> adresat;
+			std::cout << "Podaj kwote: ";
+			std::cin >> kwota;
+			std::cout << "Podaj opis: ";
+			getline(std::cin, opis);
+			aktualneKontoBankowe->utworzPrzelew(adresat, kwota, NATYCHMIASTOWY, opis, 1, waluta);
+			break;
+		}
 		case 27:
 			return;
 			break;
@@ -636,7 +656,7 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 		}
 	}
 }
-
+//funkcja odpowiadajaca za menu lokat
 void menu::lokata(KontoKlienta* aktualnyKlient, Bank* bank)
 {
 	int menuWybor;

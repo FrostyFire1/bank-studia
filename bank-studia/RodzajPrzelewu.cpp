@@ -1,5 +1,4 @@
 #include "RodzajPrzelewu.h"
-
 std::string toString(RodzajPrzelewu rodzajPrzelewu) {
 	switch (rodzajPrzelewu) {
 	case RodzajPrzelewu::NATYCHMIASTOWY:
