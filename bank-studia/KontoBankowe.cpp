@@ -92,7 +92,6 @@ void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzele
 	blokady.push_back(blokada);
 
 	this->srodki -= toTake;
-	
 }
 
 //funkcja ktora zmiania wartosc aenuma na string
@@ -117,3 +116,11 @@ std::string wyswietlRodzajKontaBankowego(RodzajKonta rodzaj)
 	}
 }
 
+KontoBankowe get(std::list<KontoBankowe> _list, int _i) {
+	std::list<KontoBankowe>::iterator it = _list.begin();
+	for (int i = 0; i < _i; i++) {
+		++it;
+	}
+	if (_i == 1) return _list.front();
+	else return _list.back();
+}

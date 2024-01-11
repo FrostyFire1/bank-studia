@@ -36,3 +36,4 @@ public:
 };
 
 std::string wyswietlRodzajKontaBankowego(RodzajKonta);
+KontoBankowe get(std::list<KontoBankowe> _list, int _i);

@@ -16,14 +16,14 @@ namespace UnitTestBank
         TEST_METHOD(SprawdzaRodzajPrzelewu) {
             //Waluta w funkcji powinna zostac zignorowana
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("EUR", 4.0));
-            Przelew przelew = tested.getPrzelewy().front();
+            Przelew przelew = tested.getPrzelewy()->front();
 
             Assert::AreEqual(-20.0, tested.getSrodki(), 1e-10);
 
         }
         TEST_METHOD(TworzyBlokade) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
-            std::vector<Blokada> blokady = tested.getBlokady();
+            std::vector<Blokada> blokady = *(tested.getBlokady());
 
             Assert::AreEqual((int)blokady.size(), 1);
 
@@ -35,7 +35,7 @@ namespace UnitTestBank
         }
         TEST_METHOD(TworzyPrzelew) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
-            Przelew przelew = tested.getPrzelewy().front();
+            Przelew przelew = tested.getPrzelewy()->front();
 
             Assert::AreEqual(20.0, przelew.kwota, 1e-10);
             Assert::AreEqual(std::string("Keks"), przelew.opis);
@@ -53,7 +53,7 @@ namespace UnitTestBank
 
         TEST_METHOD(ZabieraPieniadze) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::NATYCHMIASTOWY, "Keks", 0, Waluta("PLN", 1.0));
-            Przelew przelew = tested.getPrzelewy().front();
+            Przelew przelew = tested.getPrzelewy()->front();
 
             Assert::AreEqual(4, przelew.idPrzelewu); //Trzeci przelew unit testu
             Assert::AreEqual(-20.0, tested.getSrodki(), 1e-10);
@@ -61,7 +61,7 @@ namespace UnitTestBank
 
         TEST_METHOD(ZabieraPieniadzePoKonwersji) {
             tested.utworzPrzelew("010", 20.0, RodzajPrzelewu::WALUTOWY, "Keks", 0, Waluta("EUR", 4.0));
-            Przelew przelew = tested.getPrzelewy().front();
+            Przelew przelew = tested.getPrzelewy()->front();
             Assert::AreEqual(-80.0, tested.getSrodki(), 1e-10);
 
         }
