@@ -34,7 +34,7 @@ int main()
 			menuWybor = 0;
 			break;
 
-		case 3:
+		case 27:
 			menuWybor = -1;
 			break;
 
