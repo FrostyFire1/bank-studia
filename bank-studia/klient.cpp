@@ -132,7 +132,7 @@ void KontoKlienta::dodajKontoBankowe(KontoKlienta* aktualnyKlient,Bank* aktualny
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
 	{
-		std::cout << "Podano błędne dane, nie można założyć konta bankowego\n";
+		std::cout << "Podano bledne dane, nie mozna zalozyc konta bankowego\n";
 		return;
 	}
 	RodzajKonta typKonta = menuWyboruKonta();
@@ -167,14 +167,14 @@ void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank)
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
 	{
-		std::cout << "Podano błędne dane, nie można założyć lokaty\n";
+		std::cout << "Podano bledne dane, nie mozna zalozyc lokaty\n";
 		return;
 	}
 	RodzajLokaty typLokaty = menuWyboruLokaty();
 	RodzajCzasuLokaty czasLokaty = menuWyboruCzasuLokaty();
 	std::string nrKonta = generujNumerKonta(aktualnyKlient);
 	double srodki;
-	std::cout << "Podaj kwotę lokaty: ";
+	std::cout << "Podaj kwote lokaty: ";
 	std::cin >> srodki;
 	Lokata* nowa = new Lokata(typLokaty, czasLokaty, srodki, nrKonta);
 	listaLokat.push_front(*nowa);
@@ -187,7 +187,7 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
 	{
-		std::cout << "Podano błędne dane, nie można założyć lokaty\n";
+		std::cout << "Podano bledne dane, nie mozna zalozyc lokaty\n";
 		return;
 	}
 	int poczatek = 0;
@@ -290,18 +290,24 @@ RodzajKonta menuWyboruKonta()
 			<< "| 1. Konto oszczednosciowe\n"
 			<< "| 2. Konto rozliczeniowe\n"
 			<< "| 3. Konto walutowe\n"
-			<< "--------------------\n"
-			<< "| >";
-		std::cin >> menuWybor;
+			<< "--------------------\n";
+
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
 		switch (menuWybor)
 		{
 		case 1:
 			return RODZAJ_KONTO_OSZCZEDNOSCIOWE;
+			break;
 		case 2:
 			return RODZAJ_KONTO_ROZLICZENIOWE;
+			break;
 		case 3:
 			return RODZAJ_KONTO_WALUTOWE;
-
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -312,21 +318,27 @@ RodzajLokaty menuWyboruLokaty()
 	{
 		system("cls");
 		std::cout << "--------------------\n"
-			<< "| 1. Lokata zwykła\n"
-			<< "| 2. Loakta oszczędnościowa\n"
+			<< "| 1. Lokata zwykla\n"
+			<< "| 2. Lokata oszczednosciowa\n"
 			<< "| 3. Lokata walutowa\n"
-			<< "--------------------\n"
-			<< "| >";
-		std::cin >> menuWybor;
+			<< "--------------------\n";
+
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
 		switch (menuWybor)
 		{
 		case 1:
 			return RODZAJ_LOKATA_ZWYKLA;
+			break;
 		case 2:
 			return RODZAJ_LOKATA_OSZCZEDNOSCIOWA;
+			break;
 		case 3:
 			return RODZAJ_LOKATA_WALUTOWA;
-
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -337,21 +349,27 @@ RodzajCzasuLokaty menuWyboruCzasuLokaty()
 	{
 		system("cls");
 		std::cout << "--------------------\n"
-			<< "| 1. Lokata na okres 3 miesięcy, oprocentowanie x1\n"
-			<< "| 2. Lokata na okres 6 miesięcy, oprocentowanie x1.5\n"
-			<< "| 3. Lokata na okres 12 miesięcy, oprocentowanie x2\n"
-			<< "--------------------\n"
-			<< "| >";
-		std::cin >> menuWybor;
+			<< "| 1. Lokata na okres 3 miesiecy, oprocentowanie x1\n"
+			<< "| 2. Lokata na okres 6 miesiecy, oprocentowanie x1.5\n"
+			<< "| 3. Lokata na okres 12 miesiecy, oprocentowanie x2\n"
+			<< "--------------------\n";
+
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
 		switch (menuWybor)
 		{
 		case 1:
 			return RODZAJ_CZASU_LOKATA_3MIESIECZNA;
+			break;
 		case 2:
 			return RODZAJ_CZASU_LOKATA_6MIESIECZNA;
+			break;
 		case 3:
 			return	RODZAJ_CZASU_LOKATA_12MIESIECZNA;
-
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -414,7 +432,7 @@ void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 		}
 		plik.close();
 	}
-	else std::cout << "Nie można otworzyć pliku";
+	else std::cout << "Nie mozna otworzyc pliku";
 }
 void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 {
@@ -451,7 +469,7 @@ void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 		}
 		plik.close();
 	}
-	else std::cout << "Nie można otworzyć pliku";
+	else std::cout << "Nie mozna otworzyc pliku";
 }	
 
 void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string numerKonta)
@@ -495,17 +513,17 @@ void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string n
 		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
 		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapić pliku";
 		}
 	}
 	else
 	{
-		std::cout << "Nie można otworzyć pliku";
+		std::cout << "Nie mozna otworzyc pliku";
 	}
 }
 void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty)
@@ -564,17 +582,17 @@ void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty
 		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
 		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapić pliku";
 		}
 	}
 	else
 	{
-		std::cout << "Nie można otworzyć pliku";
+		std::cout << "Nie mozna otworzyc pliku";
 	}
 }
 
@@ -595,7 +613,7 @@ void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> lis
 	std::string temp_pelnaSciezka = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
 	std::ofstream temp_plik(temp_pelnaSciezka);
 	if (!temp_plik.is_open()) {
-		std::cerr << "Błąd otwierania pliku do zapisu." << std::endl;
+		std::cerr << "Blad otwierania pliku do zapisu." << std::endl;
 		return;
 	}
 
@@ -609,12 +627,12 @@ void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> lis
 		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
 		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapic pliku";
 		}
 }
 void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::string nazwaPliku)
@@ -639,7 +657,7 @@ void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::strin
 	std::ofstream temp_plik(temp_pelnaSciezka);
 
 	if (!temp_plik.is_open()) {
-		std::cerr << "Błąd otwierania pliku do zapisu." << std::endl;
+		std::cerr << "Blad otwierania pliku do zapisu." << std::endl;
 		return;
 	}
 
@@ -657,11 +675,11 @@ void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::strin
 		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
 		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapic pliku";
 		}
 }

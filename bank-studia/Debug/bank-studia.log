@@ -1,10 +1,9 @@
-﻿  bank.cpp
-  klient.cpp
-C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(224,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  main.cpp
-  Generating Code...
-C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(282): warning C4715: 'KontoKlienta::menuWyboruKonta': not all control paths return a value
-C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(346): warning C4715: 'KontoKlienta::menuWyboruLokaty': not all control paths return a value
-C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(409): warning C4715: 'KontoKlienta::menuWyboruCzasuLokaty': not all control paths return a value
-C:\Users\gymzo\source\repos\bank-studia\bank-studia\bank.cpp(68): warning C4715: 'Bank::Logowanie': not all control paths return a value
+﻿  klient.cpp
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(238,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(606,6): warning C4101: 'typKonta': unreferenced local variable
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(607,9): warning C4101: 'srodki': unreferenced local variable
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(643,6): warning C4101: 'rodzaj': unreferenced local variable
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(645,9): warning C4101: 'srodki': unreferenced local variable
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(646,9): warning C4101: 'oprocentowanie': unreferenced local variable
+C:\Users\gymzo\source\repos\bank-studia\bank-studia\klient.cpp(644,6): warning C4101: 'okres': unreferenced local variable
   bank-studia.vcxproj -> C:\Users\gymzo\source\repos\bank-studia\Debug\bank-studia.exe
