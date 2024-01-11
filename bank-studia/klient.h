@@ -30,6 +30,8 @@ public:
 	std::string getNazwisko();
 	std::string getMail();
 	std::string getAdres();
+	std::list<KontoBankowe> getListaKontBankowych();
+	std::list<Lokata> getListaLokat();
 	int getNumerKonta();
 
 	void setLogin(std::string);
@@ -43,6 +45,7 @@ public:
 
 	void dodajLokate(KontoKlienta*, Bank*);
 	void usunLokate(KontoKlienta* , Bank* , std::string);
+
 	void wyswietlKontaBankowe(KontoKlienta);
 	void wyswietlLokaty(KontoKlienta);
 
@@ -57,36 +60,20 @@ protected:
 	std::string mail;
 	int numerKonta = 0;
 	std::string haslo;
-
-
-
 private:
-
-
-
-	std::string generujNumerKonta();
-	bool sprawdzNumerKontaBankowego(std::list<KontoBankowe>, std::string);
-
-	RodzajKonta menuWyboruKonta();
-	void wyswietlMenuWyboruKonta(int aktualnaOpcja);
-	RodzajKonta wybierzTypKonta();
-
-	RodzajLokaty menuWyboruLokaty();
-	void wyswietlMenuWyboruLokaty(int aktualnaOpcja);
-	RodzajLokaty wybierzTypLokaty();
-
-	RodzajCzasuLokaty menuWyboruCzasuLokaty();
-	void wyswietlMenuWyboruCzasuLokaty(int aktualnaOpcja);
-	RodzajCzasuLokaty wybierzTypCzasuLokaty();
-
-	void zapiszKontoBankoweDoPliku(KontoBankowe*, std::string);
-	void zapiszLokateDoPliku(Lokata*, std::string);
-
-
-
 
 
 	void usunKontoBankoweZPliku( std::string,std::string);
 	void usunLokateZPliku( std::string,std::string);
 
 };
+
+void zapiszKontoBankoweDoPliku(KontoBankowe*, std::string);
+void zapiszLokateDoPliku(Lokata*, std::string);
+void aktualizacjaKontaBankowego(KontoBankowe*, std::list<KontoBankowe>, std::string);
+void aktualizacjaLokaty(Lokata*, std::list<Lokata>, std::string);
+std::string generujNumerKonta(KontoKlienta*);
+bool sprawdzNumerKontaBankowego(std::list<KontoBankowe>, std::list<Lokata>,std::string);
+RodzajKonta menuWyboruKonta();
+RodzajLokaty menuWyboruLokaty();
+RodzajCzasuLokaty menuWyboruCzasuLokaty();

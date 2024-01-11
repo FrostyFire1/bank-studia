@@ -37,7 +37,6 @@ KontoBankowe::~KontoBankowe()
 void KontoBankowe::wyswietlDane()
 {
 	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<< wyswietlRodzajKontaBankowego(rodzaj);
-	_getch();
 }
 
 RodzajKonta KontoBankowe::getTypKontaBankowego()
@@ -67,6 +66,7 @@ std::vector<Blokada>* KontoBankowe::getBlokady() {
 std::list<Przelew>* KontoBankowe::getPrzelewy() {
 	return &(this->przelewy);
 }
+
 void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
 	Przelew result = Przelew();
 	result.nadawca = this->numerKonta;
@@ -92,5 +92,26 @@ void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzele
 
 	this->srodki -= toTake;
 	
+}
+
+std::string wyswietlRodzajKontaBankowego(RodzajKonta rodzaj)
+{
+	{
+		switch (rodzaj)
+		{
+		case RODZAJ_KONTO_OSZCZEDNOSCIOWE:
+			return "Konto oszczednosciowe";
+			break;
+		case RODZAJ_KONTO_ROZLICZENIOWE:
+			return "Konto rozliczeniowe";
+			break;
+		case RODZAJ_KONTO_WALUTOWE:
+			return "Konto walutowe";
+			break;
+		default:
+			return "brak loakty";
+			break;
+		}
+	}
 }
 
