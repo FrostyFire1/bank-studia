@@ -34,16 +34,18 @@ KontoBankowe::~KontoBankowe()
 {
 }
 
+
+//funckja do wyswietlania danych konta
 void KontoBankowe::wyswietlDane()
 {
-	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<< wyswietlRodzajKontaBankowego(rodzaj);
+	std::cout <<"Nr konta bankowego: "<<numerKonta<<"\n Rodzaj konta: "<< wyswietlRodzajKontaBankowego(rodzaj)<<"\nŚrodki: "<<srodki;
 }
 
+//gettery i settery
 RodzajKonta KontoBankowe::getTypKontaBankowego()
 {
 	return rodzaj;
 }
-
 std::string KontoBankowe::getNrKontaBankowego()
 {
 	return numerKonta;
@@ -55,11 +57,9 @@ double KontoBankowe::getSrodki()
 void KontoBankowe::setSrodki(double srodki) {
 	this->srodki = srodki;
 }
-
 Waluta KontoBankowe::getWaluta() {
 	return this->waluta;
 }
-
 std::vector<Blokada>* KontoBankowe::getBlokady() {
 	return &(this->blokady);
 }
@@ -67,6 +67,7 @@ std::list<Przelew>* KontoBankowe::getPrzelewy() {
 	return &(this->przelewy);
 }
 
+//funkcja tworzaca przelew
 void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzelewu rodzajPrzelewu, std::string opis, int okres = 0, Waluta waluta = Waluta("PLN", 1.0)) {
 	Przelew result = Przelew();
 	result.nadawca = this->numerKonta;
@@ -94,6 +95,7 @@ void KontoBankowe::utworzPrzelew(std::string adresat, double kwota, RodzajPrzele
 	
 }
 
+//funkcja ktora zmiania wartosc aenuma na string
 std::string wyswietlRodzajKontaBankowego(RodzajKonta rodzaj)
 {
 	{
