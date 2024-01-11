@@ -645,6 +645,9 @@ void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
 			std::cout << "Podaj opis: ";
 			getline(std::cin, opis);
 			aktualneKontoBankowe->utworzPrzelew(adresat, kwota, NATYCHMIASTOWY, opis, 1, waluta);
+			//zamiana wartosci w .txt
+			aktualizacjaKontaBankowego(aktualneKontoBankowe, aktualnyKlient->getListaKontBankowych(), aktualnyKlient->getLogin());
+
 			break;
 		}
 		case 27:

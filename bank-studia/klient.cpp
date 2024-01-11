@@ -648,7 +648,6 @@ void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> lis
 			std::cout << "Nie mozna zastapic pliku";
 		}
 }
-
 void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
