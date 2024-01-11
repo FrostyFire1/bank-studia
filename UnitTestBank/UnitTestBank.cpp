@@ -22,7 +22,7 @@ namespace UnitTestBank
 				delete konto;
 			}
 
-			KontoKlienta* konto = new KontoKlienta("papamobile");
+			KontoKlienta* konto = new KontoKlienta("michal");
 			bank.listaKontKlientow.push_front(*konto);
 			delete konto;
 
@@ -33,8 +33,8 @@ namespace UnitTestBank
 				delete konto;
 			}
 
-			std::string nowyLogin = "papamobile";
-			std::string nowyLogin2 = "pepenobile";
+			std::string nowyLogin = "michal";
+			std::string nowyLogin2 = "minchal";
 
 			Assert::IsFalse(czyWolnyLogin(bank.listaKontKlientow, nowyLogin));
 			Assert::IsTrue(czyWolnyLogin(bank.listaKontKlientow, nowyLogin2));
