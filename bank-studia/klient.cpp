@@ -6,6 +6,7 @@
 #include "klient.h"
 #include "bank.h"
 
+
 KontoKlienta::KontoKlienta()
 {
 	numerKonta = 0;
@@ -54,7 +55,6 @@ void KontoKlienta::wyswietlDane()
 }
 
 //gettery i settery --------------------------------------------
-
 std::string KontoKlienta::getLogin()
 {
 	return login;
@@ -90,6 +90,15 @@ int KontoKlienta::getNumerKonta()
 	return numerKonta;
 }
 
+std::list<KontoBankowe> KontoKlienta::getListaKontBankowych()
+{
+	return listaKontBankowe;
+}
+
+std::list<Lokata> KontoKlienta::getListaLokat()
+{
+	return listaLokat;
+}
 void KontoKlienta::setLogin(std::string new_login)
 {
 	login = new_login;
@@ -115,24 +124,48 @@ void KontoKlienta::setAdres(std::string new_adres)
 	adres = new_adres;
 }
 
-
+//funkcja do dodawania konta bankowego lub lokaty
 void KontoKlienta::dodajKontoBankowe(KontoKlienta* aktualnyKlient,Bank* aktualnyBank) {
 	std::cout << "Zaloguj się ponownie w celu weryfikacji danych\n";
 	_getch();
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
 	{
-		std::cout << "Podano błędne dane, nie można założyć konta bankowego\n";
+		std::cout << "Podano bledne dane, nie mozna zalozyc konta bankowego\n";
 		return;
 	}
 	RodzajKonta typKonta = menuWyboruKonta();
-	std::string nrKonta = generujNumerKonta();
+	std::string nrKonta = generujNumerKonta(aktualnyKlient);
 	KontoBankowe* nowy = new KontoBankowe(nrKonta, typKonta);
 	listaKontBankowe.push_front(*nowy);
 	zapiszKontoBankoweDoPliku(nowy, aktualnyKlient->getLogin());
 	delete nowy;
 
 }
+
+void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank) {
+	std::cout << "Zaloguj się ponownie w celu weryfikacji danych\n";
+	_getch();
+	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
+	if (!test)
+	{
+		std::cout << "Podano bledne dane, nie mozna zalozyc lokaty\n";
+		return;
+	}
+	RodzajLokaty typLokaty = menuWyboruLokaty();
+	RodzajCzasuLokaty czasLokaty = menuWyboruCzasuLokaty();
+	std::string nrKonta = generujNumerKonta(aktualnyKlient);
+	double srodki;
+	std::cout << "Podaj kwote lokaty: ";
+	std::cin >> srodki;
+	Lokata* nowa = new Lokata(typLokaty, czasLokaty, srodki, nrKonta);
+	listaLokat.push_front(*nowa);
+	zapiszLokateDoPliku(nowa, aktualnyKlient->getLogin());
+
+	delete nowa;
+
+}
+//funkcja do usuwania konta bankowego lub lokaty
 void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualnyBank,std::string numerKonta) {
 	int poczatek = 0;
 	std::list<KontoBankowe>::iterator it;
@@ -141,7 +174,7 @@ void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualny
 		if (it->numerKonta == numerKonta)
 		{
 			listaKontBankowe.erase(it);
-			usunKontoBankoweZPliku(aktualnyKlient, aktualnyKlient->getLogin(), numerKonta);
+			usunKontoBankoweZPliku( aktualnyKlient->getLogin(), numerKonta);
 			std::cout << "Konto zostalo usuniete!";
 			_getch();
 			return;
@@ -151,33 +184,11 @@ void KontoKlienta::usunKontoBankowe(KontoKlienta* aktualnyKlient, Bank* aktualny
 	_getch();
 }
 
-void KontoKlienta::dodajLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank) {
-	std::cout << "Zaloguj się ponownie w celu weryfikacji danych\n";
-	_getch();
-	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
-	if (!test)
-	{
-		std::cout << "Podano błędne dane, nie można założyć lokaty\n";
-		return;
-	}
-	RodzajLokaty typLokaty = menuWyboruLokaty();
-	RodzajCzasuLokaty czasLokaty = menuWyboruCzasuLokaty();
-	std::string nrKonta = generujNumerKonta();
-	double srodki;
-	std::cout << "Podaj kwotę lokaty: ";
-	std::cin >> srodki;
-	Lokata* nowa = new Lokata(typLokaty, czasLokaty, srodki, nrKonta);
-	listaLokat.push_front(*nowa);
-	zapiszLokateDoPliku(nowa, aktualnyKlient->getLogin());
-
-	delete nowa;
-
-}
 void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, std::string nrLokaty) {
 	bool test = aktualnyBank->weryfikacjaTozsamosci(aktualnyKlient);
 	if (!test)
 	{
-		std::cout << "Podano błędne dane, nie można założyć lokaty\n";
+		std::cout << "Podano bledne dane, nie mozna zalozyc lokaty\n";
 		return;
 	}
 	int poczatek = 0;
@@ -187,7 +198,7 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 		if (it->nrLokaty == nrLokaty)
 		{
 			listaLokat.erase(it);
-			usunLokateZPliku(aktualnyKlient, aktualnyKlient->getLogin(), nrLokaty);
+			usunLokateZPliku( aktualnyKlient->getLogin(), nrLokaty);
 			std::cout << "Lokata zostala usunieta!";
 			_getch();
 			return;
@@ -198,27 +209,33 @@ void KontoKlienta::usunLokate(KontoKlienta* aktualnyKlient, Bank* aktualnyBank, 
 
 }
 
-void KontoKlienta::wyswietlKontaBankowe(KontoKlienta bank)
+//funkcje do wyswietlania konta bankowego lub lokaty
+void KontoKlienta::wyswietlKontaBankowe(KontoKlienta klient)
 {
 	system("cls");
-	for (KontoBankowe aktualny : bank.listaKontBankowe)
+	for (KontoBankowe aktualny : klient.listaKontBankowe)
 	{
 		aktualny.wyswietlDane();
 		std::cout << "\n\n";
 	}
+	std::cout << "Nacisnij dowolny klawisz aby kontynuowac";
+	_getch();
 }
-void KontoKlienta::wyswietlLokaty(KontoKlienta bank)
+
+void KontoKlienta::wyswietlLokaty(KontoKlienta klient)
 {
 	system("cls");
-	for (Lokata aktualna : bank.listaLokat)
+	for (Lokata aktualna : klient.listaLokat)
 	{
 		aktualna.wyswietlDaneLokat();
 		std::cout << "\n\n";
 	}
+	std::cout << "Nacisnij dowolny klawisz aby kontynuowac";
+	_getch();
 }
 
-
-std::string KontoKlienta::generujNumerKonta()
+//funkcje do generowania numeru konta bankowego i sprawdzania czy jest wolny
+std::string generujNumerKonta(KontoKlienta* klient)
 {
 	std::string numerKonta;
 	srand(time(NULL));
@@ -233,7 +250,7 @@ std::string KontoKlienta::generujNumerKonta()
 				temp = temp += std::to_string(rand() % 10);
 			}
 		}
-		test = sprawdzNumerKontaBankowego(listaKontBankowe, temp);
+		test = sprawdzNumerKontaBankowego(klient->getListaKontBankowych(), klient->getListaLokat(), temp);
 		if (test == true)
 		{
 			numerKonta = "7021372405" + temp;
@@ -244,12 +261,20 @@ std::string KontoKlienta::generujNumerKonta()
 	return numerKonta;
 
 }
-bool KontoKlienta::sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKont, std::string numerKonta)
+
+bool sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKontBankowych,std::list<Lokata> listaLokat,std::string numerKonta)
 {
 	bool czyWolny = true;
-	for (KontoBankowe konto : listaKont)
+	for (KontoBankowe konto : listaKontBankowych)
 	{
-		if (konto.numerKonta == numerKonta)
+		if (konto.getNrKontaBankowego() == numerKonta)
+		{
+			czyWolny = false;
+		}
+	}
+	for (Lokata konto : listaLokat)
+	{
+		if (konto.getNrLokaty() == numerKonta)
 		{
 			czyWolny = false;
 		}
@@ -258,199 +283,106 @@ bool KontoKlienta::sprawdzNumerKontaBankowego(std::list<KontoBankowe> listaKont,
 	return czyWolny;
 }
 
-RodzajKonta  KontoKlienta::menuWyboruKonta()
+//funkcje do wyboru rodzaju konta bankowego lub lokaty
+RodzajKonta menuWyboruKonta()
 {
-	RodzajKonta wybranyTyp = wybierzTypKonta();
-	switch (wybranyTyp) {
-	case RODZAJ_KONTO_OSZCZEDNOSCIOWE:
-		std::cout << "Wybrano konto oszczędnościowe.\n";
-		return RODZAJ_KONTO_OSZCZEDNOSCIOWE;
-		break;
-	case RODZAJ_KONTO_ROZLICZENIOWE:
-		std::cout << "Wybrano konto rozliczeniowe.\n";
-		return RODZAJ_KONTO_ROZLICZENIOWE;
-		break;
-	case RODZAJ_KONTO_WALUTOWE:
-		std::cout << "Wybrano konto walutowe.\n";
-		return RODZAJ_KONTO_WALUTOWE;
-		break;
-	default:
-		std::cout << "Nieprawidłowy wybór.\n";
-		break;
 
-	}
-}
-void KontoKlienta::wyswietlMenuWyboruKonta(int aktualnaOpcja) {
-	system("cls");
-	std::cout << "Wybierz typ konta:\n";
-	for (int i = 1; i <= 3; ++i) {
-		if (i == aktualnaOpcja) {
-			std::cout << "-> ";
-		}
-		std::cout << (i == RODZAJ_KONTO_OSZCZEDNOSCIOWE + 1 ? "Konto oszczędnościowe" :
-			(i == RODZAJ_KONTO_ROZLICZENIOWE + 1 ? "Konto rozliczeniowe" : "Konto walutowe")) << "\n";
-	}
-}
-RodzajKonta  KontoKlienta::wybierzTypKonta() {
-	int aktualnaOpcja = 1;
+	int menuWybor;
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| 1. Konto oszczednosciowe\n"
+			<< "| 2. Konto rozliczeniowe\n"
+			<< "| 3. Konto walutowe\n"
+			<< "--------------------\n";
 
-	while (true) {
-		wyswietlMenuWyboruKonta(aktualnaOpcja);
-		char klawisz = _getch();
-		switch (klawisz) {
-		case 72: //gora
-			if (aktualnaOpcja > 1) {
-				--aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 1) {
-				aktualnaOpcja = 3;
-			}
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
+		switch (menuWybor)
+		{
+		case 1:
+			return RODZAJ_KONTO_OSZCZEDNOSCIOWE;
 			break;
-		case 80: //dol
-			if (aktualnaOpcja < 3) {
-				++aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 3) {
-				aktualnaOpcja = 1;
-			}
+		case 2:
+			return RODZAJ_KONTO_ROZLICZENIOWE;
 			break;
-		case 13:
-			return static_cast<RodzajKonta>(aktualnaOpcja - 1);
+		case 3:
+			return RODZAJ_KONTO_WALUTOWE;
+			break;
 		default:
 			break;
 		}
 	}
 }
 
-RodzajLokaty KontoKlienta::menuWyboruLokaty()
+RodzajLokaty menuWyboruLokaty()
 {
-	RodzajLokaty wybranyTyp = wybierzTypLokaty();
-	switch (wybranyTyp) {
-	case RODZAJ_LOKATA_ZWYKLA:
-		std::cout << "Wybrano lokate zwykła, oprocentowanie 2%\n";
-		return RODZAJ_LOKATA_ZWYKLA;
-		break;
-	case RODZAJ_LOKATA_OSZCZEDNOSCIOWA:
-		std::cout << "Wybrano lokatę oszczednosciowa, oprocentowanie 4%\n";
-		return RODZAJ_LOKATA_OSZCZEDNOSCIOWA;
-		break;
-	case RODZAJ_LOKATA_WALUTOWA:
-		std::cout << "Wybrano lokatę walutowa, oprocentowanie 3%\n";
-		return RODZAJ_LOKATA_WALUTOWA;
-		break;
-	default:
-		std::cout << "Nieprawidłowy wybor.\n";
-		break;
+	int menuWybor;
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| 1. Lokata zwykla\n"
+			<< "| 2. Lokata oszczednosciowa\n"
+			<< "| 3. Lokata walutowa\n"
+			<< "--------------------\n";
 
-	}
-}
-void KontoKlienta::wyswietlMenuWyboruLokaty(int aktualnaOpcja) {
-	system("cls");
-	std::cout << "Wybierz typ lokaty:\n";
-	for (int i = 1; i <= 3; ++i) {
-		if (i == aktualnaOpcja) {
-			std::cout << "-> ";
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
+		switch (menuWybor)
+		{
+		case 1:
+			return RODZAJ_LOKATA_ZWYKLA;
+			break;
+		case 2:
+			return RODZAJ_LOKATA_OSZCZEDNOSCIOWA;
+			break;
+		case 3:
+			return RODZAJ_LOKATA_WALUTOWA;
+			break;
+		default:
+			break;
 		}
-		std::cout << (i == RODZAJ_LOKATA_ZWYKLA + 1 ? "Lokata zwykła" :
-			(i == RODZAJ_LOKATA_OSZCZEDNOSCIOWA + 1 ? "Lokata oszczędnościowa" : "Lokata walutowa")) << "\n";
 	}
 }
-RodzajLokaty KontoKlienta::wybierzTypLokaty() {
-	int aktualnaOpcja = 1;
+//funkcja do wyboru czasu trwania lokaty
+RodzajCzasuLokaty menuWyboruCzasuLokaty()
+{
+	int menuWybor;
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| 1. Lokata na okres 3 miesiecy, oprocentowanie x1\n"
+			<< "| 2. Lokata na okres 6 miesiecy, oprocentowanie x1.5\n"
+			<< "| 3. Lokata na okres 12 miesiecy, oprocentowanie x2\n"
+			<< "--------------------\n";
 
-	while (true) {
-		wyswietlMenuWyboruLokaty(aktualnaOpcja);
-		char klawisz = _getch();
-		switch (klawisz) {
-		case 72: //gora
-			if (aktualnaOpcja > 1) {
-				--aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 1) {
-				aktualnaOpcja = 3;
-			}
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
+		switch (menuWybor)
+		{
+		case 1:
+			return RODZAJ_CZASU_LOKATA_3MIESIECZNA;
 			break;
-		case 80: //dol
-			if (aktualnaOpcja < 3) {
-				++aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 3) {
-				aktualnaOpcja = 1;
-			}
+		case 2:
+			return RODZAJ_CZASU_LOKATA_6MIESIECZNA;
 			break;
-		case 13:
-			return static_cast<RodzajLokaty>(aktualnaOpcja - 1);
+		case 3:
+			return	RODZAJ_CZASU_LOKATA_12MIESIECZNA;
+			break;
 		default:
 			break;
 		}
 	}
 }
 
-RodzajCzasuLokaty KontoKlienta::menuWyboruCzasuLokaty()
-{
-	RodzajCzasuLokaty wybranyTyp = wybierzTypCzasuLokaty();
-	switch (wybranyTyp) {
-	case RODZAJ_CZASU_LOKATA_3MIESIECZNA:
-		std::cout << "Okres trwania lokaty 3 miesiące,oprocentowanie x1\n";
-		return RODZAJ_CZASU_LOKATA_3MIESIECZNA;
-		break;
-	case RODZAJ_CZASU_LOKATA_6MIESIECZNA:
-		std::cout << "Okres trwania lokaty 6 miesiecy,oprocentowanie x1,5\n";
-		return RODZAJ_CZASU_LOKATA_6MIESIECZNA;
-		break;
-	case RODZAJ_CZASU_LOKATA_12MIESIECZNA:
-		std::cout << "Okres trwania lokaty 12 miesiecy,oprocentowanie x2\n";
-		return RODZAJ_CZASU_LOKATA_12MIESIECZNA;
-		break;
-	default:
-		std::cout << "Nieprawidłowy wybor.\n";
-		break;
-	}
-}
-void KontoKlienta::wyswietlMenuWyboruCzasuLokaty(int aktualnaOpcja) {
-	system("cls");
-	std::cout << "Wybierz okres trwania lokaty:\n";
-	for (int i = 1; i <= 3; ++i) {
-		if (i == aktualnaOpcja) {
-			std::cout << "-> ";
-		}
-		std::cout << (i == RODZAJ_CZASU_LOKATA_3MIESIECZNA + 1 ? "3 miesiące" :
-			(i == RODZAJ_CZASU_LOKATA_6MIESIECZNA + 1 ? "6 miesięcy" : "12 miesięcy")) << "\n";
-	}
-}
-RodzajCzasuLokaty KontoKlienta::wybierzTypCzasuLokaty() {
-	int aktualnaOpcja = 1;
-
-	while (true) {
-		wyswietlMenuWyboruCzasuLokaty(aktualnaOpcja);
-		char klawisz = _getch();
-		switch (klawisz) {
-		case 72: //gora
-			if (aktualnaOpcja > 1) {
-				--aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 1) {
-				aktualnaOpcja = 3;
-			}
-			break;
-		case 80: //dol
-			if (aktualnaOpcja < 3) {
-				++aktualnaOpcja;
-			}
-			else if (aktualnaOpcja == 3) {
-				aktualnaOpcja = 1;
-			}
-			break;
-		case 13:
-			return static_cast<RodzajCzasuLokaty>(aktualnaOpcja - 1);
-		default:
-			break;
-		}
-	}
-}
-
-
-void KontoKlienta::zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
+//funckje do zapisu Konta bankoewgo lub Lokaty do pliku.txt
+void zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string nazwaPliku)
 {
 
 	char* cwd = _getcwd(0, 0);
@@ -463,7 +395,8 @@ void KontoKlienta::zapiszKontoBankoweDoPliku(KontoBankowe* konto, std::string na
 	plik << konto->getSrodki() << "\n";
 	plik.close();
 }
-void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata, std::string nazwaPliku)
+
+void zapiszLokateDoPliku(Lokata* lokata,std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -475,12 +408,14 @@ void KontoKlienta::zapiszLokateDoPliku(Lokata* lokata, std::string nazwaPliku)
 	plik << lokata->getRodzajCzasuLokaty() << "\n";
 	plik << lokata->getNrLokaty() << "\n";
 	plik << lokata->getSrodki() << "\n";
+	plik << lokata->getOprocentowanie() << "\n";
 	plik << lokata->getDataRozpoczecia() << "\n";
 	plik << lokata->getOstatnieNaliczenie() << "\n";
 	plik.close();
 }
 
-void KontoKlienta::wczytajKontaBankoweZPliku(KontoKlienta* konto,std::string nazwaPliku)
+//funckje do wczytywania Konta bankoewgo lub Lokaty z pliku.txt
+void KontoKlienta::wczytajKontaBankoweZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -496,33 +431,36 @@ void KontoKlienta::wczytajKontaBankoweZPliku(KontoKlienta* konto,std::string naz
 	{
 		while (getline(plik, linia))
 		{
-			 nrKonta=linia;
+			nrKonta=linia;
 			plik >> typKonta;
 			plik >> srodki;
-			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta));
-			nowe->srodki = srodki;
+			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta),srodki);
 			listaKontBankowe.push_front(*nowe);
 			delete nowe;
 			getline(plik, linia);
 		}
 		plik.close();
 	}
-	else std::cout << "Nie można otworzyć pliku";
+	else std::cout << "Nie mozna otworzyc pliku";
 }
-void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
+
+void KontoKlienta::wczytajLokatyZPliku(std::string nazwaPliku)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
 	std::free(cwd);
 	std::string pelnaSciezka = working_directory + "\\Lokaty\\" + nazwaPliku + "Lokaty.txt";
 	std::ifstream plik(pelnaSciezka);
+
 	std::string linia;
 	std::string nrLokaty;
 	int rodzaj;
 	int okres;
 	double srodki;
+	double oprocentowanie;
 	std::string dataRozpoczecia;
 	std::string ostatnieNaliczenie;
+
 	if (plik.is_open())
 	{
 		while (getline(plik, linia))
@@ -531,19 +469,21 @@ void KontoKlienta::wczytajLokatyZPliku(KontoKlienta*, std::string nazwaPliku)
 			plik >> okres;
 			plik >> nrLokaty;
 			plik >> srodki;
+			plik >> oprocentowanie;
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
-			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
+			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, nrLokaty, dataRozpoczecia, ostatnieNaliczenie);
 			listaLokat.push_front(*nowa);
 			delete nowa;
 			getline(plik, linia);
 		}
 		plik.close();
 	}
-	else std::cout << "Nie można otworzyć pliku";
+	else std::cout << "Nie mozna otworzyc pliku";
 }	
 
-void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::string nazwaPliku, std::string numerKonta)
+//funckje do usuwania Konta bankoewgo lub Lokaty z pliku.txt
+void KontoKlienta::usunKontoBankoweZPliku( std::string nazwaPliku, std::string numerKonta)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -557,9 +497,9 @@ void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::str
 	double srodki;
 
 	// plik tymczasowy do zapisu kont, ktore nie zostaną usunięte
-	std::string tempFilename = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
-	std::ofstream tempFile(tempFilename);
-	if (plik.is_open() && tempFile.is_open())
+	std::string temp_pelnaSciezka = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+	if (plik.is_open() && temp_plik.is_open())
 	{
 		while (getline(plik, linia))
 		{
@@ -570,9 +510,9 @@ void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::str
 			KontoBankowe* nowe = new KontoBankowe(nrKonta, static_cast<RodzajKonta>(typKonta),srodki);
 			if (nowe->getNrKontaBankowego() != numerKonta)
 			{
-				tempFile << nrKonta << "\n";
-				tempFile << typKonta << "\n";
-				tempFile << srodki << "\n";
+				temp_plik << nrKonta << "\n";
+				temp_plik << typKonta << "\n";
+				temp_plik << srodki << "\n";
 			}
 
 			delete nowe;
@@ -580,24 +520,25 @@ void KontoKlienta::usunKontoBankoweZPliku(KontoKlienta* aktualnyKlient, std::str
 		}
 		plik.close();
 		plik.clear();
-		tempFile.close();
-		tempFile.clear();
+		temp_plik.close();
+		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
-		if (std::rename(tempFilename.c_str(), pelnaSciezka.c_str()) != 0)
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapić pliku";
 		}
 	}
 	else
 	{
-		std::cout << "Nie można otworzyć pliku";
+		std::cout << "Nie mozna otworzyc pliku";
 	}
 }
-void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string nazwaPliku, std::string nrLokaty)
+
+void KontoKlienta::usunLokateZPliku(std::string nazwaPliku, std::string nrLokaty)
 {
 	char* cwd = _getcwd(0, 0);
 	std::string working_directory(cwd);
@@ -608,16 +549,17 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 	int rodzaj;
 	int okres;
 	double srodki;
+	double oprocentowanie;
 	std::string linia;
 	std::string numerLokaty;
 	std::string dataRozpoczecia;
 	std::string ostatnieNaliczenie;
 
 	// Create a temporary file
-	std::string tempFilename = working_directory + "\\Lokaty\\tempLokaty.txt";
-	std::ofstream tempFile(tempFilename);
+	std::string temp_pelnaSciezka = working_directory + "\\Lokaty\\tempLokaty.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
 
-	if (plik.is_open() && tempFile.is_open())
+	if (plik.is_open() && temp_plik.is_open())
 	{
 		while (getline(plik, linia))
 		{
@@ -625,19 +567,21 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 			plik >> okres;
 			plik >> numerLokaty;
 			plik >> srodki;
+			plik >> oprocentowanie;
 			plik >> dataRozpoczecia;
 			plik >> ostatnieNaliczenie;
 
-			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki, numerLokaty, dataRozpoczecia, ostatnieNaliczenie);
+			Lokata* nowa = new Lokata(static_cast<RodzajLokaty>(rodzaj), static_cast<RodzajCzasuLokaty>(okres), srodki,oprocentowanie, numerLokaty, dataRozpoczecia, ostatnieNaliczenie);
 
 			if (nowa->getNrLokaty() != nrLokaty)
 			{
-				tempFile << rodzaj << "\n";
-				tempFile << okres << "\n";
-				tempFile << numerLokaty << "\n";
-				tempFile << srodki << "\n";
-				tempFile << dataRozpoczecia << "\n";
-				tempFile << ostatnieNaliczenie << "\n";
+				temp_plik << rodzaj << "\n";
+				temp_plik << okres << "\n";
+				temp_plik << numerLokaty << "\n";
+				temp_plik << srodki << "\n";
+				temp_plik << oprocentowanie << "\n";
+				temp_plik << dataRozpoczecia << "\n";
+				temp_plik << ostatnieNaliczenie << "\n";
 			}
 
 			delete nowa;
@@ -646,20 +590,109 @@ void KontoKlienta::usunLokateZPliku(KontoKlienta* aktualnyKlient, std::string na
 		}
 		plik.close();
 		plik.clear();
-		tempFile.close();
-		tempFile.clear();
+		temp_plik.close();
+		temp_plik.clear();
 
 		if (std::remove(pelnaSciezka.c_str()) != 0) {
-			std::cerr << "Błąd podczas usuwania pliku." << std::endl;
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
 		}
 
-		if (std::rename(tempFilename.c_str(), pelnaSciezka.c_str()) != 0)
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
 		{
-			std::cout << "Nie można zastąpić pliku";
+			std::cout << "Nie mozna zastapić pliku";
 		}
 	}
 	else
 	{
-		std::cout << "Nie można otworzyć pliku";
+		std::cout << "Nie mozna otworzyc pliku";
 	}
+}
+
+//funckje do aktualizacji Konta bankoewgo lub Lokaty w pliku.txt
+void aktualizacjaKontaBankowego(KontoBankowe* konto, std::list<KontoBankowe> listaKont, std::string nazwaPliku)
+{
+	char* cwd = _getcwd(0, 0);
+	std::string working_directory(cwd);
+	std::free(cwd);
+	std::string pelnaSciezka = working_directory + "\\KontaBankowe\\" + nazwaPliku + "KontaBankowe.txt";
+	std::ifstream plik(pelnaSciezka);
+
+	std::string linia;
+	std::string nrKonta;
+	int typKonta;
+	double srodki;
+
+	// plik tymczasowy do zapisu kont, ktore nie zostaną usunięte
+	std::string temp_pelnaSciezka = working_directory + "\\KontaBankowe\\tempKontaBankowe.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+	if (!temp_plik.is_open()) {
+		std::cerr << "Blad otwierania pliku do zapisu." << std::endl;
+		return;
+	}
+
+	for (std::list<KontoBankowe>::iterator it = listaKont.begin(); it != listaKont.end(); ++it) {
+		temp_plik << konto->getNrKontaBankowego() << "\n";
+		temp_plik << konto->getTypKontaBankowego() << "\n";
+		temp_plik << konto->getSrodki() << "\n";
+		getline(plik, linia);
+	}
+		temp_plik.close();
+		temp_plik.clear();
+
+		if (std::remove(pelnaSciezka.c_str()) != 0) {
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
+		}
+
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
+		{
+			std::cout << "Nie mozna zastapic pliku";
+		}
+}
+void aktualizacjaLokaty(Lokata* lokata, std::list<Lokata> listaLokat, std::string nazwaPliku)
+{
+	char* cwd = _getcwd(0, 0);
+	std::string working_directory(cwd);
+	std::free(cwd);
+	std::string pelnaSciezka = working_directory + "\\Lokaty\\" + nazwaPliku + "Lokaty.txt";
+	std::ifstream plik(pelnaSciezka);
+
+	int rodzaj;
+	int okres;
+	double srodki;
+	double oprocentowanie;
+	std::string linia;
+	std::string numerLokaty;
+	std::string dataRozpoczecia;
+	std::string ostatnieNaliczenie;
+
+	// Create a temporary file
+	std::string temp_pelnaSciezka = working_directory + "\\Lokaty\\tempLokaty.txt";
+	std::ofstream temp_plik(temp_pelnaSciezka);
+
+	if (!temp_plik.is_open()) {
+		std::cerr << "Blad otwierania pliku do zapisu." << std::endl;
+		return;
+	}
+
+	for (std::list<Lokata>::iterator it = listaLokat.begin(); it != listaLokat.end(); ++it) {
+		temp_plik << lokata->getRodzajLokaty() << "\n";
+		temp_plik << lokata->getRodzajCzasuLokaty() << "\n";
+		temp_plik << lokata->getNrLokaty() << "\n";
+		temp_plik << lokata->getSrodki() << "\n";
+		temp_plik << lokata->getOprocentowanie() << "\n";
+		temp_plik << lokata->getDataRozpoczecia() << "\n";
+		temp_plik << lokata->getOstatnieNaliczenie() << "\n";
+		getline(plik, linia);
+	}
+		temp_plik.close();
+		temp_plik.clear();
+
+		if (std::remove(pelnaSciezka.c_str()) != 0) {
+			std::cerr << "Blad podczas usuwania pliku." << std::endl;
+		}
+
+		if (std::rename(temp_pelnaSciezka.c_str(), pelnaSciezka.c_str()) != 0)
+		{
+			std::cout << "Nie mozna zastapic pliku";
+		}
 }

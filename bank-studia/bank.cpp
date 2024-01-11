@@ -36,7 +36,8 @@ void Bank::przetworzPrzelewy() {
 		while(przelewy->size() != 0) {
 			Przelew przelew = przelewy->front();
 			//Znajdz odbiorce przelewu
-			KontoBankowe *odbiorca;
+			KontoBankowe* odbiorca=nullptr;
+
 			for (KontoBankowe *kontoOdbiorcy : kontaBankowe) {
 				if (kontoOdbiorcy->getNrKontaBankowego() == przelew.adresat) { odbiorca = kontoOdbiorcy; break; }
 			}
@@ -71,11 +72,8 @@ bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 	bool czyIstnieje = 0;
 
 	system("cls");
-	std::cout << "| 0. Powrot\n|\n"
-			<< "| Login: ";
+	std::cout << "| Login: ";
 	std::cin >> cinLogin;
-
-	if (cinLogin == "0") return 0;
 
 	for (KontoKlienta konto : this->listaKontKlientow)
 	{
@@ -93,14 +91,12 @@ bool Bank::Logowanie(KontoKlienta *aktualnyKlient)
 		{
 			std::cout << "| Haslo: ";
 			cinHaslo = getHaslo(1);
-			if (cinHaslo == "0") return 0;
 			if (aktualnyKlient->haslo == cinHaslo) return 1;
 			else
 			{
 				std::cout << "| Niepoprawne haslo!"; _getch();
 				system("cls");
-				std::cout << "| 0. Powrot\n|\n" 
-						  << "| Login: " << aktualnyKlient->login << "\n";
+				std::cout << "| Login: " << aktualnyKlient->login << "\n";
 			}
 		}
 	}
@@ -236,7 +232,6 @@ void Bank::dodajKlienta(int* iloscKlientow)
 	int new_numer = listaKontKlientow.back().numerKonta + 1;
 
 	system("cls"); 
-	std::cout << "| 0. Powrot\n|\n";
 	std::cout << "| Imie: ";
 	std::cin >> new_imie;
 	std::cout << "| Nazwisko: ";
@@ -288,7 +283,7 @@ void Bank::usunKlienta(KontoKlienta* aktualnyKlient, int* iloscKlientow)
 	}
 }
 
-int getListaKlientow(Bank *bank)
+int getListaKlientow(Bank* bank)
 {
 	std::ifstream* plikListaKlientow = new std::ifstream;
 	plikListaKlientow->open("listaKlientow.txt");
@@ -437,19 +432,20 @@ int menu::start()
 	int menuWybor;
 	system("cls");
 
+
 	std::cout << "--------------------\n"
 		<< "| BANK\n"
 		<< "| 1. Zaloguj sie\n"
 		<< "| 2. Zarejestruj sie\n"
-		<< "| 3. Wyjdz\n"
-		<< "--------------------\n"
-		<< "| >";
+		<< "| esc. Wyjdz\n"
+		<< "--------------------\n";
 
-	std::cin >> menuWybor;
+	menuWybor = _getch();
 
-	if (menuWybor < 1 || menuWybor>2) menuWybor = 3;
+	if (menuWybor < 51 && menuWybor > 48) menuWybor -= 48;
 	return menuWybor;
 }
+
 
 void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
@@ -457,8 +453,8 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 	int menuWybor;
 	int czyUsuniete = *iloscKlientow;
 	std::string login = aktualnyKlient->getLogin();
-	aktualnyKlient->wczytajKontaBankoweZPliku(aktualnyKlient, login);
-	aktualnyKlient->wczytajLokatyZPliku(aktualnyKlient, login);
+	aktualnyKlient->wczytajKontaBankoweZPliku(login);
+	aktualnyKlient->wczytajLokatyZPliku(login);
 
 	for (;;)
 	{
@@ -469,78 +465,27 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 			<< "| 1. Konta Bankowe\n"
 			<< "| 2. Lokaty\n"
 			<< "| 3. Zarzadzanie kontem\n"
-			<< "| 4. Wyloguj\n"
-			<< "--------------------\n"
-			<< "| >";
+			<< "| esc. Wyloguj\n"
+			<< "--------------------\n";
 
-		std::cin >> menuWybor;
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
 
 		switch (menuWybor)
 		{
 		case 1:
-			system("cls");
-			std::cout << "--------------------\n"
-				<< "| " << aktualnyKlient->getImie() << " "
-				<< "| " << aktualnyKlient->getNazwisko() << "\n"
-				<< "| 1. Dodanie Konta bankowego\n"
-				<< "| 2. Wyswietlenie kont bankowych\n"
-				<< "| 3. Usuniecie konta bankowego\n"
-				<< "--------------------\n"
-				<< "| >";
-			std::cin >> menuWybor;
-			switch (menuWybor)
-			{
-				case 1:
-					aktualnyKlient->dodajKontoBankowe(aktualnyKlient,bank);
-
-					break;
-				case 2:
-					aktualnyKlient->wyswietlKontaBankowe(*aktualnyKlient);
-					break;
-				case 3:
-					std::string numerKonta;
-					std::cout << "Podaj numer konta do usunięcia: ";
-					std::cin>>numerKonta;
-					aktualnyKlient->usunKontoBankowe(aktualnyKlient, bank, numerKonta);
-					break;
-			}
+			menu::kontoBankowe(aktualnyKlient, bank);
 			break;
-
 		case 2:
-			system("cls");
-			std::cout << "--------------------\n"
-				<< "| " << aktualnyKlient->getImie() << " "
-				<< "| " << aktualnyKlient->getNazwisko() << "\n"
-				<< "| 1. Dodanie lokaty\n"
-				<< "| 2. Wyswietlenie lokat\n"
-				<< "| 3. Usuniecie lokaty\n"
-				<< "--------------------\n"
-				<< "| >";
-			std::cin >> menuWybor;
-			switch (menuWybor)
-			{
-			case 1:
-				aktualnyKlient->dodajLokate(aktualnyKlient, bank);
-
-				break;
-			case 2:
-				aktualnyKlient->wyswietlLokaty(*aktualnyKlient);
-				break;
-			case 3:
-				std::string numerKonta;
-				std::cout << "Podaj numer konta do usunięcia: ";
-				std::cin >> numerKonta;
-				aktualnyKlient->usunLokate(aktualnyKlient, bank, numerKonta);
-				break;
-			}
+			menu::lokata(aktualnyKlient, bank);
 			break;
 
 		case 3:
 			menu::zarzadzanie(aktualnyKlient, bank, iloscKlientow);
 			if (czyUsuniete != *iloscKlientow) return;
 			break;
-
-		case 4:
+		case 27:
 			return;
 			break;
 
@@ -550,6 +495,7 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 	}
 }
 
+//funckaj odpowiadajaca za modyfikowanie konta
 void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 {
 	int menuWybor;
@@ -574,11 +520,12 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			<< "| 4. Zmien adres mailowy\n"
 			<< "| 5. Zmien adres zamieszkania\n"
 			<< "| 6. Usun konto\n"
-			<< "| 7. Wroc\n"
-			<< "--------------------\n"
-			<< "| >";
+			<< "| esc. Wroc\n"
+			<< "--------------------\n";
 
-		std::cin >> menuWybor;
+		menuWybor = _getch();
+
+		if (menuWybor < 55 && menuWybor > 48) menuWybor -= 48;
 
 		switch (menuWybor)
 		{
@@ -627,7 +574,8 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			{
 				std::string new_adres;
 				std::cout << "|\n| Nowy adres: ";
-				std::cin >> new_adres;
+				std::cin.ignore();
+				std::getline(std::cin, new_adres);
 				aktualnyKlient->setAdres(new_adres);
 			}
 			break;
@@ -637,7 +585,7 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			if (czyUsuniete != *iloscKlientow) return;
 			break;
 
-		case 7:
+		case 27:
 			updateListaKlientow(iloscKlientow, bank, aktualnyKlient, aktualnyKlientIndex);
 			return;
 			break;
@@ -646,4 +594,134 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			break;
 		}
 	}
+}
+
+//funckja odpowiadajaca za menu dla konta bankowego
+void menu::kontoBankowe(KontoKlienta* aktualnyKlient, Bank* bank)
+{
+	KontoBankowe* aktualneKontoBankowe = new KontoBankowe;
+	int menuWybor;
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| 1. Dodanie Konta bankowego\n"
+			<< "| 2. Wyswietlenie kont bankowych\n"
+			<< "| 3. Usuniecie konta bankowego\n"
+			<< "| 4. Przelewy\n"
+			<< "| esc. Wroc\n"
+			<< "--------------------\n";
+
+		menuWybor = _getch();
+
+		if (menuWybor < 53 && menuWybor > 48) menuWybor -= 48;
+
+		switch (menuWybor)
+		{
+		case 1:
+			aktualnyKlient->dodajKontoBankowe(aktualnyKlient, bank);
+			break;
+		case 2:
+			aktualnyKlient->wyswietlKontaBankowe(*aktualnyKlient);
+			break;
+		case 3:
+		{
+			std::string numerKonta;
+			std::cout << "Podaj numer konta do usuniecia: ";
+			std::cin >> numerKonta;
+			aktualnyKlient->usunKontoBankowe(aktualnyKlient, bank, numerKonta);
+			break;
+		}
+		case 4:
+		{
+			Waluta waluta;
+			std::string adresat;
+			std::string nadawca;
+			std::string opis;
+			double kwota;
+			int wyborKonto;
+
+			system("cls");
+			std::cout << "Wybierz konto:\n\n";
+
+			for (KontoBankowe aktualny : aktualnyKlient->listaKontBankowe)
+			{
+				aktualny.wyswietlDane();
+				std::cout << "\n\n";
+			}
+
+			wyborKonto = _getch()-48;
+			if (wyborKonto > (aktualnyKlient->listaKontBankowe).size()) wyborKonto = aktualnyKlient->listaKontBankowe.size()-1;
+			if (wyborKonto < 0) wyborKonto = 1;
+
+			*aktualneKontoBankowe = get(aktualnyKlient->listaKontBankowe, wyborKonto);
+
+			std::cout << "Numer konta bankowego odbiorcy: ";
+			std::cin >> adresat;
+			std::cout << "Podaj kwote: ";
+			std::cin >> kwota;
+			std::cout << "Podaj opis: ";
+			std::cin.ignore();
+			getline(std::cin, opis);
+			aktualneKontoBankowe->utworzPrzelew(adresat, kwota, NATYCHMIASTOWY, opis, 1, waluta);
+			//zamiana wartosci w .txt
+			aktualizacjaKontaBankowego(aktualneKontoBankowe, aktualnyKlient->getListaKontBankowych(), aktualnyKlient->getLogin());
+
+			break;
+		}
+		case 27:
+			return;
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+//funkcja odpowiadajaca za menu lokat
+void menu::lokata(KontoKlienta* aktualnyKlient, Bank* bank)
+{
+	int menuWybor;
+	for (;;)
+	{
+		system("cls");
+		std::cout << "--------------------\n"
+			<< "| " << aktualnyKlient->getImie() << " "
+			<< "| " << aktualnyKlient->getNazwisko() << "\n"
+			<< "| 1. Dodanie lokaty\n"
+			<< "| 2. Wyswietlenie lokat\n"
+			<< "| 3. Usuniecie lokaty\n"
+			<< "| esc. Wroc\n"
+			<< "--------------------\n";
+
+		menuWybor = _getch();
+
+		if (menuWybor < 52 && menuWybor > 48) menuWybor -= 48;
+
+		switch (menuWybor)
+		{
+		case 1:
+			aktualnyKlient->dodajLokate(aktualnyKlient, bank);
+
+			break;
+		case 2:
+			aktualnyKlient->wyswietlLokaty(*aktualnyKlient);
+			break;
+		case 3:
+		{
+			std::string numerKonta;
+			std::cout << "Podaj numer konta do usuniecia: ";
+			std::cin >> numerKonta;
+			aktualnyKlient->usunLokate(aktualnyKlient, bank, numerKonta);
+			break;
+		}
+		case 27:
+			return;
+			break;
+
+		default:
+			break;
+		}
+	}
+
 }

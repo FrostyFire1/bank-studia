@@ -22,10 +22,9 @@ protected:
 	std::string ostatnieNaliczenie;
 public:
 	Lokata(RodzajLokaty , RodzajCzasuLokaty ,double, std::string );
-	Lokata(RodzajLokaty, RodzajCzasuLokaty, double, std::string,std::string,std::string);
+	Lokata(RodzajLokaty, RodzajCzasuLokaty, double,double, std::string,std::string,std::string);
 	Lokata();
 	void wyswietlDaneLokat();
-	std::string Data(RodzajCzasuLokaty);
 
 	RodzajLokaty getRodzajLokaty();
 	RodzajCzasuLokaty getRodzajCzasuLokaty();
@@ -33,7 +32,12 @@ public:
 	std::string getNrLokaty();
 	std::string getDataRozpoczecia();
 	std::string getOstatnieNaliczenie();
+	double getOprocentowanie();
 
 };
+std::string wyswietlRodzajLokaty(RodzajLokaty);
+std::string wyswietlRodzajCzasuLokaty(RodzajCzasuLokaty);
+double obliczOprocentowanie(RodzajLokaty, RodzajCzasuLokaty);
+std::string Data(RodzajCzasuLokaty);
 
 #endif 
