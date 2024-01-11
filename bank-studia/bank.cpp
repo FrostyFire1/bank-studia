@@ -397,11 +397,10 @@ int menu::start()
 		<< "| BANK\n"
 		<< "| 1. Zaloguj sie\n"
 		<< "| 2. Zarejestruj sie\n"
-		<< "| 3. Wyjdz\n"
-		<< "--------------------\n"
-		<< "| >";
+		<< "| esc. Wyjdz\n"
+		<< "--------------------\n";
 
-	std::cin >> menuWybor;
+	menuWybor = _getch() - 48;
 
 	if (menuWybor < 1 || menuWybor>2) menuWybor = 3;
 	return menuWybor;
@@ -425,11 +424,10 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 			<< "| 1. Konta Bankowe\n"
 			<< "| 2. Lokaty\n"
 			<< "| 3. Zarzadzanie kontem\n"
-			<< "| 4. Wyloguj\n"
-			<< "--------------------\n"
-			<< "| >";
+			<< "| esc. Wyloguj\n"
+			<< "--------------------\n";
 
-		std::cin >> menuWybor;
+		menuWybor = _getch() - 48;
 
 		switch (menuWybor)
 		{
@@ -441,9 +439,9 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 				<< "| 1. Dodanie Konta bankowego\n"
 				<< "| 2. Wyswietlenie kont bankowych\n"
 				<< "| 3. Usuniecie konta bankowego\n"
-				<< "--------------------\n"
-				<< "| >";
-			std::cin >> menuWybor;
+				<< "--------------------\n";
+
+			menuWybor = _getch() - 48;
 			switch (menuWybor)
 			{
 				case 1:
@@ -470,9 +468,9 @@ void menu::main(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlientow)
 				<< "| 1. Dodanie lokaty\n"
 				<< "| 2. Wyswietlenie lokat\n"
 				<< "| 3. Usuniecie lokaty\n"
-				<< "--------------------\n"
-				<< "| >";
-			std::cin >> menuWybor;
+				<< "--------------------\n";
+
+			menuWybor = _getch() - 48;
 			switch (menuWybor)
 			{
 			case 1:
@@ -530,11 +528,11 @@ void menu::zarzadzanie(KontoKlienta* aktualnyKlient, Bank* bank, int* iloscKlien
 			<< "| 4. Zmien adres mailowy\n"
 			<< "| 5. Zmien adres zamieszkania\n"
 			<< "| 6. Usun konto\n"
-			<< "| 7. Wroc\n"
+			<< "| esc. Wroc\n"
 			<< "--------------------\n"
 			<< "| >";
 
-		std::cin >> menuWybor;
+		menuWybor = _getch() - 48;
 
 		switch (menuWybor)
 		{
