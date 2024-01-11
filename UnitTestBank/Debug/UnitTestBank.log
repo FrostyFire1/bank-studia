@@ -1,9 +1,4 @@
-﻿  pch.cpp
-  UnitTestBank.cpp
-  UnitTestKontoBankowe.cpp
-C:\Users\gymzo\source\repos\bank-studia\UnitTestBank\UnitTestKontoBankowe.cpp(19,52): error C2228: left of '.front' must have class/struct/union
-C:\Users\gymzo\source\repos\bank-studia\UnitTestBank\UnitTestKontoBankowe.cpp(19,52): message : type is 'std::list<Przelew,std::allocator<Przelew>> *'
-C:\Users\gymzo\source\repos\bank-studia\UnitTestBank\UnitTestKontoBankowe.cpp(19,52): message : did you intend to use '->' instead?
-C:\Users\gymzo\source\repos\bank-studia\UnitTestBank\UnitTestKontoBankowe.cpp(26,42): error C2440: 'initializing': cannot convert from 'std::vector<Blokada,std::allocator<Blokada>> *' to 'std::vector<Blokada,std::allocator<Blokada>>'
-C:\Users\gymzo\source\repos\bank-studia\UnitTestBank\UnitTestKontoBankowe.cpp(26,42): message : No constructor could take the source type, or constructor overload resolution was ambiguous
-  Generating Code...
+﻿  UnitTestKontoBankowe.cpp
+  LINK : C:\Users\gymzo\source\repos\bank-studia\Debug\UnitTestBank.dll not found or not built by the last incremental link; performing full link
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1096,5): error MSB6006: "link.exe" exited with code 1112.
+..\bank-studia\x64\Debug\bank.obj : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'
